@@ -80,8 +80,8 @@ services:
   frontend:
     volumes:
       # https://stackoverflow.com/a/32785014
-      - ./frontend:/app
-      - /app/node_modules
+      - ./frontend:/frontend
+      - node_modules:/frontend/node_modules
     build:
       context: ./frontend
       target: run-dev
@@ -90,6 +90,9 @@ services:
       - traefik.constraint-label-stack=${TRAEFIK_TAG?Variable not set}
       - traefik.http.routers.${STACK_NAME?Variable not set}-frontend-http.rule=PathPrefix(`/`)
       - traefik.http.services.${STACK_NAME?Variable not set}-frontend.loadbalancer.server.port=80
+
+volumes:
+  node_modules:
 
 networks:
   traefik-public:
