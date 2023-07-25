@@ -38,6 +38,12 @@ class Settings(BaseSettings):
             return None
         return v
 
+    # GENERAL SETTINGS
+
+    MULTI_MAX: int = 20
+
+    # COMPONENT SETTINGS
+
     POSTGRES_SERVER: str
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str

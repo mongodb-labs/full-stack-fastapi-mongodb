@@ -1,19 +1,19 @@
 from typing import Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from uuid import UUID
 
 
 class RefreshTokenBase(BaseModel):
     token: str
-    is_valid: bool = True
+    authenticates_id: Optional[UUID] = None
 
 
 class RefreshTokenCreate(RefreshTokenBase):
-    pass
+    authenticates_id: UUID
 
 
 class RefreshTokenUpdate(RefreshTokenBase):
-    is_valid: bool = Field(..., description="Deliberately disable a refresh token.")
+    pass
 
 
 class RefreshToken(RefreshTokenUpdate):

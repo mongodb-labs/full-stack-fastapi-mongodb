@@ -86,14 +86,13 @@ def read_user(
 def read_all_users(
     *,
     db: Session = Depends(deps.get_db),
-    skip: int = 0,
-    limit: int = 100,
+    page: int = 0,
     current_user: models.User = Depends(deps.get_current_active_superuser),
 ) -> Any:
     """
     Retrieve all current users.
     """
-    return crud.user.get_multi(db=db, skip=skip, limit=limit)
+    return crud.user.get_multi(db=db, page=page)
 
 
 @router.post("/new-totp", response_model=schemas.NewTOTP)

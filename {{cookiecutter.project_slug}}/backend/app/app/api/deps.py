@@ -88,12 +88,12 @@ def get_refresh_user(db: Session = Depends(get_db), token: str = Depends(reusabl
         raise HTTPException(status_code=400, detail="Inactive user")
     # Check and revoke this refresh token
     token_obj = crud.token.get(token=token, user=user)
-    if not token_obj or not token_obj.is_valid:
+    if not token_obj:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Could not validate credentials",
         )
-    crud.token.cancel_refresh_token(db, db_obj=token_obj)
+    crud.token.remove(db, db_obj=token_obj)
     return user
 
 

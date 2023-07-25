@@ -1,5 +1,4 @@
 from typing import Any, Union, Dict
-from pydantic import EmailStr
 
 from fastapi import APIRouter, Body, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
@@ -34,7 +33,7 @@ See `security.py` for other requirements.
 
 
 @router.post("/magic/{email}", response_model=schemas.WebToken)
-def login_with_magic_link(*, db: Session = Depends(deps.get_db), email: EmailStr) -> Any:
+def login_with_magic_link(*, db: Session = Depends(deps.get_db), email: str) -> Any:
     """
     First step of a 'magic link' login. Check if the user exists and generate a magic link. Generates two short-duration
     jwt tokens, one for validation, one for email. Creates user if not exist.
