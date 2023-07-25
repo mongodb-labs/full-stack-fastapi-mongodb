@@ -4,7 +4,7 @@
       <div class="space-y-6 bg-white py-6 px-4 sm:p-6">
         <div>
           <h3 class="text-lg font-medium leading-6 text-gray-900">{{  title }}</h3>
-          <p v-if="!auth.profile.password" class="mt-1 text-sm text-gray-500">
+          <p v-if="!authStore.profile.password" class="mt-1 text-sm text-gray-500">
             Secure your account by adding a password, or enabling two-factor security. Or both. Any changes will 
             require you to enter your original password.
           </p>
@@ -144,12 +144,13 @@
 import { Switch, Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from "@headlessui/vue"
 import { QrCodeIcon } from "@heroicons/vue/24/outline"
 import QrcodeVue from "qrcode.vue"
-import { useAuthStore } from "@/stores"
+import { useAuthStore, useTokenStore } from "@/stores"
 import { apiAuth } from "@/api"
 import { IUserProfileUpdate, INewTOTP, IEnableTOTP } from "@/interfaces"
 
 
-const auth = useAuthStore()
+const authStore = useAuthStore()
+const tokenStore = useTokenStore()
 let profile = {} as IUserProfileUpdate
 const title = "Security"
 const redirectTOTP = "/settings"
@@ -160,7 +161,7 @@ const totpClaim = ref({} as IEnableTOTP)
 const qrSize = 200
 
 const schema = {
-  original: { required: auth.profile.password, min: 8, max: 64 },
+  original: { required: authStore.profile.password, min: 8, max: 64 },
   password: { required: false, min: 8, max: 64 },
   confirmation: { required: false, confirmed: "password" }
 }
@@ -171,7 +172,7 @@ const totpSchema = {
 
 onMounted( () => {
   resetProfile()
-  totpEnabled.value = auth.profile.totp
+  totpEnabled.value = authStore.profile.totp
 })
 
 function resetProfile() {
@@ -183,7 +184,7 @@ function resetProfile() {
 // @ts-ignore
 async function enableTOTP(values: any, { resetForm }) {
   totpClaim.value.claim = values.claim
-  await auth.enableTOTPAuthentication(totpClaim.value)
+  await authStore.enableTOTPAuthentication(totpClaim.value)
   resetForm()
   totpModal.value = false 
 }
@@ -191,16 +192,16 @@ async function enableTOTP(values: any, { resetForm }) {
 // @ts-ignore
 async function submit(values: any, { resetForm }) {
   profile = {}
-  if ((!auth.profile.password && !values.original) || 
-      (auth.profile.password && values.original)) {
+  if ((!authStore.profile.password && !values.original) || 
+      (authStore.profile.password && values.original)) {
     if (values.original) profile.original = values.original
     if (values.password && values.password !== values.original) {
       profile.password = values.password
-      await auth.updateUserProfile(profile)
+      await authStore.updateUserProfile(profile)
     }
-    if (totpEnabled.value !== auth.profile.totp && totpEnabled.value) {
-      await auth.authTokens.refreshTokens()
-      const { data: response } = await apiAuth.requestNewTOTP(auth.authTokens.token)
+    if (totpEnabled.value !== authStore.profile.totp && totpEnabled.value) {
+      await tokenStore.refreshTokens()
+      const { data: response } = await apiAuth.requestNewTOTP(tokenStore.token)
       if (response.value) {
         totpNew.value.key = response.value.key
         totpNew.value.uri = response.value.uri
@@ -209,8 +210,8 @@ async function submit(values: any, { resetForm }) {
         totpModal.value = true
       }
     }
-    if (totpEnabled.value !== auth.profile.totp && !totpEnabled.value) {
-      await auth.disableTOTPAuthentication(profile)
+    if (totpEnabled.value !== authStore.profile.totp && !totpEnabled.value) {
+      await authStore.disableTOTPAuthentication(profile)
     }
     resetForm()
   }

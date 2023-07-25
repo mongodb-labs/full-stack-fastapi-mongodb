@@ -21,7 +21,7 @@
               <span class="truncate">{{ item.name }}</span>
             </button>
             <button 
-              v-if="auth.is_superuser"
+              v-if="authStore.is_superuser"
               class="text-gray-900 hover:text-gray-900 group rounded-md px-3 py-2 flex items-center text-sm font-medium cursor-pointer"
               @click.prevent="navigateTo('/moderation')"
             >
@@ -31,7 +31,7 @@
               />
               <span class="truncate">Moderation</span>
             </button>
-            <SettingsValidateEmailButton v-if="!auth.profile.email_validated"/>
+            <SettingsValidateEmailButton v-if="!authStore.profile.email_validated"/>
           </nav>
         </aside>
         <div class="space-y-6 ml-3 sm:px-6 lg:col-span-9 min-w-full lg:px-0">
@@ -55,7 +55,7 @@ definePageMeta({
   middleware: ["authenticated"],
 });
 
-const auth = useAuthStore()
+const authStore = useAuthStore()
 
 const navigation = [
   { name: "Account", id: "ACCOUNT", icon: UserCircleIcon },

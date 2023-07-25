@@ -7,6 +7,8 @@ import {
 } from "@/interfaces"
 import { apiAuth } from "@/api"
 import { tokenIsTOTP, tokenParser } from "@/utilities"
+import { useToastStore } from "./toasts"
+import { useTokenStore } from "./tokens"
 
 export const useAuthStore = defineStore("authUser", {
   state: (): IUserProfile => ({
@@ -40,7 +42,7 @@ export const useAuthStore = defineStore("authUser", {
     },
     profile: (state) => state,
     loggedIn: (state) => state.id !== "",
-    authTokens: () => {
+    tokenStore: () => {
       // @ts-ignore
       return ( useTokenStore() )
     }
@@ -51,9 +53,9 @@ export const useAuthStore = defineStore("authUser", {
       // @ts-ignore
       const toasts = useToastStore()
       try {
-        await this.authTokens.getTokens(payload)
-        if (this.authTokens.token && 
-            !tokenIsTOTP(this.authTokens.token)
+        await this.tokenStore.getTokens(payload)
+        if (this.tokenStore.token && 
+            !tokenIsTOTP(this.tokenStore.token)
             ) await this.getUserProfile()
       } catch (error) {
         toasts.addNotice({
@@ -68,9 +70,9 @@ export const useAuthStore = defineStore("authUser", {
       // @ts-ignore
       const toasts = useToastStore()
       try {
-        await this.authTokens.validateMagicTokens(token)
-        if (this.authTokens.token && 
-          !tokenIsTOTP(this.authTokens.token)
+        await this.tokenStore.validateMagicTokens(token)
+        if (this.tokenStore.token && 
+          !tokenIsTOTP(this.tokenStore.token)
           ) await this.getUserProfile()
       } catch (error) {
         toasts.addNotice({
@@ -85,9 +87,9 @@ export const useAuthStore = defineStore("authUser", {
       // @ts-ignore
       const toasts = useToastStore()
       try {
-        await this.authTokens.validateTOTPClaim(claim)
-        if (this.authTokens.token && 
-          !tokenIsTOTP(this.authTokens.token)
+        await this.tokenStore.validateTOTPClaim(claim)
+        if (this.tokenStore.token && 
+          !tokenIsTOTP(this.tokenStore.token)
           ) await this.getUserProfile()
       } catch (error) {
         toasts.addNotice({
@@ -105,7 +107,7 @@ export const useAuthStore = defineStore("authUser", {
       try {
         const { data: response } = await apiAuth.createProfile(payload)
         if (response.value) this.setUserProfile(response.value)
-        await this.authTokens.getTokens({ 
+        await this.tokenStore.getTokens({ 
           username: this.email, 
           password: payload.password 
         })
@@ -119,10 +121,10 @@ export const useAuthStore = defineStore("authUser", {
     },
     async getUserProfile() {
       if (!this.loggedIn) {
-        await this.authTokens.refreshTokens()
-        if (this.authTokens.token) {
+        await this.tokenStore.refreshTokens()
+        if (this.tokenStore.token) {
           try {
-            const { data: response } = await apiAuth.getProfile(this.authTokens.token)
+            const { data: response } = await apiAuth.getProfile(this.tokenStore.token)
             if (response.value) this.setUserProfile(response.value)
           } catch (error) {
             this.logOut()
@@ -133,10 +135,10 @@ export const useAuthStore = defineStore("authUser", {
     async updateUserProfile(payload: IUserProfileUpdate) {
       // @ts-ignore
       const toasts = useToastStore()
-      await this.authTokens.refreshTokens()
-      if (this.loggedIn && this.authTokens.token) {
+      await this.tokenStore.refreshTokens()
+      if (this.loggedIn && this.tokenStore.token) {
         try {
-          const { data: response } = await apiAuth.updateProfile(this.authTokens.token, payload)
+          const { data: response } = await apiAuth.updateProfile(this.tokenStore.token, payload)
           if (response.value) 
           if (response.value) {
             this.setUserProfile(response.value)
@@ -158,10 +160,10 @@ export const useAuthStore = defineStore("authUser", {
     async enableTOTPAuthentication(payload: IEnableTOTP) {
       // @ts-ignore
       const toasts = useToastStore()
-      await this.authTokens.refreshTokens()
-      if (this.loggedIn && this.authTokens.token) {
+      await this.tokenStore.refreshTokens()
+      if (this.loggedIn && this.tokenStore.token) {
         try {
-          const { data: response } = await apiAuth.enableTOTPAuthentication(this.authTokens.token, payload)
+          const { data: response } = await apiAuth.enableTOTPAuthentication(this.tokenStore.token, payload)
           if (response.value) {
             this.totp = true
             toasts.addNotice({
@@ -181,10 +183,10 @@ export const useAuthStore = defineStore("authUser", {
     async disableTOTPAuthentication(payload: IUserProfileUpdate) {
       // @ts-ignore
       const toasts = useToastStore()
-      await this.authTokens.refreshTokens()
-      if (this.loggedIn && this.authTokens.token) {
+      await this.tokenStore.refreshTokens()
+      if (this.loggedIn && this.tokenStore.token) {
         try {
-          const { data: response } = await apiAuth.disableTOTPAuthentication(this.authTokens.token, payload)
+          const { data: response } = await apiAuth.disableTOTPAuthentication(this.tokenStore.token, payload)
           if (response.value) {
             this.totp = false
             toasts.addNotice({
@@ -215,10 +217,10 @@ export const useAuthStore = defineStore("authUser", {
     async sendEmailValidation() {
       // @ts-ignore
       const toasts = useToastStore()
-      await this.authTokens.refreshTokens()
-      if (this.authTokens.token && !this.email_validated) {
+      await this.tokenStore.refreshTokens()
+      if (this.tokenStore.token && !this.email_validated) {
         try {
-          const { data: response } = await apiAuth.requestValidationEmail(this.authTokens.token)
+          const { data: response } = await apiAuth.requestValidationEmail(this.tokenStore.token)
           if (response.value) {
             toasts.addNotice({
               title: "Validation sent",
@@ -237,11 +239,11 @@ export const useAuthStore = defineStore("authUser", {
     async validateEmail(validationToken: string) {
       // @ts-ignore
       const toasts = useToastStore()
-      await this.authTokens.refreshTokens()
-      if (this.authTokens.token && !this.email_validated) {
+      await this.tokenStore.refreshTokens()
+      if (this.tokenStore.token && !this.email_validated) {
         try {
           const { data: response } = await apiAuth.validateEmail(
-            this.authTokens.token,
+            this.tokenStore.token,
             validationToken
           )
           if (response.value) {
@@ -270,7 +272,7 @@ export const useAuthStore = defineStore("authUser", {
           const { data: response } = await apiAuth.recoverPassword(email)
           if (response.value) {
             if (response.value.hasOwnProperty("claim")) 
-              this.authTokens.setMagicToken(response.value as unknown as IWebToken)
+              this.tokenStore.setMagicToken(response.value as unknown as IWebToken)
             toasts.addNotice({
               title: "Success",
               content: "If that login exists, we'll send you an email to reset your password.",
@@ -282,7 +284,7 @@ export const useAuthStore = defineStore("authUser", {
             content: "Please check your details, or internet connection, and try again.",
             icon: "error"
           })
-          this.authTokens.deleteTokens()
+          this.tokenStore.deleteTokens()
         }
       }
     },
@@ -291,7 +293,7 @@ export const useAuthStore = defineStore("authUser", {
       const toasts = useToastStore()
       if (!this.loggedIn) {
         try {
-          const claim: string = this.authTokens.token
+          const claim: string = this.tokenStore.token
           // Check the two magic tokens meet basic criteria
           const localClaim = tokenParser(claim)
           const magicClaim = tokenParser(token)
@@ -311,13 +313,13 @@ export const useAuthStore = defineStore("authUser", {
             content: "Ensure you're using the same browser and that the token hasn't expired.",
             icon: "error"
           })
-          this.authTokens.deleteTokens()
+          this.tokenStore.deleteTokens()
         }
       }
     },
     // reset state using `$reset`
     logOut () {
-      this.authTokens.deleteTokens()
+      this.tokenStore.deleteTokens()
       this.$reset()
     }
   }

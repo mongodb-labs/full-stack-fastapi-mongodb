@@ -45,14 +45,14 @@ definePageMeta({
   middleware: ["anonymous"],
 });
 
-const auth = useAuthStore()
+const authStore = useAuthStore()
 const redirectRoute = "/"
 const schema = {
     email: { email: true, required: true }
 }
 
 async function submit(values: any) {
-  await auth.recoverPassword(values.email)
+  await authStore.recoverPassword(values.email)
   await new Promise((resolve) => {
     setTimeout(() => {
       resolve(true)

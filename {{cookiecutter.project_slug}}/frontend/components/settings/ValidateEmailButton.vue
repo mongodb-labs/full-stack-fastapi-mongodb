@@ -17,9 +17,9 @@
 import { AtSymbolIcon } from "@heroicons/vue/24/outline"
 import { useAuthStore } from "@/stores"
 
-const auth = useAuthStore()
+const authStore = useAuthStore()
 
 async function submit() {
-  await auth.sendEmailValidation()
+  await authStore.sendEmailValidation()
 }
 </script>

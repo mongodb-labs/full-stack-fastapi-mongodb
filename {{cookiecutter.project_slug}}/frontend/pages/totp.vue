@@ -37,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import { useAuthStore } from "@/stores"
+import { useAuthStore, useTokenStore } from "@/stores"
 import { tokenIsTOTP } from "@/utilities"
 
 definePageMeta({
@@ -45,22 +45,23 @@ layout: "authentication",
 middleware: ["anonymous"],
 });
 
-const auth = useAuthStore()
+const authStore = useAuthStore()
+const tokenStore = useTokenStore()
 const redirectRoute = "/"
 const schema = {
   claim: { required: true, min: 6, max: 7 }
 }
 
 async function submit(values: any) {
-  await auth.totpLogin(values.claim)
-  if (auth.loggedIn) {
+  await authStore.totpLogin(values.claim)
+  if (authStore.loggedIn) {
     return await navigateTo(redirectRoute)     
   }
 }
 
 onMounted(async () => {
   // Check if token exists
-  if (!auth.authTokens.token || !tokenIsTOTP(auth.authTokens.token)) 
+  if (!tokenStore.token || !tokenIsTOTP(tokenStore.token)) 
     return await navigateTo("/")
 })
 </script>
