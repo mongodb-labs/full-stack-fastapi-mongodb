@@ -1,4 +1,4 @@
-FROM ghcr.io/br3ndonland/inboard:fastapi-0.51.0-python3.11
+FROM ghcr.io/br3ndonland/inboard:fastapi-0.51-python3.11
 
 # Use file.name* in case it doesn't exist in the repo
 COPY ./app/pyproject.toml ./app/README.md ./app/__version__.py /app/
