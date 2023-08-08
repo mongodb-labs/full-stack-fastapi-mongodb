@@ -1,5 +1,4 @@
 FROM python:3.11
-
 WORKDIR /app/
 ARG \
   HATCH_VERSION=1.7.0 \
@@ -13,25 +12,20 @@ ENV \
   PIPX_HOME=/opt/pipx/home \
   PIPX_VERSION=$PIPX_VERSION \
   PYTHONPATH=/app
-
+COPY ./app/app /app/app
+COPY ./app/pyproject.toml ./app/README.md ./app/worker-start.sh /app/
 RUN <<HEREDOC
-. /etc/os-release
 python -m pip install --no-cache-dir --upgrade pip "pipx==$PIPX_VERSION"
 pipx install "hatch==$HATCH_VERSION"
-HEREDOC
-
+hatch env prune && hatch env create production
+chmod +x /app/worker-start.sh
 # Neomodel has shapely and libgeos as dependencies
-# RUN apt-get update && apt-get install -y libgeos-dev
-
-# Use file.name* in case it doesn't exist in the repo
-COPY ./app/pyproject.toml ./app/README.md ./app/__version__.py /app/
-RUN hatch env prune && hatch env create production
-
+# apt-get update && apt-get install -y libgeos-dev
 # /start Project-specific dependencies
-# RUN apt-get update && apt-get install -y --no-install-recommends \
-# && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*	
-# WORKDIR /app
-# /end Project-specific dependencies	
+# apt-get update && apt-get install -y --no-install-recommends
+# rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# /end Project-specific dependencies
+HEREDOC
 
 # For development, Jupyter remote kernel, Hydrogen
 # Using inside the container:
@@ -39,8 +33,4 @@ RUN hatch env prune && hatch env create production
 # ARG INSTALL_JUPYTER=false
 # RUN bash -c "if [ $INSTALL_JUPYTER == 'true' ] ; then pip install jupyterlab ; fi"
 
-COPY ./app/ /app/
-COPY ./app/worker-start.sh /worker-start.sh
-WORKDIR /app/
-RUN chmod +x /worker-start.sh
-CMD ["bash", "/worker-start.sh"]
+CMD ["bash", "worker-start.sh"]
