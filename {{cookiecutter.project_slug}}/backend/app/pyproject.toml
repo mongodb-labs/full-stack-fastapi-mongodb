@@ -55,7 +55,7 @@ Issues = "https://github.com/unknown/app/issues"
 Source = "https://github.com/unknown/app"
 
 [tool.hatch.version]
-path = "./__version__.py"
+path = "app/__version__.py"
 
 [dirs.env]
 virtual = "./.venv"
