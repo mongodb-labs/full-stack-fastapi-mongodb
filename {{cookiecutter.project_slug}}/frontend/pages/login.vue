@@ -64,7 +64,7 @@
 
 <script setup lang="ts">
 import { Switch } from '@headlessui/vue'
-import { useAuthStore } from "@/stores"
+import { useAuthStore, useTokenStore } from "@/stores"
 import { tokenParser, tokenIsTOTP } from "@/utilities"
 
 definePageMeta({
@@ -72,8 +72,9 @@ definePageMeta({
   middleware: ["anonymous"],
 });
 
+const authStore = useAuthStore()
+const tokenStore = useTokenStore()
 const route = useRoute()
-const auth = useAuthStore()
 const redirectAfterLogin = "/"
 const redirectAfterMagic = "/magic"
 const redirectTOTP = "/totp"
@@ -85,12 +86,12 @@ const schema = {
 }
 
 async function submit(values: any) {
-  await auth.logIn({ username: values.email, password: values.password })
-  if (auth.loggedIn) return await navigateTo(redirectAfterLogin)
-  if (auth.authTokens.token && tokenIsTOTP(auth.authTokens.token)) 
+  await authStore.logIn({ username: values.email, password: values.password })
+  if (authStore.loggedIn) return await navigateTo(redirectAfterLogin)
+  if (tokenStore.token && tokenIsTOTP(tokenStore.token)) 
     return await navigateTo(redirectTOTP)
-  if (auth.authTokens.token && 
-      tokenParser(auth.authTokens.token).hasOwnProperty("fingerprint"))
+  if (tokenStore.token && 
+      tokenParser(tokenStore.token).hasOwnProperty("fingerprint"))
     return await navigateTo(redirectAfterMagic)
 }
 

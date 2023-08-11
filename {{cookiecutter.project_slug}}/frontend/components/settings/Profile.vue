@@ -57,13 +57,13 @@
 import { useAuthStore } from "@/stores"
 import { IUserProfileUpdate } from "@/interfaces"
 
-const auth = useAuthStore()
+const authStore = useAuthStore()
 let profile = {} as IUserProfileUpdate
 const title = "Personal settings"
 const description = "Changing your email address will change your login. Any changes will require you to enter your original password."
 
 const schema = {
-    original: { required: auth.profile.password, min: 8, max: 64 },
+    original: { required: authStore.profile.password, min: 8, max: 64 },
     full_name: { required: false },
     email: { email: true, required: true },
 }
@@ -74,20 +74,20 @@ onMounted( () => {
 
 function resetProfile() {
   profile = {
-    full_name: auth.profile.full_name,
-    email: auth.profile.email,
+    full_name: authStore.profile.full_name,
+    email: authStore.profile.email,
   }
 }
 
 async function submit(values: any) {
   profile = {}
-  if ((!auth.profile.password && !values.original) || 
-      (auth.profile.password && values.original)) {
+  if ((!authStore.profile.password && !values.original) || 
+      (authStore.profile.password && values.original)) {
     if (values.original) profile.original = values.original
     if (values.email) {
       profile.email = values.email
       if (values.full_name) profile.full_name = values.full_name
-      await auth.updateUserProfile(profile)
+      await authStore.updateUserProfile(profile)
       resetProfile()
     }
   }

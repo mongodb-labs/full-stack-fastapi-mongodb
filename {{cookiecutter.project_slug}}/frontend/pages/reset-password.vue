@@ -53,12 +53,12 @@ const schema = {
     password: { required: true, min: 8 },
     confirmation: { required: true, confirmed: "password" }
 }
-const auth = useAuthStore()
+const authStore = useAuthStore()
 const route = useRoute()
 const redirectRoute = "/login"
 
 async function submit(values: any) {
-  await auth.resetPassword(values.password, route.query.token as string)
+  await authStore.resetPassword(values.password, route.query.token as string)
   await new Promise((resolve) => {
     setTimeout(() => {
       resolve(true)

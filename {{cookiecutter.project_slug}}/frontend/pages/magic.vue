@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
 import { LinkIcon, EnvelopeIcon } from "@heroicons/vue/24/outline"
-import { useAuthStore } from "@/stores"
+import { useTokenStore } from "@/stores"
 import { tokenParser } from "@/utilities"
 
 definePageMeta({
@@ -44,12 +44,12 @@ definePageMeta({
   middleware: ["anonymous"],
 });
 
-const auth = useAuthStore()
+const tokenStore = useTokenStore()
 const redirectRoute = "/login"
 
 
 onMounted(async () => {
-  if (!tokenParser(auth.authTokens.token).hasOwnProperty("fingerprint")) {
+  if (!tokenParser(tokenStore.token).hasOwnProperty("fingerprint")) {
     return await navigateTo(redirectRoute)    
   }
 })

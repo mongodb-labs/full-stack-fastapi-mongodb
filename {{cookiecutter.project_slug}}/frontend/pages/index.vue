@@ -77,13 +77,16 @@
 
 <script setup lang="ts">
 import { ChevronRightIcon } from "@heroicons/vue/20/solid"
-import { useAuthStore } from "@/stores"
 import { tokenIsTOTP } from "@/utilities"
+import { useAuthStore, useTokenStore } from "@/stores"
 
 definePageMeta({
   layout: "home",
 });
 
+const authStore = useAuthStore()
+const tokenStore = useTokenStore()
+const route = useRoute()
 const redirectTOTP = "/totp"
 const redirectAfterLogin = "/"
 const github = {
@@ -103,8 +106,6 @@ const github = {
 
 onMounted(async () => {
   // Check if email is being validated
-  const route = useRoute()
-  const auth = useAuthStore()
   if (route.query && route.query.magic) {
     // No idea: https://stackoverflow.com/q/74759799/295606
     await new Promise((resolve) => {
@@ -112,8 +113,8 @@ onMounted(async () => {
         resolve(true)
       }, 100)
     })
-    if (!auth.loggedIn) await auth.magicLogin(route.query.magic as string)
-    if (tokenIsTOTP(auth.authTokens.token)) await navigateTo(redirectTOTP)
+    if (!authStore.loggedIn) await authStore.magicLogin(route.query.magic as string)
+    if (tokenIsTOTP(tokenStore.token)) await navigateTo(redirectTOTP)
     else await navigateTo(redirectAfterLogin) 
   }
 })

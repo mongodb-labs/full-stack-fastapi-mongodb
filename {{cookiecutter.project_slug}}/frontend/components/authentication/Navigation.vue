@@ -1,7 +1,7 @@
 <template>
     <!-- Profile dropdown -->
     <Menu as="div" class="relative ml-3">
-    <div v-if="!auth.loggedIn">
+    <div v-if="!authStore.loggedIn">
         <NuxtLink 
             to="/login"
             class="rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"
@@ -47,15 +47,14 @@ import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue"
 import { ArrowLeftOnRectangleIcon } from "@heroicons/vue/24/outline"
 import { useAuthStore } from "@/stores"
 
-const auth = useAuthStore()
-
+const authStore = useAuthStore()
 const navigation = [
   { name: "Settings", to: "/settings" },
 ]
 const redirectRoute = "/"
 
 async function logout() {
-    auth.logOut()
+    authStore.logOut()
     await navigateTo(redirectRoute)
 }
 </script>

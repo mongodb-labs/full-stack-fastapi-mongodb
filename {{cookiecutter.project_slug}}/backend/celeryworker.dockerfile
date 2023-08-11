@@ -1,40 +1,36 @@
-FROM python:3.9
-
+FROM python:3.11
 WORKDIR /app/
-
-# Install Poetry
-RUN curl -sSL https://install.python-poetry.org | POETRY_HOME=/opt/poetry python && \
-    cd /usr/local/bin && \
-    ln -s /opt/poetry/bin/poetry && \
-    poetry config virtualenvs.create false
-
-# Copy poetry.lock* in case it doesn't exist in the repo
-COPY ./app/pyproject.toml ./app/poetry.lock* /app/
-
+ARG \
+  HATCH_VERSION=1.7.0 \
+  PIPX_VERSION=1.2.0
+ENV \
+  C_FORCE_ROOT=1 \
+  HATCH_ENV_TYPE_VIRTUAL_PATH=.venv \
+  HATCH_VERSION=$HATCH_VERSION \
+  PATH=/opt/pipx/bin:/app/.venv/bin:$PATH \
+  PIPX_BIN_DIR=/opt/pipx/bin \
+  PIPX_HOME=/opt/pipx/home \
+  PIPX_VERSION=$PIPX_VERSION \
+  PYTHONPATH=/app
+COPY ./app/app /app/app
+COPY ./app/pyproject.toml ./app/README.md ./app/worker-start.sh /app/
+RUN <<HEREDOC
+python -m pip install --no-cache-dir --upgrade pip "pipx==$PIPX_VERSION"
+pipx install "hatch==$HATCH_VERSION"
+hatch env prune && hatch env create production
+chmod +x /app/worker-start.sh
 # Neomodel has shapely and libgeos as dependencies
-RUN apt-get update && apt-get install -y libgeos-dev
-
-# Allow installing dev dependencies to run tests
-ARG INSTALL_DEV=false
-RUN bash -c "if [ $INSTALL_DEV == 'true' ] ; then poetry install --no-root ; else poetry install --no-root --no-dev ; fi"
-
+# apt-get update && apt-get install -y libgeos-dev
 # /start Project-specific dependencies
-# RUN apt-get update && apt-get install -y --no-install-recommends \
-# && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*	
-
-WORKDIR /app/
-# /end Project-specific dependencies	
+# apt-get update && apt-get install -y --no-install-recommends
+# rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# /end Project-specific dependencies
+HEREDOC
 
 # For development, Jupyter remote kernel, Hydrogen
 # Using inside the container:
 # jupyter lab --ip=0.0.0.0 --allow-root --NotebookApp.custom_display_url=http://127.0.0.1:8888
-ARG INSTALL_JUPYTER=false
-RUN bash -c "if [ $INSTALL_JUPYTER == 'true' ] ; then pip install jupyterlab ; fi"
+# ARG INSTALL_JUPYTER=false
+# RUN bash -c "if [ $INSTALL_JUPYTER == 'true' ] ; then pip install jupyterlab ; fi"
 
-ENV C_FORCE_ROOT=1
-COPY ./app /app
-WORKDIR /app
-ENV PYTHONPATH=/app
-COPY ./app/worker-start.sh /worker-start.sh
-RUN chmod +x /worker-start.sh
-CMD ["bash", "/worker-start.sh"]
+CMD ["bash", "worker-start.sh"]
