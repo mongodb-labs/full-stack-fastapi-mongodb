@@ -6,15 +6,15 @@ Accelerate your next web development project with this FastAPI/Nuxt.js base proj
 
 This project is for developers looking to build and maintain full-feature progressive web applications using Python on the backend / Typescript on the frontend, and want the complex-but-routine aspects of auth 'n auth, and component and deployment configuration, taken care of, including interactive API documentation. 
 
-This is a comprehensively updated fork of [Sebastián Ramírez's](https://github.com/tiangolo) [Full Stack FastAPI and PostgreSQL Base Project Generator](https://github.com/tiangolo/full-stack-fastapi-postgresql). FastAPI is updated to version 0.88 (November 2022), SQLAlchemy to version 2.0 (January 2023), and the frontend to Nuxt 3.2 (February 2023).
+This is a comprehensively updated fork of [Sebastián Ramírez's](https://github.com/tiangolo) [Full Stack FastAPI and PostgreSQL Base Project Generator](https://github.com/tiangolo/full-stack-fastapi-postgresql). FastAPI is updated to version 0.99 (July 2023), SQLAlchemy to version 2.0 (July 2023), and the frontend to Nuxt 3.6 (July 2023).
 
 - [Screenshots](#screenshots)
 - [Key features](#key-features)
 - [How to use it](#how-to-use-it)
-  - [Getting started](#getting-started)
-  - [Development and installation](#development-and-installation)
-  - [Deployment for production](#deployment-for-production)
-  - [Authentication and magic tokens](#authentication-and-magic-tokens)
+  - [Getting started](./docs/getting-started.md)
+  - [Development and installation](./docs/development-guide.md)
+  - [Deployment for production](./docs/deployment-guide.md)
+  - [Authentication and magic tokens](./docs/authentication-guide.md)
 - [More details](#more-details)
 - [Release notes](#release-notes)
 - [License](#license)
@@ -80,9 +80,35 @@ This FastAPI, PostgreSQL, Neo4j & Nuxt 3 repo will generate a complete web appli
 
 After using this generator, your new project (the directory created) will contain an extensive `README.md` with instructions for development, deployment, etc. You can pre-read [the project `README.md` template here too](./{{cookiecutter.project_slug}}/README.md).
 
+This current release (August 2023) is for FastAPI version 0.99 and is the last before introducing support for Pydantic 2. Since this is intended as a base stack on which you will build complex applications, there is no intention of backwards compatability between releases, and the objective is to ensure that each release has the latest long-term-support versions of the core libraries so that you can rely on your application core for as long as possible.
+
+To align with [Inboard](https://inboard.bws.bio/), Poetry has been deprecated in favour of [Hatch](https://hatch.pypa.io/latest/). This will also, hopefully, sort out some Poetry-related Docker build errors.
+
+## Help needed
+
+The tests are broken and it would be great if someone could take that on. Other potential roadmap items:
+
+- Translation: docs are all in English and it would be great if those could be in other languages.
+- Internationalisation: I am working on adding [nuxt/i18n](https://v8.i18n.nuxtjs.org/), but the Nuxt3 version is still pre-release.
+- PWA: Would be good to review the Vite [PWA](https://vite-pwa-org.netlify.app/) plugin.
+
 ## Release Notes
 
 See notes and [releases](https://github.com/whythawk/full-stack-fastapi-postgresql/releases).
+
+### 0.7.4
+- Updates: Complete update of stack to latest long-term releases. [#35](https://github.com/whythawk/full-stack-fastapi-postgresql/pull/35) by @turukawa, review by @br3ndonland
+  - `frontend`:
+    - Node 16 -> 18
+	- Nuxt 3.2 -> 3.6.5
+    - Latest Pinia requires changes in stores, where imports are not required (cause actual errors), and parameter declaration must happen in functions.
+  - `backend` and `celeryworker`:
+    - Python 3.9 -> 3.11
+    - FastAPI 0.88 -> 0.99 (Inboard 0.37 -> 0.51)
+    - Poetry -> Hatch
+    - Postgres 14 -> 15
+- Fixed: Updated token url in deps.py [#29](https://github.com/whythawk/full-stack-fastapi-postgresql/pull/29) by @vusa
+- Docs: Reorganised documentation [#21](https://github.com/whythawk/full-stack-fastapi-postgresql/pull/21) by @turukawa
 
 ### 0.7.3
 - @nuxt/content 2.2.1 -> 2.4.3
