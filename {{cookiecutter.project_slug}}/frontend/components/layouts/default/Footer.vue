@@ -3,7 +3,7 @@
       <div class="mx-auto max-w-md overflow-hidden py-12 px-4 sm:max-w-3xl sm:px-6 lg:max-w-7xl lg:px-8">
         <nav class="-mx-5 -my-2 flex flex-wrap justify-center" aria-label="Footer">
           <div v-for="item in footerNavigation.main" :key="item.name" class="px-5 py-2">
-            <NuxtLink :to="item.to" class="text-base text-gray-400 hover:text-gray-300">{{ item.name }}</NuxtLink>
+            <LocaleLink :to="item.to" class="text-base text-gray-400 hover:text-gray-300">{{ t(item.name) }}</LocaleLink>
           </div>
         </nav>
         <div class="mt-8 flex justify-center space-x-6">
@@ -12,19 +12,23 @@
             <component :is="item.icon" class="h-6 w-6" aria-hidden="true" />
           </a>
         </div>
-        <p class="mt-8 text-center text-base text-gray-400">&copy; 2022 {{ siteName }}. All rights reserved.</p>
+        <div class="flex justify-between">
+          <p class="mt-8 text-center text-base text-gray-400">&copy; 2022 {{ t(siteName) }}. {{ t("footer.rights") }}</p>
+          <LocaleDropdown />
+        </div>
       </div>
     </footer>
 </template>
 
 <script setup lang="ts">
-const siteName: String = "Your Company, Inc"
+const { t } = useI18n()
+const siteName: string = "common.title"
 
 const footerNavigation = {
   main: [
-    { name: "About", to: "/about" },
-	{ name: "Authentication", to: "/authentication" },
-    { name: "Blog", to: "/blog" },
+    { name: "nav.about", to: "/about" },
+	  { name: "nav.authentication", to: "/authentication" },
+    { name: "nav.blog", to: "/blog" },
   ],
   social: [
     {
@@ -58,3 +62,28 @@ const footerNavigation = {
   ],
 }
 </script>
+
+<style>
+.pwa-toast {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  margin: 16px;
+  padding: 12px;
+  border: 1px solid #8885;
+  border-radius: 4px;
+  z-index: 1;
+  text-align: left;
+  box-shadow: 3px 4px 5px 0 #8885;
+}
+.pwa-toast .message {
+  margin-bottom: 8px;
+}
+.pwa-toast button {
+  border: 1px solid #8885;
+  outline: none;
+  margin-right: 5px;
+  border-radius: 2px;
+  padding: 3px 10px;
+}
+</style>

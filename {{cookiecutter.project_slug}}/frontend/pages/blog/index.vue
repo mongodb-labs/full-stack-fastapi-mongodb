@@ -13,10 +13,10 @@
                 class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-gray-100 text-gray-800"
               >{{ c.trim() }}</span>
             </div>
-            <NuxtLink :to="blog._path" class="mt-4 block">
+            <LocaleLink :to="blog._path" class="mt-4 block">
               <p class="text-xl font-semibold text-gray-900">{{ blog.title }}</p>
               <p class="mt-3 text-base text-gray-500">{{ blog.description }}</p>
-            </NuxtLink>
+            </LocaleLink>
             <div class="mt-4 flex items-center">
               <div>
                 <p class="text-sm font-medium text-gray-900">
