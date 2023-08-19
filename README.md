@@ -101,7 +101,7 @@ The tests are broken and it would be great if someone could take that on. Other 
 
 ### 0.7.5
 
-- Updates to `frontend` by @turukawa:
+- Updates to `frontend`, [#37](https://github.com/whythawk/full-stack-fastapi-postgresql/pull/37) by @turukawa:
   - `@nuxtjs/i18n` for internationalisation, along with language selection component.
   - `@vite-pwa/nuxt` along with button components for install and refreshing the app and service workers, and a CLI icon generator.
   - `@nuxtjs/robots` for simple control of `robots.txt` permissions from `nuxt.config.ts`.
