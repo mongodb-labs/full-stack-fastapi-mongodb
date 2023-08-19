@@ -17,7 +17,7 @@
                     <ErrorMessage name="email" class="absolute left-5 top-5 translate-y-full w-48 px-2 py-1 bg-gray-700 rounded-lg text-center text-white text-sm after:content-[''] after:absolute after:left-1/2 after:bottom-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-t-transparent after:border-b-gray-700"/>
                   </div>
                   <div class="text-sm text-right">
-                    <NuxtLink to="/login" class="font-medium text-rose-500 hover:text-rose-600">Login to your account</NuxtLink>
+                    <LocaleLink to="/login" class="font-medium text-rose-500 hover:text-rose-600">Login to your account</LocaleLink>
                   </div>
                 </div>
   

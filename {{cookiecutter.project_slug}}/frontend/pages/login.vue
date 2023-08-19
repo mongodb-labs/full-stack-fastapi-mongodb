@@ -30,7 +30,7 @@
                   <ErrorMessage name="password" class="absolute left-5 top-0 translate-y-full w-48 px-2 py-1 bg-gray-700 rounded-lg text-center text-white text-sm after:content-[''] after:absolute after:left-1/2 after:bottom-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-t-transparent after:border-b-gray-700"/>
                 </div>
                 <div class="text-sm text-right">
-                  <NuxtLink to="/recover-password" class="font-medium text-rose-500 hover:text-rose-600">Forgot your password?</NuxtLink>
+                  <LocaleLink to="/recover-password" class="font-medium text-rose-500 hover:text-rose-600">Forgot your password?</LocaleLink>
                 </div>
               </div>
 

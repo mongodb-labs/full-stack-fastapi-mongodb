@@ -7,7 +7,7 @@
             <div class="mt-10">
               <div>
                 <div class="inline-flex space-x-4">
-                  <NuxtLink to="/about" class="rounded bg-rose-50 px-2.5 py-1 text-sm font-semibold text-rose-500">Key features</NuxtLink>
+                  <LocaleLink to="/about" class="rounded bg-rose-50 px-2.5 py-1 text-sm font-semibold text-rose-500">Key features</LocaleLink>
                   <a :href="github.href" class="inline-flex space-x-4">
                     <span class="inline-flex items-center space-x-1 text-sm font-medium text-rose-500">
                       <span class="inline-flex items-center space-x-1 text-sm font-medium text-rose-400">

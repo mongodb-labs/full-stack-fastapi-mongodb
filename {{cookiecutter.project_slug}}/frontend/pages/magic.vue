@@ -17,7 +17,7 @@
             </p>
           </div>
 
-          <NuxtLink to="/login?oauth=true" class="mt-8 flex">
+          <LocaleLink to="/login?oauth=true" class="mt-8 flex">
             <component 
               :is="LinkIcon" 
               class="text-rose-500 h-4 w-4 mr-1" aria-hidden="true" 
@@ -25,7 +25,7 @@
             <p class="text-sm text-rose-500 align-middle">
               If you prefer, use your password & don't email.
             </p>
-          </NuxtLink>
+          </LocaleLink>
         </div>
       </div>
       <div class="relative hidden w-0 flex-1 lg:block">
