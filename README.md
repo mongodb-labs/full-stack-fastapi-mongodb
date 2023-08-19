@@ -16,6 +16,7 @@ This is a comprehensively updated fork of [Sebastián Ramírez's](https://github
   - [Deployment for production](./docs/deployment-guide.md)
   - [Authentication and magic tokens](./docs/authentication-guide.md)
 - [More details](#more-details)
+- [Help needed](#help-needed)
 - [Release notes](#release-notes)
 - [License](#license)
   
@@ -60,6 +61,8 @@ This FastAPI, PostgreSQL, Neo4j & Nuxt 3 repo will generate a complete web appli
   - **Form validation** with [Vee-Validate 4](https://vee-validate.logaretm.com/v4/).
   - **State management** with [Pinia](https://pinia.vuejs.org/), and persistance with [Pinia PersistedState](https://prazdevs.github.io/pinia-plugin-persistedstate/).
   - **CSS and templates** with [TailwindCSS](https://tailwindcss.com/), [HeroIcons](https://heroicons.com/), and [HeadlessUI](https://headlessui.com/).
+  - **Internationalisation** with [@nuxt/i18n](https://nuxt.com/modules/i18n).
+  - **PWA support** with [Vite PWA plugin](https://vite-pwa-org.netlify.app/frameworks/nuxt.html).
 - **PostgreSQL** database.
 - **PGAdmin** for PostgreSQL database management.
 - **Celery** worker that can import and use models and code from the rest of the backend selectively.
@@ -84,17 +87,24 @@ This current release (August 2023) is for FastAPI version 0.99 and is the last b
 
 To align with [Inboard](https://inboard.bws.bio/), Poetry has been deprecated in favour of [Hatch](https://hatch.pypa.io/latest/). This will also, hopefully, sort out some Poetry-related Docker build errors.
 
+You will also find an initial implementation of internationalisation using [@nuxt/i18n](https://nuxt.com/modules/i18n). This is - at this time - a release candidate, so please do update and check their documentation for any changes. The [Vite PWA plugin](https://vite-pwa-org.netlify.app/frameworks/nuxt.html) is also included, along with a Node CLI for generating all necessary app icons. You will see links and notes to this in the [nuxt.config.ts](./{{cookiecutter.project_slug}}/frontend/nuxt.config.ts) file.
+
 ## Help needed
 
 The tests are broken and it would be great if someone could take that on. Other potential roadmap items:
 
 - Translation: docs are all in English and it would be great if those could be in other languages.
-- Internationalisation: I am working on adding [nuxt/i18n](https://v8.i18n.nuxtjs.org/), but the Nuxt3 version is still pre-release.
-- PWA: Would be good to review the Vite [PWA](https://vite-pwa-org.netlify.app/) plugin.
+- Internationalisation: [nuxt/i18n](https://v8.i18n.nuxtjs.org/) is added, but the sample pages are not all translated.
+- Code review and optimisation: both the front- and backend stacks have seen some big generational changes, so would be good to have more eyes on the updates to this stack.
 
 ## Release Notes
 
-See notes and [releases](https://github.com/whythawk/full-stack-fastapi-postgresql/releases).
+### 0.7.5
+
+- Updates to `frontend` by @turukawa:
+  - `@nuxtjs/i18n` for internationalisation, along with language selection component.
+  - `@vite-pwa/nuxt` along with button components for install and refreshing the app and service workers, and a CLI icon generator.
+  - `@nuxtjs/robots` for simple control of `robots.txt` permissions from `nuxt.config.ts`.
 
 ### 0.7.4
 - Updates: Complete update of stack to latest long-term releases. [#35](https://github.com/whythawk/full-stack-fastapi-postgresql/pull/35) by @turukawa, review by @br3ndonland
