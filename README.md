@@ -99,7 +99,11 @@ The tests are broken and it would be great if someone could take that on. Other 
 
 ## Release Notes
 
-### 0.7.5
+### 0.8.1
+
+- Minor updates to Docker scripts for `build`.
+
+### 0.8.0
 
 - Updates to `frontend`, [#37](https://github.com/whythawk/full-stack-fastapi-postgresql/pull/37) by @turukawa:
   - `@nuxtjs/i18n` for internationalisation, along with language selection component.
