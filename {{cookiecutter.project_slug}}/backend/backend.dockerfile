@@ -2,7 +2,8 @@ FROM ghcr.io/br3ndonland/inboard:fastapi-0.51-python3.11
 
 # Use file.name* in case it doesn't exist in the repo
 COPY ./app/app /app/app
-COPY ./app/pyproject.toml ./app/README.md /app/
+COPY ./app/pyproject.toml /app/pyproject.toml
+COPY ./app/README.md /app/README.md
 WORKDIR /app/
 ENV HATCH_ENV_TYPE_VIRTUAL_PATH=.venv
 RUN hatch env prune && hatch env create production && pip install --upgrade setuptools
