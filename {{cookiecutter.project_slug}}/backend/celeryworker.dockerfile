@@ -12,10 +12,7 @@ ENV \
   PIPX_HOME=/opt/pipx/home \
   PIPX_VERSION=$PIPX_VERSION \
   PYTHONPATH=/app
-COPY ./app/app /app/app
-COPY ./app/pyproject.toml /app/pyproject.toml
-COPY ./app/README.md /app/README.md
-COPY ./app/worker-start.sh /app/worker-start.sh
+COPY ./app/ /app/
 RUN <<HEREDOC
 python -m pip install --no-cache-dir --upgrade pip "pipx==$PIPX_VERSION"
 pipx install "hatch==$HATCH_VERSION"
