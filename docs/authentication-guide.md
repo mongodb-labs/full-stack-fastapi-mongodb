@@ -4,6 +4,7 @@
 2. [Development and installation](development-guide.md)
 3. [Deployment for production](deployment-guide.md)
 4. [Authentication and magic tokens](authentication-guide.md)
+5. [Websockets for interactive communication](websocket-guide.md)
 
 ---
 

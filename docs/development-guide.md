@@ -4,6 +4,7 @@
 2. [Development and installation](development-guide.md)
 3. [Deployment for production](deployment-guide.md)
 4. [Authentication and magic tokens](authentication-guide.md)
+5. [Websockets for interactive communication](websocket-guide.md)
 
 ---
 
@@ -90,6 +91,25 @@ And start them:
 docker-compose up -d 
 ```
 
+By default, `backend` Python dependencies are managed with [Hatch](https://hatch.pypa.io/latest/). From `./backend/app/` you can install all the dependencies with:
+
+```console
+$ hatch env prune
+$ hatch env create production
+```
+
+Because Hatch doesn't have a version lock file (like Poetry), it is helpful to `prune` when you rebuild to avoid any sort of dependency hell. Then you can start a shell session with the new environment with:
+
+```console
+$ hatch shell
+```
+
+Make sure your editor uses the environment you just created with Hatch. For Visual Studio Code, from the shell, launch an appropriate development environment with:
+
+```console
+$ code .
+```
+
 **NOTE:** The Nuxt image does not automatically refresh while running in development mode. Any changes will need a rebuild. This gets tired fast, so it's easier to run Nuxt outside Docker and call through to the `backend` for API calls. You can then view the frontend at `http://localhost:3000` and the backend api endpoints at `http://localhost/redoc`. This problem won't be a concern in production.
 
 Change into the `/frontend` folder, and:
@@ -98,8 +118,6 @@ Change into the `/frontend` folder, and:
 yarn install
 yarn dev
 ```
-
-Be careful about the version of `Node.js` you're using. As of today (December 2022), the latest Node version supported by Nuxt is 16.18.1.
 
 FastAPI `backend` updates will refresh automatically, but the `celeryworker` container must be restarted before changes take effect.
 

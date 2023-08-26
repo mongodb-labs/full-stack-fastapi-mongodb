@@ -15,6 +15,7 @@ This is a comprehensively updated fork of [Sebastián Ramírez's](https://github
   - [Development and installation](./docs/development-guide.md)
   - [Deployment for production](./docs/deployment-guide.md)
   - [Authentication and magic tokens](./docs/authentication-guide.md)
+  - [Websockets for interactive communication](./docs/websocket-guide.md)
 - [More details](#more-details)
 - [Help needed](#help-needed)
 - [Release notes](#release-notes)
@@ -78,6 +79,7 @@ This FastAPI, PostgreSQL, Neo4j & Nuxt 3 repo will generate a complete web appli
 - [Development and installation](./docs/development-guide.md)
 - [Deployment for production](./docs/deployment-guide.md)
 - [Authentication and magic tokens](./docs/authentication-guide.md)
+- [Websockets for interactive communication](./docs/websocket-guide.md)
 
 ## More details
 
@@ -98,6 +100,18 @@ The tests are broken and it would be great if someone could take that on. Other 
 - Code review and optimisation: both the front- and backend stacks have seen some big generational changes, so would be good to have more eyes on the updates to this stack.
 
 ## Release Notes
+
+See notes and [releases](https://github.com/whythawk/full-stack-fastapi-postgresql/releases). 
+
+## 0.8.2
+
+Fixing [#39](https://github.com/whythawk/full-stack-fastapi-postgresql/issues/39), thanks to @a-vorobyoff:
+
+- Exposing port 24678 for Vite on frontend in development mode.
+- Ensuring Nuxt content on /api/_content doesn't interfere with backend /api/v routes.
+- Checking for password before hashing on user creation.
+- Updating generated README for Hatch (after Poetry deprecation).
+- Minor fixes.
 
 ### 0.8.1
 
@@ -123,50 +137,6 @@ The tests are broken and it would be great if someone could take that on. Other 
     - Postgres 14 -> 15
 - Fixed: Updated token url in deps.py [#29](https://github.com/whythawk/full-stack-fastapi-postgresql/pull/29) by @vusa
 - Docs: Reorganised documentation [#21](https://github.com/whythawk/full-stack-fastapi-postgresql/pull/21) by @turukawa
-
-### 0.7.3
-- @nuxt/content 2.2.1 -> 2.4.3
-- Fixed: `@nuxt/content` default api, `/api/_content`, conflicts with the `backend` api url preventing content pages loading.
-- Documentation: Complete deployment guide in `DEPLOYMENT-README.md` (this has now been moved to `/docs`)
-
-### 0.7.2
-- Fixed: URLs for recreating project in generated `README.md`. PR [#15](https://github.com/whythawk/full-stack-fastapi-postgresql/pull/15) by @FranzForstmayr
-- Fixed: Absolute path for mount point in `docker-compose.override.yml`. PR [#16](https://github.com/whythawk/full-stack-fastapi-postgresql/pull/16) by @FranzForstmayr
-- Fixed: Login artifacts left over from before switch to magic auth. PR [#18](https://github.com/whythawk/full-stack-fastapi-postgresql/pull/18) by @turukawa and @FranzForstmayr
-- New: New floating magic login card. PR [#19](https://github.com/whythawk/full-stack-fastapi-postgresql/pull/19) by @turukawa
-- New: New site contact page. PR [#20](https://github.com/whythawk/full-stack-fastapi-postgresql/pull/20) by @turukawa
-
-### 0.7.1
-
-- SQLAlchemy 1.4 -> 2.0
-- Nuxt.js 3.0 -> 3.2.2
-- Fixed: `tokenUrl` in `app/api/deps.py`. Thanks to @Choiuijin1125.
-- Fixed: SMTP options for TLS must be `ssl`. Thanks to @raouldo.
-- Fixed: `libgeos` is a dependency for `shapely` which is a dependency for `neomodel`, and which doesn't appear to be installed correctly on Macs. Thanks to @valsha and @Mocha-L.
-- Fixed: `frontend` fails to start in development. Thanks to @pabloapast and @dividor.
-
-### 0.7.0
-
-- New feature: magic (email-based) login, with password fallback
-- New feature: Time-based One-Time Password (TOTP) authentication
-- Security enhancements to improve consistency, safety and reliability of the authentication process (see full description in the frontend app)
-- Requires one new `frontend` dependency: [QRcode.vue](https://github.com/scopewu/qrcode.vue)
-
-### 0.6.1
-
-- Corrected error in variable name `ACCESS_TOKEN_EXPIRE_SECONDS`
-
-### 0.6.0
-
-- Inboard 0.10.4 -> 0.37.0, including FastAPI 0.88
-- SQLAlchemy 1.3 -> 1.4
-- Authentication refresh token tables and schemas for long-term issuing of a new access token.
-- Postgresql 12 -> 14
-- Neo4j pinned to 5.2.0
-- Nuxt.js 2.5 -> 3.0
-- Pinia for state management (replaces Vuex)
-- Vee-Validate 3 -> 4
-- Tailwind 2.2 -> 3.2
 
 [Historic changes from original](https://github.com/tiangolo/full-stack-fastapi-postgresql#release-notes)
 

@@ -4,6 +4,7 @@
 2. [Development and installation](development-guide.md)
 3. [Deployment for production](deployment-guide.md)
 4. [Authentication and magic tokens](authentication-guide.md)
+5. [Websockets for interactive communication](websocket-guide.md)
 
 ---
 
@@ -104,35 +105,41 @@ After using this generator, your new project will contain an extensive `README.m
 
 See notes and [releases](https://github.com/whythawk/full-stack-fastapi-postgresql/releases). The last four release notes are listed here:
 
-### 0.7.3
-- @nuxt/content 2.2.1 -> 2.4.3
-- Fixed: `@nuxt/content` default api, `/api/_content`, conflicts with the `backend` api url preventing content pages loading.
-- Documentation: Complete deployment guide in `DEPLOYMENT-README.md` (this has now been moved to `/docs`)
+## 0.8.2
 
-### 0.7.2
-- Fixed: URLs for recreating project in generated `README.md`. PR [#15](https://github.com/whythawk/full-stack-fastapi-postgresql/pull/15) by @FranzForstmayr
-- Fixed: Absolute path for mount point in `docker-compose.override.yml`. PR [#16](https://github.com/whythawk/full-stack-fastapi-postgresql/pull/16) by @FranzForstmayr
-- Fixed: Login artifacts left over from before switch to magic auth. PR [#18](https://github.com/whythawk/full-stack-fastapi-postgresql/pull/18) by @turukawa and @FranzForstmayr
-- New: New floating magic login card. PR [#19](https://github.com/whythawk/full-stack-fastapi-postgresql/pull/19) by @turukawa
-- New: New site contact page. PR [#20](https://github.com/whythawk/full-stack-fastapi-postgresql/pull/20) by @turukawa
+Fixing [#39](https://github.com/whythawk/full-stack-fastapi-postgresql/issues/39), thanks to @a-vorobyoff:
 
-### 0.7.1
+- Exposing port 24678 for Vite on frontend in development mode.
+- Ensuring Nuxt content on /api/_content doesn't interfere with backend /api/v routes.
+- Checking for password before hashing on user creation.
+- Updating generated README for Hatch (after Poetry deprecation).
+- Minor fixes.
 
-- SQLAlchemy 1.4 -> 2.0
-- Nuxt.js 3.0 -> 3.2.2
-- Fixed: `tokenUrl` in `app/api/deps.py`. Thanks to @Choiuijin1125.
-- Fixed: SMTP options for TLS must be `ssl`. Thanks to @raouldo.
-- Fixed: `libgeos` is a dependency for `shapely` which is a dependency for `neomodel`, and which doesn't appear to be installed correctly on Macs. Thanks to @valsha and @Mocha-L.
-- Fixed: `frontend` fails to start in development. Thanks to @pabloapast and @dividor.
+### 0.8.1
 
-### 0.7.0
+- Minor updates to Docker scripts for `build`.
 
-- New feature: magic (email-based) login, with password fallback
-- New feature: Time-based One-Time Password (TOTP) authentication
-- Security enhancements to improve consistency, safety and reliability of the authentication process (see full description in the frontend app)
-- Requires one new `frontend` dependency: [QRcode.vue](https://github.com/scopewu/qrcode.vue)
+### 0.8.0
 
-[Historic changes from original](https://github.com/tiangolo/full-stack-fastapi-postgresql#release-notes)
+- Updates to `frontend`, [#37](https://github.com/whythawk/full-stack-fastapi-postgresql/pull/37) by @turukawa:
+  - `@nuxtjs/i18n` for internationalisation, along with language selection component.
+  - `@vite-pwa/nuxt` along with button components for install and refreshing the app and service workers, and a CLI icon generator.
+  - `@nuxtjs/robots` for simple control of `robots.txt` permissions from `nuxt.config.ts`.
+
+### 0.7.4
+
+- Updates: Complete update of stack to latest long-term releases. [#35](https://github.com/whythawk/full-stack-fastapi-postgresql/pull/35) by @turukawa, review by @br3ndonland
+  - `frontend`:
+    - Node 16 -> 18
+	- Nuxt 3.2 -> 3.6.5
+    - Latest Pinia requires changes in stores, where imports are not required (cause actual errors), and parameter declaration must happen in functions.
+  - `backend` and `celeryworker`:
+    - Python 3.9 -> 3.11
+    - FastAPI 0.88 -> 0.99 (Inboard 0.37 -> 0.51)
+    - Poetry -> Hatch
+    - Postgres 14 -> 15
+- Fixed: Updated token url in deps.py [#29](https://github.com/whythawk/full-stack-fastapi-postgresql/pull/29) by @vusa
+- Docs: Reorganised documentation [#21](https://github.com/whythawk/full-stack-fastapi-postgresql/pull/21) by @turukawa
 
 ## License
 
