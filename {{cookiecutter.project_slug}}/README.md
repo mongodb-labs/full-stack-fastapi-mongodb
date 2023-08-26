@@ -1,24 +1,13 @@
 # {{cookiecutter.project_name}}
 
-## Backend Requirements
+## Documentation for development
 
-* [Docker](https://www.docker.com/).
-* [Docker Compose](https://docs.docker.com/compose/install/).
-* [Poetry](https://python-poetry.org/) for Python package and environment management.
+- [Getting started](https://github.com/whythawk/full-stack-fastapi-postgresql/blob/master/docs/getting-started.md)
+- [Development and installation](https://github.com/whythawk/full-stack-fastapi-postgresql/blob/master/docs/development-guide.md)
+- [Deployment for production](https://github.com/whythawk/full-stack-fastapi-postgresql/blob/master/docs/deployment-guide.md)
+- [Authentication and magic tokens](https://github.com/whythawk/full-stack-fastapi-postgresql/blob/master/docs/authentication-guide.md)
 
-## Frontend Requirements
-
-* Node.js (with `yarn`).
-
-## Backend local development
-
-* Start the stack with Docker Compose:
-
-```bash
-docker-compose up -d
-```
-
-* Now you can open your browser and interact with these URLs:
+* Local development URLs:
 
 Frontend, built with Docker, with routes handled based on the path: http://localhost
 
@@ -56,21 +45,26 @@ If your Docker is not running in `localhost` (the URLs above wouldn't work) chec
 
 ### General workflow
 
-By default, the dependencies are managed with [Poetry](https://python-poetry.org/), go there and install it.
+By default, the dependencies are managed with [Hatch](https://hatch.pypa.io/latest/), go there and install it.
 
 From `./backend/app/` you can install all the dependencies with:
 
 ```console
-$ poetry install
+$ hatch env prune
+$ hatch env create production
 ```
 
-Then you can start a shell session with the new environment with:
+Because Hatch doesn't have a version lock file (like Poetry), it is helpful to `prune` when you rebuild to avoid any sort of dependency hell. Then you can start a shell session with the new environment with:
 
 ```console
-$ poetry shell
+$ hatch shell
 ```
 
-Next, open your editor at `./backend/app/` (instead of the project root: `./`), so that you see an `./app/` directory with your code inside. That way, your editor will be able to find all the imports, etc. Make sure your editor uses the environment you just created with Poetry.
+Next, open your editor at `./backend/app/` (instead of the project root: `./`), so that you see an `./app/` directory with your code inside. That way, your editor will be able to find all the imports, etc. Make sure your editor uses the environment you just created with Hatch. For Visual Studio Code, from the shell, launch an appropriate development environment with:
+
+```console
+$ code .
+```
 
 Modify or add SQLAlchemy models in `./backend/app/app/models/`, Pydantic schemas in `./backend/app/app/schemas/`, API endpoints in `./backend/app/app/api/`, CRUD (Create, Read, Update, Delete) utils in `./backend/app/app/crud/`. The easiest might be to copy the ones for Items (models, endpoints, and CRUD utils) and update them to your needs.
 
@@ -113,6 +107,8 @@ root@7f2607af31c3:/app#
 that means that you are in a `bash` session inside your container, as a `root` user, under the `/app` directory.
 
 ### Backend tests
+
+> NOTE: Tests have not been updated on the current version, so these are likely to fail.
 
 To test the backend run:
 
