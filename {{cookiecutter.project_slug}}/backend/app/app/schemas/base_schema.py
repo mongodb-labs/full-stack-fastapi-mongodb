@@ -1,6 +1,6 @@
 from __future__ import annotations
-from pydantic import BaseModel, Field, validator, constr
-from typing import Optional, List
+from pydantic import BaseModel, Field
+from typing import Optional
 from uuid import UUID
 from datetime import date, datetime
 import json
@@ -11,17 +11,17 @@ from app.schema_types import BaseEnum
 class BaseSchema(BaseModel):
     @property
     def as_db_dict(self):
-        to_db = self.dict(exclude_defaults=True, exclude_none=True, exclude={"identifier, id"})
+        to_db = self.model_dump(exclude_defaults=True, exclude_none=True, exclude={"identifier, id"})
         for key in ["id", "identifier"]:
-            if key in self.dict().keys():
-                to_db[key] = self.dict()[key].hex
+            if key in self.model_dump().keys():
+                to_db[key] = self.model_dump()[key].hex
         return to_db
 
     @property
     def as_neo_dict(self):
-        to_db = self.json(exclude_defaults=True, exclude_none=True, exclude={"identifier, id"})
+        to_db = self.model_dump_json(exclude_defaults=True, exclude_none=True, exclude={"identifier, id"})
         to_db = json.loads(to_db)
-        self_dict = self.dict()
+        self_dict = self.model_dump()
         for key in self_dict.keys():
             if isinstance(self_dict[key], BaseEnum):
                 # Uppercase the Enum values
@@ -40,7 +40,8 @@ class MetadataBaseSchema(BaseSchema):
     # https://www.dublincore.org/specifications/dublin-core/dcmi-terms/#section-3
     title: Optional[str] = Field(None, description="A human-readable title given to the resource.")
     description: Optional[str] = Field(
-        None, description="A short description of the resource.",
+        None,
+        description="A short description of the resource.",
     )
     isActive: Optional[bool] = Field(default=True, description="Whether the resource is still actively maintained.")
     isPrivate: Optional[bool] = Field(
@@ -68,4 +69,4 @@ class MetadataBaseInDBBase(MetadataBaseSchema):
     class Config:
         # https://github.com/samuelcolvin/pydantic/issues/1334#issuecomment-745434257
         # Call PydanticModel.from_orm(dbQuery)
-        orm_mode = True
+        from_attributes = True

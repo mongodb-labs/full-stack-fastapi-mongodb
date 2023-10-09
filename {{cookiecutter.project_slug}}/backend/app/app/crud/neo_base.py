@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from neomodel import db, Q, One, CardinalityViolation
 from uuid import UUID
 import inspect
-from neomodel.relationship_manager import RelationshipDefinition, ZeroOrMore
+from neomodel.relationship_manager import ZeroOrMore
 
 from app.gdb import NeomodelConfig, NodeBase
 

@@ -124,7 +124,7 @@ Please refer to <a href="https://dockerswarm.rocks" target="_blank">DockerSwarm.
 
 ## More details
 
-After using this generator, your new project (the directory created) will contain an extensive `README.md` with instructions for development, deployment, etc. You can pre-read [the project `README.md` template here too](./{{cookiecutter.project_slug}}/README.md).
+After using this generator, your new project (the directory created) will contain an extensive `README.md` with instructions for development, deployment, etc. You can pre-read [the project `README.md` template here too](./dev-fsfp/README.md).
 
 ## Licence
 

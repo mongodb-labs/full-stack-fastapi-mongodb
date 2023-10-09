@@ -1,13 +1,8 @@
+import asyncio
 import logging
-from pathlib import Path
-import json
-from passlib.totp import generate_secret
 
-from app.gdb.init_gdb import init_gdb
 from app.db.init_db import init_db
-from app.db.session import SessionLocal
-from app.gdb import NeomodelConfig
-from app.core.config import settings
+from app.db.session import MongoDatabase
 
 from tenacity import after_log, before_log, retry, stop_after_attempt, wait_fixed
 
@@ -24,26 +19,16 @@ wait_seconds = 1
     before=before_log(logger, logging.INFO),
     after=after_log(logger, logging.WARN),
 )
-def initNeo4j() -> None:
-    try:
-        NeomodelConfig().ready()
-        init_gdb()
-    except Exception as e:
-        logger.error(e)
-        raise e
+async def populate_db() -> None:
+    await init_db(MongoDatabase())
+    # Place any code after this line to add any db population steps
 
 
-def init() -> None:
-    db = SessionLocal()
-    init_db(db)
-
-
-def main() -> None:
+async def main() -> None:
     logger.info("Creating initial data")
-    initNeo4j()
-    init()
+    await populate_db()
     logger.info("Initial data created")
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())

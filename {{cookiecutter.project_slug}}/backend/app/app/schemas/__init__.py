@@ -1,3 +1,4 @@
+# flake8: noqa
 from .base_schema import BaseSchema, MetadataBaseSchema, MetadataBaseCreate, MetadataBaseUpdate, MetadataBaseInDBBase
 from .msg import Msg
 from .token import (

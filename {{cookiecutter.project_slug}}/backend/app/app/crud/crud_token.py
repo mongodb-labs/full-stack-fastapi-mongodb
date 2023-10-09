@@ -1,5 +1,7 @@
 from __future__ import annotations
-from sqlalchemy.orm import Session
+from motor.core import AgnosticDatabase
+from beanie import WriteRules
+from beanie.operators import And, In, PullAll
 
 from app.crud.base import CRUDBase
 from app.models import User, Token
@@ -9,27 +11,28 @@ from app.core.config import settings
 
 class CRUDToken(CRUDBase[Token, RefreshTokenCreate, RefreshTokenUpdate]):
     # Everything is user-dependent
-    def create(self, db: Session, *, obj_in: str, user_obj: User) -> Token:
-        db_obj = db.query(self.model).filter(self.model.token == obj_in).first()
-        if db_obj and db_obj.authenticates != user_obj:
-            raise ValueError("Token mismatch between key and user.")
-        obj_in = RefreshTokenCreate(**{"token": obj_in, "authenticates_id": user_obj.id})
-        return super().create(db=db, obj_in=obj_in)
+    async def create(self, db: AgnosticDatabase, *, obj_in: str, user_obj: User) -> Token:
+        db_obj = await self.model.find_one(self.model.token == obj_in)
+        if db_obj:
+            if db_obj.authenticates_id != user_obj.id:
+                raise ValueError("Token mismatch between key and user.")
+            return db_obj
+        else:
+            new_token = self.model(token=obj_in, authenticates_id=user_obj.id)
+            user_obj.refresh_tokens.append(new_token)
+            await user_obj.save(link_rule=WriteRules.WRITE)
+            return new_token
 
-    def get(self, *, user: User, token: str) -> Token:
-        return user.refresh_tokens.filter(self.model.token == token).first()
+    async def get(self, *, user: User, token: str) -> Token:
+        return await user.find_one(And(User.id == user.id, User.refresh_tokens.token == token), fetch_links=True)
 
-    def get_multi(self, *, user: User, page: int = 0, page_break: bool = False) -> list[Token]:
-        db_objs = user.refresh_tokens
-        if not page_break:
-            if page > 0:
-                db_objs = db_objs.offset(page * settings.MULTI_MAX)
-            db_objs = db_objs.limit(settings.MULTI_MAX)
-        return db_objs.all()
+    async def get_multi(self, *, user: User, page: int = 0, page_break: bool = False) -> list[Token]:
+        offset = {"skip": page * settings.MULTI_MAX, "limit": settings.MULTI_MAX} if page_break else {}
+        return await User.find(In(User.refresh_tokens, user.refresh_tokens), **offset).to_list()
 
-    def remove(self, db: Session, *, db_obj: Token) -> None:
-        db.delete(db_obj)
-        db.commit()
-        return None
+    async def remove(self, db: AgnosticDatabase, *, db_obj: Token) -> None:
+        await User.update_all(PullAll({User.refresh_tokens: [db_obj.to_ref()]}))
+        await db_obj.delete()
+
 
 token = CRUDToken(Token)

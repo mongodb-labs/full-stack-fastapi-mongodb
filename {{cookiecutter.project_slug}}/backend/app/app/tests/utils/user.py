@@ -1,7 +1,7 @@
 from typing import Dict
 
 from fastapi.testclient import TestClient
-from sqlalchemy.orm import Session
+from motor.core import AgnosticDatabase
 
 from app import crud
 from app.core.config import settings
@@ -10,9 +10,7 @@ from app.schemas.user import UserCreate, UserUpdate
 from app.tests.utils.utils import random_email, random_lower_string
 
 
-def user_authentication_headers(
-    *, client: TestClient, email: str, password: str
-) -> Dict[str, str]:
+def user_authentication_headers(*, client: TestClient, email: str, password: str) -> Dict[str, str]:
     data = {"username": email, "password": password}
 
     r = client.post(f"{settings.API_V1_STR}/login/access-token", data=data)
@@ -22,7 +20,7 @@ def user_authentication_headers(
     return headers
 
 
-def create_random_user(db: Session) -> User:
+def create_random_user(db: AgnosticDatabase) -> User:
     email = random_email()
     password = random_lower_string()
     user_in = UserCreate(username=email, email=email, password=password)
@@ -30,9 +28,7 @@ def create_random_user(db: Session) -> User:
     return user
 
 
-def authentication_token_from_email(
-    *, client: TestClient, email: str, db: Session
-) -> Dict[str, str]:
+def authentication_token_from_email(*, client: TestClient, email: str, db: AgnosticDatabase) -> Dict[str, str]:
     """
     Return a valid token for the user with given email.
 

@@ -1,86 +1,87 @@
 from typing import Any, Dict, Optional, Union
 
-from sqlalchemy.orm import Session
+from motor.core import AgnosticDatabase
 
-from app.core.security import get_password_hash, verify_password, create_new_totp
+from app.core.security import get_password_hash, verify_password
 from app.crud.base import CRUDBase
 from app.models.user import User
 from app.schemas.user import UserCreate, UserInDB, UserUpdate
 from app.schemas.totp import NewTOTP
 
 
+# ODM, Schema, Schema
 class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
-    def get_by_email(self, db: Session, *, email: str) -> Optional[User]:
-        return db.query(User).filter(User.email == email).first()
+    async def get_by_email(self, db: AgnosticDatabase, *, email: str) -> Optional[User]:
+        return await User.find_one(User.email == email)
 
-    def create(self, db: Session, *, obj_in: UserCreate) -> User:
-        db_obj = User(
-            email=obj_in.email,
-            hashed_password=get_password_hash(obj_in.password) if obj_in.password is not None else None,
-            full_name=obj_in.full_name,
-            is_superuser=obj_in.is_superuser,
-        )
-        db.add(db_obj)
-        db.commit()
-        db.refresh(db_obj)
-        return db_obj
+    async def create(self, db: AgnosticDatabase, *, obj_in: UserCreate) -> User:
+        # TODO: Figure out what happens when you have a unique key like 'email'
+        user = {
+            **obj_in.model_dump(),
+            "email": obj_in.email,
+            "hashed_password": get_password_hash(obj_in.password) if obj_in.password is not None else None,
+            "full_name": obj_in.full_name,
+            "is_superuser": obj_in.is_superuser,
+        }
 
-    def update(self, db: Session, *, db_obj: User, obj_in: Union[UserUpdate, Dict[str, Any]]) -> User:
+        return await User(**user).create()
+
+    async def update(self, db: AgnosticDatabase, *, db_obj: User, obj_in: Union[UserUpdate, Dict[str, Any]]) -> User:
         if isinstance(obj_in, dict):
             update_data = obj_in
         else:
-            update_data = obj_in.dict(exclude_unset=True)
+            update_data = obj_in.model_dump(exclude_unset=True)
         if update_data.get("password"):
             hashed_password = get_password_hash(update_data["password"])
             del update_data["password"]
             update_data["hashed_password"] = hashed_password
         if update_data.get("email") and db_obj.email != update_data["email"]:
             update_data["email_validated"] = False
-        return super().update(db, db_obj=db_obj, obj_in=update_data)
+        return await super().update(db, db_obj=db_obj, obj_in=update_data)
 
-    def authenticate(self, db: Session, *, email: str, password: str) -> Optional[User]:
-        user = self.get_by_email(db, email=email)
+    async def authenticate(self, db: AgnosticDatabase, *, email: str, password: str) -> Optional[User]:
+        user = await self.get_by_email(db, email=email)
         if not user:
             return None
         if not verify_password(plain_password=password, hashed_password=user.hashed_password):
             return None
         return user
 
-    def validate_email(self, db: Session, *, db_obj: User) -> User:
-        obj_in = UserUpdate(**UserInDB.from_orm(db_obj).dict())
+    async def validate_email(self, db: AgnosticDatabase, *, db_obj: User) -> User:
+        obj_in = UserUpdate(**UserInDB.model_validate(db_obj).model_dump())
         obj_in.email_validated = True
-        return self.update(db=db, db_obj=db_obj, obj_in=obj_in)
+        return await self.update(db=db, db_obj=db_obj, obj_in=obj_in)
 
-    def activate_totp(self, db: Session, *, db_obj: User, totp_in: NewTOTP) -> User:
-        obj_in = UserUpdate(**UserInDB.from_orm(db_obj).dict())
-        obj_in = obj_in.dict(exclude_unset=True)
+    async def activate_totp(self, db: AgnosticDatabase, *, db_obj: User, totp_in: NewTOTP) -> User:
+        obj_in = UserUpdate(**UserInDB.model_validate(db_obj).model_dump())
+        obj_in = obj_in.model_dump(exclude_unset=True)
         obj_in["totp_secret"] = totp_in.secret
-        return self.update(db=db, db_obj=db_obj, obj_in=obj_in)
+        return await self.update(db=db, db_obj=db_obj, obj_in=obj_in)
 
-    def deactivate_totp(self, db: Session, *, db_obj: User) -> User:
-        obj_in = UserUpdate(**UserInDB.from_orm(db_obj).dict())
-        obj_in = obj_in.dict(exclude_unset=True)
+    async def deactivate_totp(self, db: AgnosticDatabase, *, db_obj: User) -> User:
+        obj_in = UserUpdate(**UserInDB.model_validate(db_obj).model_dump())
+        obj_in = obj_in.model_dump(exclude_unset=True)
         obj_in["totp_secret"] = None
         obj_in["totp_counter"] = None
-        return self.update(db=db, db_obj=db_obj, obj_in=obj_in)
+        return await self.update(db=db, db_obj=db_obj, obj_in=obj_in)
 
-    def update_totp_counter(self, db: Session, *, db_obj: User, new_counter: int) -> User:
-        obj_in = UserUpdate(**UserInDB.from_orm(db_obj).dict())
-        obj_in = obj_in.dict(exclude_unset=True)
+    async def update_totp_counter(self, db: AgnosticDatabase, *, db_obj: User, new_counter: int) -> User:
+        obj_in = UserUpdate(**UserInDB.model_validate(db_obj).model_dump())
+        obj_in = obj_in.model_dump(exclude_unset=True)
         obj_in["totp_counter"] = new_counter
-        return self.update(db=db, db_obj=db_obj, obj_in=obj_in)
+        return await self.update(db=db, db_obj=db_obj, obj_in=obj_in)
 
-    def toggle_user_state(self, db: Session, *, obj_in: Union[UserUpdate, Dict[str, Any]]) -> User:
-        db_obj = self.get_by_email(db, email=obj_in.email)
+    async def toggle_user_state(self, db: AgnosticDatabase, *, obj_in: Union[UserUpdate, Dict[str, Any]]) -> User:
+        db_obj = await self.get_by_email(db, email=obj_in.email)
         if not db_obj:
             return None
-        return self.update(db=db, db_obj=db_obj, obj_in=obj_in)
+        return await self.update(db=db, db_obj=db_obj, obj_in=obj_in)
 
     def has_password(self, user: User) -> bool:
         if user.hashed_password:
             return True
         return False
-    
+
     def is_active(self, user: User) -> bool:
         return user.is_active
 

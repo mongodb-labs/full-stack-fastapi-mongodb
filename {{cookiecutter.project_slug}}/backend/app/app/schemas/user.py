@@ -1,6 +1,6 @@
 from typing import Optional
-from uuid import UUID
 from pydantic import BaseModel, Field, EmailStr, constr, validator
+from beanie import PydanticObjectId
 
 
 class UserLogin(BaseModel):
@@ -14,7 +14,7 @@ class UserBase(BaseModel):
     email_validated: Optional[bool] = False
     is_active: Optional[bool] = True
     is_superuser: Optional[bool] = False
-    full_name: Optional[str] = None
+    full_name: str = ""
 
 
 # Properties to receive via API on creation
@@ -30,10 +30,10 @@ class UserUpdate(UserBase):
 
 
 class UserInDBBase(UserBase):
-    id: Optional[UUID] = None
+    id: Optional[PydanticObjectId] = None
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 # Additional properties to return via API
@@ -42,7 +42,7 @@ class User(UserInDBBase):
     totp_secret: bool = Field(default=False, alias="totp")
 
     class Config:
-        allow_population_by_field_name = True
+        populate_by_name = True
 
     @validator("hashed_password", pre=True)
     def evaluate_hashed_password(cls, hashed_password):

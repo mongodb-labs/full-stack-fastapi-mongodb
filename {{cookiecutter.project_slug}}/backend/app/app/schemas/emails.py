@@ -12,4 +12,3 @@ class EmailValidation(BaseModel):
     email: EmailStr
     subject: str
     token: str
-

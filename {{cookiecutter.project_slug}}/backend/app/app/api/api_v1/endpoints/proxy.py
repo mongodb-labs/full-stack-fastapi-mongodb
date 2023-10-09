@@ -17,7 +17,10 @@ a user-login dependency to reduce the risk of leaking the server as a random pro
 
 @router.post("/{path:path}")
 async def proxy_post_request(
-    *, path: AnyHttpUrl, request: Request, current_user: models.User = Depends(deps.get_current_active_user),
+    *,
+    path: AnyHttpUrl,
+    request: Request,
+    current_user: models.User = Depends(deps.get_current_active_user),
 ) -> Any:
     # https://www.starlette.io/requests/
     # https://www.python-httpx.org/quickstart/
@@ -39,7 +42,10 @@ async def proxy_post_request(
 
 @router.get("/{path:path}")
 async def proxy_get_request(
-    *, path: AnyHttpUrl, request: Request, current_user: models.User = Depends(deps.get_current_active_user),
+    *,
+    path: AnyHttpUrl,
+    request: Request,
+    current_user: models.User = Depends(deps.get_current_active_user),
 ) -> Any:
     try:
         headers = {
@@ -52,4 +58,3 @@ async def proxy_get_request(
         return response
     except Exception as e:
         raise HTTPException(status_code=403, detail=str(e))
-

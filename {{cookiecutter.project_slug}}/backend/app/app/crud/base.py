@@ -1,8 +1,8 @@
-from typing import Any, Dict, Generic, List, Optional, Type, TypeVar, Union
+from typing import Any, Dict, Generic, Optional, Type, TypeVar, Union
 
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
-from sqlalchemy.orm import Session
+from motor.core import AgnosticDatabase
 
 from app.db.base_class import Base
 from app.core.config import settings
@@ -24,31 +24,20 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         """
         self.model = model
 
-    def get(self, db: Session, id: Any) -> Optional[ModelType]:
-        return db.query(self.model).filter(self.model.id == id).first()
+    async def get(self, db: AgnosticDatabase, id: Any) -> Optional[ModelType]:
+        return await self.model.get(id)
 
-    def get_multi(self, db: Session, *, page: int = 0, page_break: bool = False) -> list[ModelType]:
-        db_objs = db.query(self.model)
-        if not page_break:
-            if page > 0:
-                db_objs = db_objs.offset(page * settings.MULTI_MAX)
-            db_objs = db_objs.limit(settings.MULTI_MAX)
-        return db_objs.all()
+    async def get_multi(self, db: AgnosticDatabase, *, page: int = 0, page_break: bool = False) -> list[ModelType]:
+        offset = {"skip": page * settings.MULTI_MAX, "limit": settings.MULTI_MAX} if page_break else {}
+        return await self.model.find_all(**offset).to_list()
 
-    def create(self, db: Session, *, obj_in: CreateSchemaType) -> ModelType:
+    async def create(self, db: AgnosticDatabase, *, obj_in: CreateSchemaType) -> ModelType:
         obj_in_data = jsonable_encoder(obj_in)
         db_obj = self.model(**obj_in_data)  # type: ignore
-        db.add(db_obj)
-        db.commit()
-        db.refresh(db_obj)
-        return db_obj
+        return await db_obj.create()
 
-    def update(
-        self,
-        db: Session,
-        *,
-        db_obj: ModelType,
-        obj_in: Union[UpdateSchemaType, Dict[str, Any]]
+    async def update(
+        self, db: AgnosticDatabase, *, db_obj: ModelType, obj_in: Union[UpdateSchemaType, Dict[str, Any]]
     ) -> ModelType:
         obj_data = jsonable_encoder(db_obj)
         if isinstance(obj_in, dict):
@@ -58,13 +47,12 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         for field in obj_data:
             if field in update_data:
                 setattr(db_obj, field, update_data[field])
-        db.add(db_obj)
-        db.commit()
-        db.refresh(db_obj)
+        # TODO: Check if this saves changes with the setattr calls
+        await db_obj.save()
         return db_obj
 
-    def remove(self, db: Session, *, id: int) -> ModelType:
-        obj = db.query(self.model).get(id)
-        db.delete(obj)
-        db.commit()
+    async def remove(self, db: AgnosticDatabase, *, id: int) -> ModelType:
+        obj = await self.model.get(id)
+        if obj:
+            await obj.delete()
         return obj

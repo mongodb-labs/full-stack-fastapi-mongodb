@@ -3,7 +3,7 @@ from typing import Any, List
 from fastapi import APIRouter, Body, Depends, HTTPException
 from fastapi.encoders import jsonable_encoder
 from pydantic.networks import EmailStr
-from sqlalchemy.orm import Session
+from motor.core import AgnosticDatabase
 
 from app import crud, models, schemas
 from app.api import deps
@@ -17,9 +17,9 @@ router = APIRouter()
 
 
 @router.post("/", response_model=schemas.User)
-def create_user_profile(
+async def create_user_profile(
     *,
-    db: Session = Depends(deps.get_db),
+    db: AgnosticDatabase = Depends(deps.get_db),
     password: str = Body(...),
     email: EmailStr = Body(...),
     full_name: str = Body(None),
@@ -27,7 +27,7 @@ def create_user_profile(
     """
     Create new user without the need to be logged in.
     """
-    user = crud.user.get_by_email(db, email=email)
+    user = await crud.user.get_by_email(db, email=email)
     if user:
         raise HTTPException(
             status_code=400,
@@ -35,14 +35,14 @@ def create_user_profile(
         )
     # Create user auth
     user_in = schemas.UserCreate(password=password, email=email, full_name=full_name)
-    user = crud.user.create(db, obj_in=user_in)
+    user = await crud.user.create(db, obj_in=user_in)
     return user
 
 
 @router.put("/", response_model=schemas.User)
-def update_user(
+async def update_user(
     *,
-    db: Session = Depends(deps.get_db),
+    db: AgnosticDatabase = Depends(deps.get_db),
     obj_in: schemas.UserUpdate,
     current_user: models.User = Depends(deps.get_current_active_user),
 ) -> Any:
@@ -50,7 +50,7 @@ def update_user(
     Update user.
     """
     if current_user.hashed_password:
-        user = crud.user.authenticate(db, email=current_user.email, password=obj_in.original)
+        user = await crud.user.authenticate(db, email=current_user.email, password=obj_in.original)
         if not obj_in.original or not user:
             raise HTTPException(status_code=400, detail="Unable to authenticate this update.")
     current_user_data = jsonable_encoder(current_user)
@@ -60,19 +60,19 @@ def update_user(
     if obj_in.full_name is not None:
         user_in.full_name = obj_in.full_name
     if obj_in.email is not None:
-        check_user = crud.user.get_by_email(db, email=obj_in.email)
+        check_user = await crud.user.get_by_email(db, email=obj_in.email)
         if check_user and check_user.email != current_user.email:
             raise HTTPException(
                 status_code=400,
                 detail="This username is not available.",
             )
         user_in.email = obj_in.email
-    user = crud.user.update(db, db_obj=current_user, obj_in=user_in)
+    user = await crud.user.update(db, db_obj=current_user, obj_in=user_in)
     return user
 
 
 @router.get("/", response_model=schemas.User)
-def read_user(
+async def read_user(
     *,
     current_user: models.User = Depends(deps.get_current_active_user),
 ) -> Any:
@@ -83,20 +83,20 @@ def read_user(
 
 
 @router.get("/all", response_model=List[schemas.User])
-def read_all_users(
+async def read_all_users(
     *,
-    db: Session = Depends(deps.get_db),
+    db: AgnosticDatabase = Depends(deps.get_db),
     page: int = 0,
     current_user: models.User = Depends(deps.get_current_active_superuser),
 ) -> Any:
     """
     Retrieve all current users.
     """
-    return crud.user.get_multi(db=db, page=page)
+    return await crud.user.get_multi(db=db, page=page)
 
 
 @router.post("/new-totp", response_model=schemas.NewTOTP)
-def request_new_totp(
+async def request_new_totp(
     *,
     current_user: models.User = Depends(deps.get_current_active_user),
 ) -> Any:
@@ -110,16 +110,16 @@ def request_new_totp(
 
 
 @router.post("/toggle-state", response_model=schemas.Msg)
-def toggle_state(
+async def toggle_state(
     *,
-    db: Session = Depends(deps.get_db),
+    db: AgnosticDatabase = Depends(deps.get_db),
     user_in: schemas.UserUpdate,
     current_user: models.User = Depends(deps.get_current_active_superuser),
 ) -> Any:
     """
     Toggle user state (moderator function)
     """
-    response = crud.user.toggle_user_state(db=db, obj_in=user_in)
+    response = await crud.user.toggle_user_state(db=db, obj_in=user_in)
     if not response:
         raise HTTPException(
             status_code=400,
@@ -129,29 +129,29 @@ def toggle_state(
 
 
 @router.post("/create", response_model=schemas.User)
-def create_user(
+async def create_user(
     *,
-    db: Session = Depends(deps.get_db),
+    db: AgnosticDatabase = Depends(deps.get_db),
     user_in: schemas.UserCreate,
     current_user: models.User = Depends(deps.get_current_active_superuser),
 ) -> Any:
     """
     Create new user (moderator function).
     """
-    user = crud.user.get_by_email(db, email=user_in.email)
+    user = await crud.user.get_by_email(db, email=user_in.email)
     if user:
         raise HTTPException(
             status_code=400,
             detail="The user with this username already exists in the system.",
         )
-    user = crud.user.create(db, obj_in=user_in)
+    user = await crud.user.create(db, obj_in=user_in)
     if settings.EMAILS_ENABLED and user_in.email:
         send_new_account_email(email_to=user_in.email, username=user_in.email, password=user_in.password)
     return user
 
 
 @router.get("/tester", response_model=schemas.Msg)
-def test_endpoint() -> Any:
+async def test_endpoint() -> Any:
     """
     Test current endpoint.
     """

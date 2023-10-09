@@ -73,7 +73,7 @@ A [Docker](https://www.docker.com/) configuration is also provided. The _Dockerf
 To work with the Docker configuration:
 
 ```sh
-cd /path/to/full-stack-fastapi-postgresql/{{cookiecutter.project_slug}}/frontend
+cd /path/to/full-stack-fastapi-postgresql/dev-fsfp/frontend
 
 # build and run the development environment with hot-reloading
 docker build . --rm --target run-dev -t localhost/whythawk/nuxt-for-fastapi:run-dev
