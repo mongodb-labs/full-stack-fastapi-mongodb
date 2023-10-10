@@ -45,19 +45,26 @@ class Settings(BaseSettings):
 
     # COMPONENT SETTINGS
 
-    POSTGRES_SERVER: str
-    POSTGRES_USER: str
-    POSTGRES_PASSWORD: str
-    POSTGRES_DB: str
-    SQLALCHEMY_DATABASE_URI: Optional[str] = None
+    MONGO_HOST: str
+    MONGO_USER: str
+    MONGO_PASSWORD: str
+    MONGO_DATABASE: str
+    MONGO_URI_OPTIONS: str = "retryWrites=true&w=majority"
+    MONGO_DATABASE_URI: Optional[str] = None
 
-    @validator("SQLALCHEMY_DATABASE_URI", pre=True)
+    @validator("MONGO_DATABASE_URI", pre=True)
     def assemble_db_connection(cls, v: Optional[str], values: Dict[str, Any]) -> Any:
         if isinstance(v, str):
             return v
-        # TODO: Replace with MongoDsn construction
-        # MongoDsn.build(scheme="str")
-        return "mongodb+srv://jib:test@vectorsearch-msk.gsgkc.mongodb.net/?retryWrites=true&w=majority"
+        mongo_user, mongo_password, mongo_host, mongo_options = (
+            values.get("MONGO_USER"),
+            values.get("MONGO_PASSWORD"),
+            values.get("MONGO_HOST"),
+            values.get("MONGO_URI_OPTIONS"),
+        )
+        return (
+            f"mongodb+srv://{mongo_user}:{mongo_password}@{mongo_host}/?{mongo_options}"
+        )
 
     SMTP_TLS: bool = True
     SMTP_PORT: Optional[int] = None
@@ -80,7 +87,11 @@ class Settings(BaseSettings):
 
     @validator("EMAILS_ENABLED", pre=True)
     def get_emails_enabled(cls, v: bool, values: Dict[str, Any]) -> bool:
-        return bool(values.get("SMTP_HOST") and values.get("SMTP_PORT") and values.get("EMAILS_FROM_EMAIL"))
+        return bool(
+            values.get("SMTP_HOST")
+            and values.get("SMTP_PORT")
+            and values.get("EMAILS_FROM_EMAIL")
+        )
 
     EMAIL_TEST_USER: EmailStr = "test@example.com"  # type: ignore
     FIRST_SUPERUSER: EmailStr

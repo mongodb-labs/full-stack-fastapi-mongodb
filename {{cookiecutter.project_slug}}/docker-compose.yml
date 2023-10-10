@@ -67,100 +67,19 @@ services:
         # to disable www redirection remove the section: ${STACK_NAME?Variable not set}-www-redirect,
         - traefik.http.routers.${STACK_NAME?Variable not set}-proxy-http.middlewares=${STACK_NAME?Variable not set}-www-redirect,${STACK_NAME?Variable not set}-https-redirect
 
-  db:
-    image: postgres:15
-    volumes:
-      - app-db-data:/var/lib/postgresql/data/pgdata
-    env_file:
-      - .env
-    environment:
-      - PGDATA=/var/lib/postgresql/data/pgdata
-    deploy:
-      placement:
-        constraints:
-          - node.labels.${STACK_NAME?Variable not set}.app-db-data == true
-
-  pgadmin:
-    image: dpage/pgadmin4
-    networks:
-      - ${TRAEFIK_PUBLIC_NETWORK?Variable not set}
-      - default
-    depends_on:
-      - db
-    env_file:
-      - .env
-    deploy:
-      labels:
-        - traefik.enable=true
-        - traefik.docker.network=${TRAEFIK_PUBLIC_NETWORK?Variable not set}
-        - traefik.constraint-label=${TRAEFIK_PUBLIC_TAG?Variable not set}
-        - traefik.http.routers.${STACK_NAME?Variable not set}-pgadmin-http.rule=Host(`pgadmin.${DOMAIN?Variable not set}`)
-        - traefik.http.routers.${STACK_NAME?Variable not set}-pgadmin-http.entrypoints=http
-        - traefik.http.routers.${STACK_NAME?Variable not set}-pgadmin-http.middlewares=${STACK_NAME?Variable not set}-https-redirect
-        - traefik.http.routers.${STACK_NAME?Variable not set}-pgadmin-https.rule=Host(`pgadmin.${DOMAIN?Variable not set}`)
-        - traefik.http.routers.${STACK_NAME?Variable not set}-pgadmin-https.entrypoints=https
-        - traefik.http.routers.${STACK_NAME?Variable not set}-pgadmin-https.tls=true
-        - traefik.http.routers.${STACK_NAME?Variable not set}-pgadmin-https.tls.certresolver=le
-        - traefik.http.services.${STACK_NAME?Variable not set}-pgadmin.loadbalancer.server.port=5050
-
-  neo4j:
-    image: neo4j:5.2.0
-    networks:
-      - ${TRAEFIK_PUBLIC_NETWORK?Variable not set}
-      - default
-    ports:
-      - "6477:6477"
-      - "7474:7474"
-      - "7687:7687"
-    volumes:
-      #- ./conf/neo4j.conf:/var/lib/neo4j/conf
-      - app-neo4j-data:/data
-      - app-neo4j-plugins:/plugins
-      - app-neo4j-import:/var/lib/neo4j/import
-    env_file:
-      - .env
-    environment:
-      - NEO4J_ACCEPT_LICENSE_AGREEMENT=yes
-      - NEO4J_AUTH=${NEO4J_USERNAME?Variable not set}/${NEO4J_PASSWORD?Variable not set}
-      - NEO4J_server_config_strict__validation_enabled=false
-      #- NEO4J_dbms_default__advertised__address=0.0.0.0
-      - NEO4J_dbms_default__listen__address=0.0.0.0
-      #- NEO4J_dbms_connector_bolt_advertised__address=0.0.0.0:7687
-      - NEO4J_dbms_connector_bolt_listen__address=0.0.0.0:7687
-      - NEO4J_dbms_connector_http_listen__address=:7474
-      - NEO4J_dbms_connector_http_advertised__address=:7474
-      - NEO4J_dbms_connector_https_listen__address=:6477
-      - NEO4J_dbms_connector_https_advertised__address=:6477
-      - NEO4J_dbms_connector_bolt_listen__address=:7687
-      - NEO4J_dbms_mode=SINGLE
-      - NEO4J_PLUGINS=["graph-data-science", "apoc"]
-      - NEO4J_dbms_security_procedures_allowlist=gds.*, apoc.*
-      - NEO4J_dbms_security_procedures_unrestricted=gds.*, apoc.*
-      - NEO4J_dbms_memory_heap_initial__size=512m
-      - NEO4J_dbms_memory_heap_max__size=512m
-      - NEO4J_dbms_memory_pagecache_size=512m
-      - NEO4J_dbms_jvm_additional="-XX:+ExitOnOutOfMemoryError"
-    deploy:
-      labels:
-        - traefik.enable=true
-        - traefik.docker.network=${TRAEFIK_PUBLIC_NETWORK?Variable not set}
-        - traefik.constraint-label=${TRAEFIK_PUBLIC_TAG?Variable not set}
-        - traefik.http.routers.${STACK_NAME?Variable not set}-neo4j-http.rule=Host(`neo4j.${DOMAIN?Variable not set}`)
-        - traefik.http.routers.${STACK_NAME?Variable not set}-neo4j-http.entrypoints=http
-        - traefik.http.routers.${STACK_NAME?Variable not set}-neo4j-http.middlewares=${STACK_NAME?Variable not set}-https-redirect
-        - traefik.http.routers.${STACK_NAME?Variable not set}-neo4j-https.rule=Host(`neo4j.${DOMAIN?Variable not set}`)
-        - traefik.http.routers.${STACK_NAME?Variable not set}-neo4j-https.entrypoints=https
-        - traefik.http.routers.${STACK_NAME?Variable not set}-neo4j-https.tls=true
-        - traefik.http.routers.${STACK_NAME?Variable not set}-neo4j-https.tls.certresolver=le
-        - traefik.http.services.${STACK_NAME?Variable not set}-neo4j.loadbalancer.server.port=7474
-      replicas: 1
-      resources:
-        limits:
-          memory: 2048M
-        reservations:
-          memory: 512M
-      # restart_policy:
-      #  condition: on-failure
+  # TODO: Implement docker for local MONGO
+  # db:
+  #   image: postgres:15
+  #   volumes:
+  #     - app-db-data:/var/lib/postgresql/data/pgdata
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     - PGDATA=/var/lib/postgresql/data/pgdata
+  #   deploy:
+  #     placement:
+  #       constraints:
+  #         - node.labels.${STACK_NAME?Variable not set}.app-db-data == true
 
   queue:
     image: rabbitmq:3

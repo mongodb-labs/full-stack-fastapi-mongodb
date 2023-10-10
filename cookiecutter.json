@@ -23,9 +23,10 @@
     "smtp_emails_from_name": "Symona Adaro",
     "smtp_emails_to_email": "info@{{cookiecutter.domain_main}}",
 
-    "postgres_password": "changethis",
-    "pgadmin_default_user": "{{cookiecutter.first_superuser}}",
-    "pgadmin_default_user_password": "{{cookiecutter.first_superuser_password}}",
+    "mongo_host": "changethis",
+    "mongo_user": "changethis",
+    "mongodb_password": "changethis",
+    "mongodb_database": "changethis",
 
     "neo4j_password": "changethis",
 
@@ -48,7 +49,6 @@
         "frontend/**/*.vue",
         "frontend/.nuxt/*",
         "frontend/node_modules/*",
-        "backend/app/app/email-templates/**",
-        "backend/app/app/gdb/**"
+        "backend/app/app/email-templates/**"
     ]
 }
