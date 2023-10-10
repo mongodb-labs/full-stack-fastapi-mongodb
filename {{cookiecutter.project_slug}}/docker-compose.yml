@@ -118,11 +118,6 @@ services:
 
   backend:
     image: "${DOCKER_IMAGE_BACKEND?Variable not set}:${TAG-latest}"
-    depends_on:
-      - db
-      - neo4j
-    volumes:
-      - app-neo4j-import:/app/imports
     logging:
       driver: "json-file"
       options:
@@ -153,12 +148,6 @@ services:
 
   celeryworker:
     image: "${DOCKER_IMAGE_CELERYWORKER?Variable not set}:${TAG-latest}"
-    depends_on:
-      - db
-      - neo4j
-      - queue
-    volumes:
-      - app-neo4j-import:/app/imports
     logging:
       driver: "json-file"
       options:
@@ -200,9 +189,6 @@ services:
 
 volumes:
   app-db-data:
-  app-neo4j-data:
-  app-neo4j-plugins:
-  app-neo4j-import:
 
 networks:
   traefik-public:
