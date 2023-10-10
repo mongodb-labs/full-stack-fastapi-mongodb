@@ -46,8 +46,8 @@
 
     "_copy_without_render": [
         "frontend/**/*.html",
-        "frontend/**/*.vue",
-        "frontend/.nuxt/*",
+        "frontend/**/*.tsx",
+        "frontend/.next/*",
         "frontend/node_modules/*",
         "backend/app/app/email-templates/**"
     ]
