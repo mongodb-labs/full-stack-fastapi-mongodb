@@ -6,4 +6,4 @@ docker-stack.yml
 *.code-workspace
 .s3cfg
 
-.DS_STORE
+.DS_Store
