@@ -25,7 +25,6 @@ import {
   validateTOTPClaim,
 } from "./tokensSlice"
 import { PURGE, purgeStoredState } from "redux-persist"
-import { perstistor } from "../reduxProvider"
 
 interface AuthState {
   id: string

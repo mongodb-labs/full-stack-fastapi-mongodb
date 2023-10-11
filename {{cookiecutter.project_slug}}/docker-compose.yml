@@ -170,7 +170,7 @@ services:
     image: "${DOCKER_IMAGE_FRONTEND?Variable not set}:${TAG-latest}"
     env_file:
       - .env
-      - ./frontend/.env
+      - ./frontend/.env.local
     build:
       context: ./frontend
     deploy:

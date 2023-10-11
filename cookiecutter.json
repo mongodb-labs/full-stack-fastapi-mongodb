@@ -47,6 +47,7 @@
     "_copy_without_render": [
         "frontend/**/*.html",
         "frontend/**/*.tsx",
+        "frontend/**/*.ico",
         "frontend/.next/*",
         "frontend/node_modules/*",
         "backend/app/app/email-templates/**"

@@ -20,7 +20,7 @@ interface IKeyable {
   [key: string]: any | any[]
 }
 
-export {
+export type {
   IKeyable,
   IUserProfile,
   IUserProfileUpdate,
