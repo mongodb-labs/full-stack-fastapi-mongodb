@@ -52,7 +52,11 @@ export const getTokens = (payload: { username: string; password?: string }) => {
         }
       } else {
         const response = await apiAuth.loginWithMagicLink(payload.username)
-        dispatch(setMagicToken(response))
+        if (response.claim) {
+          dispatch(setMagicToken(response))
+        } else {
+          throw "error"
+        }
       }
     } catch (error) {
       dispatch(

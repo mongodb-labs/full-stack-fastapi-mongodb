@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 
-const siteName: string = "common.title"
+const siteName: string = "CompanyName"
 
 const githubIcon = () => {
   return (
