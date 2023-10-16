@@ -1,14 +1,14 @@
 ---
 title: Getting started with a base project
-description: "Accelerate your next web development project with this FastAPI/Nuxt.js base project generator."
+description: "Accelerate your next web development project with this FastAPI/Next.js base project generator."
 navigation: false
 ---
 
 # Getting started with a base project
 
-Accelerate your next web development project with this FastAPI/Nuxt.js base project generator.
+Accelerate your next web development project with this FastAPI/Next.js base project generator.
 
-This project is a comprehensively updated fork of [Sebastián Ramírez's](https://github.com/tiangolo) [Full Stack FastAPI and PostgreSQL Base Project Generator](https://github.com/tiangolo/full-stack-fastapi-postgresql). FastAPI is updated to version 0.88 (November 2022), SQLAlchemy to version 1.4.45 (December 2022), and the frontend to Nuxt 3 (November 2022).
+This project is a comprehensively updated React + MongoDB version of [Sebastián Ramírez's](https://github.com/tiangolo) [Full Stack FastAPI and PostgreSQL Base Project Generator](https://github.com/tiangolo/full-stack-fastapi-postgresql).
 
 ---
 
@@ -33,18 +33,15 @@ This project is a comprehensively updated fork of [Sebastián Ramírez's](https:
   - **Common CRUD** support via generic inheritance.
   - **Standards-based**: Based on (and fully compatible with) the open standards for APIs: [OpenAPI](https://github.com/OAI/OpenAPI-Specification) and [JSON Schema](http://json-schema.org/).
   - [**Many other features**]("https://fastapi.tiangolo.com/features/"): including automatic validation, serialization, interactive documentation, etc.
-- [**Nuxt/Vue 3**](https://nuxt.com/) frontend:
+- [**Next/React**](https://react.dev/) frontend:
   - **Authentication** with JWT and cookie management, including `access` and `refresh` tokens,
   - **Authorisation** via middleware for page access, including logged in or superuser.
-  - **Model blog** project, with [Nuxt Content](https://content.nuxtjs.org/) for writing Markdown pages.
-  - **Form validation** with [Vee-Validate 4](https://vee-validate.logaretm.com/v4/).
-  - **State management** with [Pinia](https://pinia.vuejs.org/), and persistance with [Pinia PersistedState](https://prazdevs.github.io/pinia-plugin-persistedstate/).
+  - **Model blog** project, with [gray-matter](https://github.com/jonschlinkert/gray-matter) for writing Markdown pages.
+  - **State management** with [Redux](https://redux.js.org/), and persistance with [redux-persist](https://github.com/rt2zz/redux-persist).
   - **CSS and templates** with [TailwindCSS](https://tailwindcss.com/), [HeroIcons](https://heroicons.com/), and [HeadlessUI](https://headlessui.com/).
-- **PostgreSQL** database.
-- **PGAdmin** for PostgreSQL database management.
+- **MongoDB** database.
 - **Celery** worker that can import and use models and code from the rest of the backend selectively.
 - **Flower** for Celery jobs monitoring.
-- **Neo4j** graph database, including integration into the FastAPI base project.
 - Load balancing between frontend and backend with **Traefik**, so you can have both under the same domain, separated by path, but served by different containers.
 - Traefik integration, including Let's Encrypt **HTTPS** certificates automatic generation.
 - GitLab **CI** (continuous integration), including frontend and backend testing.
