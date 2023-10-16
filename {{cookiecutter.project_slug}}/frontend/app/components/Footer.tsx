@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 
-const siteName: string = "CompanyName"
+const siteName: string = "{{ cookiecutter.project_name }}"
 
 const githubIcon = () => {
   return (
@@ -47,11 +47,13 @@ const footerNavigation = {
   social: [
     {
       name: "GitHub",
+      // TODO: Switch to mongo-labs
       href: "https://github.com/whythawk/full-stack-fastapi-postgresql",
       icon: githubIcon,
     },
     {
       name: "Mastodon",
+      // TODO: Switch to mongo-labs?
       href: "https://wandering.shop/@GavinChait",
       icon: mastodonIcon,
     },

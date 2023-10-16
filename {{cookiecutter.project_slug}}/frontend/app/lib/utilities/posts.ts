@@ -8,10 +8,9 @@ import remarkToc from "remark-toc"
 
 const postsDirectory = path.join(process.cwd(), "app/content/blog")
 
-// -------------------------------------------------
-// GET THE DATA OF ALL POSTS IN SORTED ORDER BY DATE
-/*
-  Returns an array that looks like this:
+/**
+ * Get the data of all posts in sorted order by date
+ * @return {List[Object]}     Returns an array that looks like this:
   [
     {
       id: 'ssg-ssr',
@@ -24,8 +23,7 @@ const postsDirectory = path.join(process.cwd(), "app/content/blog")
       date: '2020-01-02'
     }
   ]
-*/
-
+ */
 export function getSortedPostsData() {
   // Get file names under /posts
   const fileNames = fs.readdirSync(postsDirectory) // [ 'pre-rendering.md', 'ssg-ssr.md' ]
