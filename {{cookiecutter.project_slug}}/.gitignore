@@ -5,3 +5,5 @@ docker-stack.yml
 .env
 *.code-workspace
 .s3cfg
+
+.DS_Store

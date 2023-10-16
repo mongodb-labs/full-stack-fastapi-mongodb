@@ -71,14 +71,10 @@ services:
 
   frontend:
     ports:
-      - "24678:24678"
-    volumes:
-      # https://stackoverflow.com/a/32785014
-      - ./frontend:/frontend
-      - node_modules:/frontend/node_modules
+      - "3000:3000"
     build:
       context: ./frontend
-      target: run-dev
+      target: runner
     labels:
       - traefik.enable=true
       - traefik.constraint-label-stack=${TRAEFIK_TAG?Variable not set}
