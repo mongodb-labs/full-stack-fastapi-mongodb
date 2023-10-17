@@ -52,23 +52,28 @@ If your Docker is not running in `localhost` (the URLs above wouldn't work) chec
 
 ### General workflow
 
-By default, the dependencies are managed with [Poetry](https://python-poetry.org/), go there and install it.
+By default, the dependencies are managed with [Hatch](https://hatch.pypa.io/latest/), go there and install it.
 
 From `./backend/app/` you can install all the dependencies with:
 
 ```console
-$ poetry install
+$ hatch env prune
+$ hatch env create production
 ```
 
-Then you can start a shell session with the new environment with:
+Because Hatch doesn't have a version lock file (like Poetry), it is helpful to `prune` when you rebuild to avoid any sort of dependency hell. Then you can start a shell session with the new environment with:
 
 ```console
-$ poetry shell
+$ hatch shell
 ```
 
-Next, open your editor at `./backend/app/` (instead of the project root: `./`), so that you see an `./app/` directory with your code inside. That way, your editor will be able to find all the imports, etc. Make sure your editor uses the environment you just created with Poetry.
+Next, open your editor at `./backend/app/` (instead of the project root: `./`), so that you see an `./app/` directory with your code inside. That way, your editor will be able to find all the imports, etc. Make sure your editor uses the environment you just created with Hatch. For Visual Studio Code, from the shell, launch an appropriate development environment with:
 
-Modify or add SQLAlchemy models in `./backend/app/app/models/`, Pydantic schemas in `./backend/app/app/schemas/`, API endpoints in `./backend/app/app/api/`, CRUD (Create, Read, Update, Delete) utils in `./backend/app/app/crud/`. The easiest might be to copy the ones for Items (models, endpoints, and CRUD utils) and update them to your needs.
+```console
+$ code .
+```
+
+Modify or add beanie models in `./backend/app/app/models/` (make sure to include them in `MODELS` within `.backend/app/app/models/__init__.py`), Pydantic schemas in `./backend/app/app/schemas/`, API endpoints in `./backend/app/app/api/`, CRUD (Create, Read, Update, Delete) utils in `./backend/app/app/crud/`. The easiest might be to copy the ones for Items (models, endpoints, and CRUD utils) and update them to your needs.
 
 Add and modify tasks to the Celery worker in `./backend/app/app/worker.py`.
 
