@@ -18,12 +18,6 @@ python -m pip install --no-cache-dir --upgrade pip "pipx==$PIPX_VERSION"
 pipx install "hatch==$HATCH_VERSION"
 hatch env prune && hatch env create production
 chmod +x /app/worker-start.sh
-# Neomodel has shapely and libgeos as dependencies
-# apt-get update && apt-get install -y libgeos-dev
-# /start Project-specific dependencies
-# apt-get update && apt-get install -y --no-install-recommends
-# rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-# /end Project-specific dependencies
 HEREDOC
 
 # For development, Jupyter remote kernel, Hydrogen

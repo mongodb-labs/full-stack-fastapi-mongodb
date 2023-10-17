@@ -8,12 +8,12 @@ After you clone the project, there are several scripts that can help during deve
 
 Generate a new default project `dev-fsfp`.
 
-Call it from one level above the project directory. So, if the project is at `~/code/full-stack-fastapi-postgresql/`, call it from `~/code/`, like:
+Call it from one level above the project directory. So, if the project is at `~/code/full-stack-fastapi-mongodb/`, call it from `~/code/`, like:
 
 ```console
 $ cd ~/code/
 
-$ bash ./full-stack-fastapi-postgresql/scripts/dev-fsfp.sh
+$ bash ./full-stack-fastapi-mongodb/scripts/dev-fsfp.sh
 ```
 
 It will generate a new project with all the defaults at `~/code/dev-fsfp/`.
@@ -34,12 +34,12 @@ Move the changes from a project `dev-fsfp` back to the project generator.
 
 You would call it after calling `./scripts/dev-fsfp.sh` and adding some modifications to `dev-fsfp`.
 
-Call it from one level above the project directory. So, if the project is at `~/code/full-stack-fastapi-postgresql/`, call it from `~/code/`, like:
+Call it from one level above the project directory. So, if the project is at `~/code/full-stack-fastapi-mongodb/`, call it from `~/code/`, like:
 
 ```console
 $ cd ~/code/
 
-$ bash ./full-stack-fastapi-postgresql/scripts/dev-fsfp-back.sh
+$ bash ./full-stack-fastapi-mongodb/scripts/dev-fsfp-back.sh
 ```
 
 That will also contain all the generated files with the generated variables, but it will let you compare the changes in `dev-fsfp` and the source in the project generator with git, and see what to commit.
@@ -51,7 +51,7 @@ After using `./scripts/dev-fsfp-back.sh`, there will be a bunch of generated fil
 To discard all those changes at once, run `discard-dev-files.sh` from the root of the project, e.g.:
 
 ```console
-$ cd ~/code/full-stack-fastapi-postgresql/
+$ cd ~/code/full-stack-fastapi-mongodb/
 
 $ bash ./scripts/dev-fsfp-back.sh
 ```
@@ -63,7 +63,7 @@ Run the tests. It creates a project `testing-project` *inside* of the project ge
 Call it from the root of the project, e.g.:
 
 ```console
-$ cd ~/code/full-stack-fastapi-postgresql/
+$ cd ~/code/full-stack-fastapi-mongodb/
 
 $ bash ./scripts/test.sh
 ```

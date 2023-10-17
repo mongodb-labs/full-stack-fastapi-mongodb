@@ -28,8 +28,6 @@
     "mongodb_password": "changethis",
     "mongodb_database": "changethis",
 
-    "neo4j_password": "changethis",
-
     "traefik_constraint_tag": "{{cookiecutter.domain_main}}",
     "traefik_constraint_tag_staging": "{{cookiecutter.domain_staging}}",
     "traefik_public_constraint_tag": "traefik-public",

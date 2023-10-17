@@ -186,7 +186,7 @@ The `response` is a `switch` statement which identifies and responds to the appr
 
 ## Setting up the FastAPI `backend`
 
-At the `backend` you already have a [sockets.py](https://github.com/whythawk/full-stack-fastapi-postgresql/blob/0.8.2/%7B%7Bcookiecutter.project_slug%7D%7D/backend/app/app/api/sockets.py) which handles serialising and deserialising the Websocket requests and responses. Now you create a route in `/endpoints`:
+At the `backend` you already have a [sockets.py](https://github.com/mongodb-labs/full-stack-fastapi-mongodb/blob/0.8.2/%7B%7Bcookiecutter.project_slug%7D%7D/backend/app/app/api/sockets.py) which handles serialising and deserialising the Websocket requests and responses. Now you create a route in `/endpoints`:
 
 ```
 from fastapi import APIRouter, Depends, WebSocket, HTTPException, WebSocketException

@@ -11,7 +11,7 @@ import { token } from "./lib/slices/tokensSlice"
 
 const github = {
   name: "GitHub",
-  href: "https://github.com/whythawk/full-stack-fastapi-postgresql",
+  href: "https://github.com/mongodb-labs/full-stack-fastapi-mongodb",
   icon: () => {
     return (
       <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -91,7 +91,7 @@ export default function Page() {
                 </h1>
                 <p className="mt-6 text-xl text-gray-500">
                   Accelerate your next web development project with this FastAPI
-                  0.88 / React 18.0 base project generator.
+                  0.103 / React 18.0 base project generator.
                 </p>
               </div>
               <div className="mt-6 sm:max-w-xl">
@@ -105,11 +105,6 @@ export default function Page() {
                     <span className="font-bold">Authorisation</span> via
                     middleware for page access, including logged in or
                     superuser.
-                  </li>
-                  <li>
-                    <span className="font-bold">Databases</span> for Neo4j and
-                    PostgreSQL included, plus PGAdmin for PostgreSQL management,
-                    using SQLAlchemy 1.4.
                   </li>
                   <li>
                     <span className="font-bold">Form validation</span> with

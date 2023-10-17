@@ -67,20 +67,6 @@ services:
         # to disable www redirection remove the section: ${STACK_NAME?Variable not set}-www-redirect,
         - traefik.http.routers.${STACK_NAME?Variable not set}-proxy-http.middlewares=${STACK_NAME?Variable not set}-www-redirect,${STACK_NAME?Variable not set}-https-redirect
 
-  # TODO: Implement docker for local MONGO
-  # db:
-  #   image: postgres:15
-  #   volumes:
-  #     - app-db-data:/var/lib/postgresql/data/pgdata
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     - PGDATA=/var/lib/postgresql/data/pgdata
-  #   deploy:
-  #     placement:
-  #       constraints:
-  #         - node.labels.${STACK_NAME?Variable not set}.app-db-data == true
-
   queue:
     image: rabbitmq:3
     # Using the below image instead is required to enable the "Broker" tab in the flower UI:

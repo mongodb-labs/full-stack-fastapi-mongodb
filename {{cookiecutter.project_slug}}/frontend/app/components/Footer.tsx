@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 
-const siteName: string = "{{ cookiecutter.project_name }}"
+const siteName: string = process.env.PROJECT_NAME ?? "Change This"
 
 const githubIcon = () => {
   return (

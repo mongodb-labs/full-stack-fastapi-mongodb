@@ -2,10 +2,10 @@
 
 ## Documentation for development
 
-- [Getting started](https://github.com/whythawk/full-stack-fastapi-postgresql/blob/master/docs/getting-started.md)
-- [Development and installation](https://github.com/whythawk/full-stack-fastapi-postgresql/blob/master/docs/development-guide.md)
-- [Deployment for production](https://github.com/whythawk/full-stack-fastapi-postgresql/blob/master/docs/deployment-guide.md)
-- [Authentication and magic tokens](https://github.com/whythawk/full-stack-fastapi-postgresql/blob/master/docs/authentication-guide.md)
+- [Getting started](https://github.com/mongodb-labs/full-stack-fastapi-mongodb/blob/master/docs/getting-started.md)
+- [Development and installation](https://github.com/mongodb-labs/full-stack-fastapi-mongodb/blob/master/docs/development-guide.md)
+- [Deployment for production](https://github.com/mongodb-labs/full-stack-fastapi-mongodb/blob/master/docs/deployment-guide.md)
+- [Authentication and magic tokens](https://github.com/mongodb-labs/full-stack-fastapi-mongodb/blob/master/docs/authentication-guide.md)
 
 * Local development URLs:
 
@@ -16,10 +16,6 @@ Backend, JSON based web API based on OpenAPI: http://localhost/api/
 Automatic interactive documentation with Swagger UI (from the OpenAPI backend): http://localhost/docs
 
 Alternative automatic documentation with ReDoc (from the OpenAPI backend): http://localhost/redoc
-
-PGAdmin, PostgreSQL web administration: http://localhost:5050
-
-Neo4j web administration: http://localhost:7474
 
 Flower, administration of Celery tasks: http://localhost:5555
 
