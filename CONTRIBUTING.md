@@ -1,6 +1,6 @@
 # Contributing
 
-Here are some short guidelines to guide you if you want to contribute to the development of the Full Stack FastAPI PostgreSQL project generator itself.
+Here are some short guidelines to guide you if you want to contribute to the development of the Full Stack FastAPI MongoDB project generator itself.
 
 After you clone the project, there are several scripts that can help during development.
 

@@ -48,7 +48,7 @@ const footerNavigation = {
     {
       name: "GitHub",
       // TODO: Switch to mongo-labs
-      href: "https://github.com/whythawk/full-stack-fastapi-postgresql",
+      href: "https://github.com/mongodb-labs/full-stack-fastapi-mongodb",
       icon: githubIcon,
     },
     {

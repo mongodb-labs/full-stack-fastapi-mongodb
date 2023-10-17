@@ -39,6 +39,24 @@ If your Docker is not running in `localhost` (the URLs above wouldn't work) chec
 
 ## Backend local development, additional details
 
+### Setting Up MongoDB
+
+**The backend and celery containers will fail to load if a proper Mongo URI is not configured**.
+
+Please ensure that either 
+- `MONGO_(HOST|USER|PASSWORD|DATABASE)` were properly set in the initial MongoDB setup phase
+- `MONGO_DATABASE_URI` has been set in `{{ cookiebutter.project_slug }}/.env`
+
+To learn more about how to generate a MongoDB URI please look at the docs on [Connecting to your MongoDB Atlas Clutser](https://www.mongodb.com/docs/atlas/tutorial/connect-to-your-cluster/)
+
+### Setting Up MongoDB Locally
+
+**Currently, the FARM-stack generator does not provide a running `mongod` within the docker container**
+
+If running a local instance of MongoDB outside of a docker container that you want your backend to communicate with, you will need to set up [port forwarding in your docker config](https://docs.docker.com/desktop/networking/#use-cases-and-workarounds). Since the intention of this generator is to work with scalable production environments very quickly, providing a local container of MongoDB was not part of the initial charter in its creation. **We do strongly advise you connect to an Atlas cluster** 
+
+To see how to use MongoDB with Docker, read through this article on [set-up steps](https://www.mongodb.com/compatibility/docker)
+
 ### General workflow
 
 By default, the dependencies are managed with [Hatch](https://hatch.pypa.io/latest/), go there and install it.
@@ -62,7 +80,7 @@ Next, open your editor at `./backend/app/` (instead of the project root: `./`), 
 $ code .
 ```
 
-Modify or add SQLAlchemy models in `./backend/app/app/models/`, Pydantic schemas in `./backend/app/app/schemas/`, API endpoints in `./backend/app/app/api/`, CRUD (Create, Read, Update, Delete) utils in `./backend/app/app/crud/`. The easiest might be to copy the ones for Items (models, endpoints, and CRUD utils) and update them to your needs.
+Modify or add beanie models in `./backend/app/app/models/` (make sure to include them in `MODELS` within `.backend/app/app/models/__init__.py`), Pydantic schemas in `./backend/app/app/schemas/`, API endpoints in `./backend/app/app/api/`, CRUD (Create, Read, Update, Delete) utils in `./backend/app/app/crud/`. The easiest might be to copy the ones for Items (models, endpoints, and CRUD utils) and update them to your needs.
 
 Add and modify tasks to the Celery worker in `./backend/app/app/worker.py`.
 
@@ -749,11 +767,11 @@ Traefik UI: http://localhost.tiangolo.com:8090
 
 ## Project generation and updating, or re-generating
 
-This project was generated using https://github.com/whythawk/full-stack-fastapi-postgresql with:
+This project was generated using https://github.com/mongodb-labs/full-stack-fastapi-mongodb with:
 
 ```bash
 pip install cookiecutter
-cookiecutter https://github.com/whythawk/full-stack-fastapi-postgresql
+cookiecutter https://github.com/whythawk/full-stack-fastapi-mongodb
 ```
 
 You can check the variables used during generation in the file `cookiecutter-config-file.yml`.
@@ -771,7 +789,7 @@ You can use that file while generating a new project to reuse all those variable
 For example, run:
 
 ```console
-$ cookiecutter --config-file ./cookiecutter-config-file.yml --output-dir ../project-copy https://github.com/whythawk/full-stack-fastapi-postgresql
+$ cookiecutter --config-file ./cookiecutter-config-file.yml --output-dir ../project-copy https://github.com/mongodb-labs/full-stack-fastapi-mongodb
 ```
 
 That will use the file `cookiecutter-config-file.yml` in the current directory (in this project) to generate a new project inside a sibling directory `project-copy`.

@@ -52,7 +52,7 @@ Go to the directory where you want to create your project and run:
 
 ```bash
 pip install cookiecutter
-cookiecutter https://github.com/whythawk/full-stack-fastapi-postgresql
+cookiecutter https://github.com/mongodb-labs/full-stack-fastapi-mongodb
 ```
 
 ### Generate passwords
