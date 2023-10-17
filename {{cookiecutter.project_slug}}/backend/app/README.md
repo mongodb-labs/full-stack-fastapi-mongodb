@@ -50,6 +50,24 @@ If your Docker is not running in `localhost` (the URLs above wouldn't work) chec
 
 ## Backend local development, additional details
 
+### Setting Up MongoDB
+
+**The backend and celery containers will fail to load if a proper Mongo URI is not configured**.
+
+Please ensure that either 
+- `MONGO_(HOST|USER|PASSWORD|DATABASE)` were properly set in the initial MongoDB setup phase
+- `MONGO_DATABASE_URI` has been set in `{{ cookiebutter.project_slug }}/.env`
+
+To learn more about how to generate a MongoDB URI please look at the docs on [Connecting to your MongoDB Atlas Clutser](https://www.mongodb.com/docs/atlas/tutorial/connect-to-your-cluster/)
+
+### Setting Up MongoDB Locally
+
+**Currently, the FARM-stack generator does not provide a running `mongod` within the docker container**
+
+If running a local instance of MongoDB outside of a docker container that you want your backend to communicate with, you will need to set up [port forwarding in your docker config](https://docs.docker.com/desktop/networking/#use-cases-and-workarounds). Since the intention of this generator is to work with scalable production environments very quickly, providing a local container of MongoDB was not part of the initial charter in its creation. **We do strongly advise you connect to an Atlas cluster** 
+
+To see how to use MongoDB with Docker, read through this article on [set-up steps](https://www.mongodb.com/compatibility/docker)
+
 ### General workflow
 
 By default, the dependencies are managed with [Hatch](https://hatch.pypa.io/latest/), go there and install it.
