@@ -56,7 +56,7 @@ If your Docker is not running in `localhost` (the URLs above wouldn't work) chec
 
 Please ensure that either 
 - `MONGO_(HOST|USER|PASSWORD|DATABASE)` were properly set in the initial MongoDB setup phase
-- `MONGO_DATABASE_URI` has been set in `{{ cookiebutter.project_slug }}/.env`
+- `MONGO_DATABASE_URI` has been set in `{{ cookiecutter.project_slug }}/.env`
 
 To learn more about how to generate a MongoDB URI please look at the docs on [Connecting to your MongoDB Atlas Clutser](https://www.mongodb.com/docs/atlas/tutorial/connect-to-your-cluster/)
 
