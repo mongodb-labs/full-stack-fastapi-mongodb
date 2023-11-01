@@ -1,5 +1,5 @@
 from typing import Optional
-from pydantic import BaseModel, Field, EmailStr, constr, validator
+from pydantic import BaseModel, Field, EmailStr, constr, field_validator
 from beanie import PydanticObjectId
 
 
@@ -44,13 +44,13 @@ class User(UserInDBBase):
     class Config:
         populate_by_name = True
 
-    @validator("hashed_password", pre=True)
+    @field_validator("hashed_password", mode="before")
     def evaluate_hashed_password(cls, hashed_password):
         if hashed_password:
             return True
         return False
 
-    @validator("totp_secret", pre=True)
+    @field_validator("totp_secret", mode="before")
     def evaluate_totp_secret(cls, totp_secret):
         if totp_secret:
             return True

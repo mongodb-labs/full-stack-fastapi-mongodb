@@ -1,0 +1,105 @@
+name: build and deploy template
+on:
+  push:
+    branches:
+      - main
+      - production
+
+env:
+  TRAEFIK_PUBLIC_NETWORK: traefik-public
+  STACK_NAME: {{cookiecutter.docker_swarm_stack_name_main}}
+  DOCKER_IMAGE_CELERYWORKER: {{cookiecutter.docker_image_celeryworker}}
+  TRAEFIK_TAG: {{cookiecutter.traefik_constraint_tag}}
+  TRAEFIK_PUBLIC_TAG: {{cookiecutter.traefik_public_constraint_tag}}
+  DOCKER_IMAGE_BACKEND: {{cookiecutter.docker_image_backend}}
+  DOCKER_IMAGE_FRONTEND: {{cookiecutter.docker_image_frontend}}
+  PROJECT_NAME: {{cookiecutter.project_name}}
+  DOMAIN: localhost
+  SMTP_HOST:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Run Tests
+        run: sh ./scripts/test.sh
+
+  deploy-staging:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+{% raw %}
+      - name: Log in to Docker Registry
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+{% endraw %}
+
+      - name: Install docker-auto-labels
+        run: pip install docker-auto-labels
+
+      - name: Build Staging 
+        run: |
+          DOMAIN={{cookiecutter.domain_staging}}
+          TRAEFIK_TAG={{cookiecutter.traefik_constraint_tag_staging}}
+          STACK_NAME={{cookiecutter.docker_swarm_stack_name_staging}}
+          TAG=staging
+          FRONTEND_ENV=staging
+          sh ./scripts/build-push.sh
+
+      - name: Deploy Staging
+        run: |
+          DOMAIN={{cookiecutter.domain_staging}}
+          TRAEFIK_TAG={{cookiecutter.traefik_constraint_tag_staging}}
+          STACK_NAME={{cookiecutter.docker_swarm_stack_name_staging}}
+          TAG=staging
+          sh ./scripts/deploy.sh
+    needs: tests
+
+  deploy-prod:
+    if: github.ref == 'refs/heads/production'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+{% raw %}
+      - name: Log in to Docker Registry
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+{% endraw %}
+      
+      - name: Install docker-auto-labels
+        run: pip install docker-auto-labels
+      
+      - name: Build Production
+        run: |
+          DOMAIN={{cookiecutter.domain_main}}
+          TRAEFIK_TAG={{cookiecutter.traefik_constraint_tag}}
+          STACK_NAME={{cookiecutter.docker_swarm_stack_name_main}}
+          TAG=prod
+          FRONTEND_ENV=production
+          sh ./scripts/build-push.sh
+
+      - name: Deploy Production
+        run: |
+          DOMAIN={{cookiecutter.domain_main}}
+          TRAEFIK_TAG={{cookiecutter.traefik_constraint_tag}}
+          STACK_NAME={{cookiecutter.docker_swarm_stack_name_main}}
+          TAG=prod
+          sh ./scripts/deploy.sh
+    needs: tests
+   
+
+  
+  
+    

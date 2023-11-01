@@ -8,11 +8,13 @@ class _MongoClientSingleton:
     def __new__(cls):
         if not hasattr(cls, "instance"):
             cls.instance = super(_MongoClientSingleton, cls).__new__(cls)
-            cls.instance.mongo_client = motor_asyncio.AsyncIOMotorClient(settings.MONGO_DATABASE_URI)
+            cls.instance.mongo_client = motor_asyncio.AsyncIOMotorClient(
+                settings.MONGO_DATABASE_URI
+            )
         return cls.instance
 
 
-def MongoDatabase() -> core.AgnosticDatabase:
+def MongoDatabase(test=False) -> core.AgnosticDatabase:
     return _MongoClientSingleton().mongo_client[settings.MONGO_DATABASE]
 
 

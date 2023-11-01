@@ -93,9 +93,7 @@ The input variables, with their default values (some auto generated) are:
 - `smtp_emails_from_email`: The email account to use as the sender in the notification emails, it could be something like `info@your-custom-domain.com`.
 - `smtp_emails_from_name`: The email account name to use as the sender in the notification emails, it could be something like `Symona Adaro`.
 - `smtp_emails_to_email`: The email account to use as the recipient for `contact us` emails, it could be something like `requests@your-custom-domain.com`.
-- `mongo_host`: MongoDB host cluster URI password
-- `mongo_user`: MongoDB User account to access the cluster
-- `mongodb_password`: MongoDB password for access to the cluster
+- `mongodb_uri`: MongoDB URI for access to the cluster
 - `mongodb_database`: MongoDB database to have the application operate within
 - `traefik_constraint_tag`: The tag to be used by the internal Traefik load balancer (for example, to divide requests between backend and frontend) for production. Used to separate this stack from any other stack you might have. This should identify each stack in each environment (production, staging, etc).
 - `traefik_constraint_tag_staging`: The Traefik tag to be used while on staging.

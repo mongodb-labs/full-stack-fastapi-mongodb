@@ -6,6 +6,7 @@ set -e
 DOMAIN=backend \
 SMTP_HOST="" \
 TRAEFIK_PUBLIC_NETWORK_IS_EXTERNAL=false \
+TRAEFIK_PUBLIC_NETWORK=traefik-public \
 INSTALL_DEV=true \
 docker-compose \
 -f docker-compose.yml \

@@ -1,7 +1,8 @@
 import secrets
 from typing import Any, Dict, List, Optional, Union
 
-from pydantic import AnyHttpUrl, EmailStr, HttpUrl, validator
+from pydantic import AnyHttpUrl, EmailStr, HttpUrl, field_validator
+from pydantic_core.core_schema import ValidationInfo
 from pydantic_settings import BaseSettings
 
 
@@ -22,7 +23,7 @@ class Settings(BaseSettings):
     # "http://localhost:8080", "http://local.dockertoolbox.tiangolo.com"]'
     BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []
 
-    @validator("BACKEND_CORS_ORIGINS", pre=True)
+    @field_validator("BACKEND_CORS_ORIGINS", mode="before")
     def assemble_cors_origins(cls, v: Union[str, List[str]]) -> Union[List[str], str]:
         if isinstance(v, str) and not v.startswith("["):
             return [i.strip() for i in v.split(",")]
@@ -33,9 +34,9 @@ class Settings(BaseSettings):
     PROJECT_NAME: str
     SENTRY_DSN: Optional[HttpUrl] = None
 
-    @validator("SENTRY_DSN", pre=True)
+    @field_validator("SENTRY_DSN", mode="before")
     def sentry_dsn_can_be_blank(cls, v: str) -> Optional[str]:
-        if len(v) == 0:
+        if isinstance(v, str) and len(v) == 0:
             return None
         return v
 
@@ -44,27 +45,8 @@ class Settings(BaseSettings):
     MULTI_MAX: int = 20
 
     # COMPONENT SETTINGS
-
-    MONGO_HOST: str
-    MONGO_USER: str
-    MONGO_PASSWORD: str
     MONGO_DATABASE: str
-    MONGO_URI_OPTIONS: str = "retryWrites=true&w=majority"
-    MONGO_DATABASE_URI: Optional[str] = None
-
-    @validator("MONGO_DATABASE_URI", pre=True)
-    def assemble_db_connection(cls, v: Optional[str], values: Dict[str, Any]) -> Any:
-        if isinstance(v, str):
-            return v
-        mongo_user, mongo_password, mongo_host, mongo_options = (
-            values.get("MONGO_USER"),
-            values.get("MONGO_PASSWORD"),
-            values.get("MONGO_HOST"),
-            values.get("MONGO_URI_OPTIONS"),
-        )
-        return (
-            f"mongodb+srv://{mongo_user}:{mongo_password}@{mongo_host}/?{mongo_options}"
-        )
+    MONGO_DATABASE_URI: str = ""
 
     SMTP_TLS: bool = True
     SMTP_PORT: Optional[int] = None
@@ -75,22 +57,22 @@ class Settings(BaseSettings):
     EMAILS_FROM_NAME: Optional[str] = None
     EMAILS_TO_EMAIL: Optional[EmailStr] = None
 
-    @validator("EMAILS_FROM_NAME")
-    def get_project_name(cls, v: Optional[str], values: Dict[str, Any]) -> str:
+    @field_validator("EMAILS_FROM_NAME")
+    def get_project_name(cls, v: Optional[str], info: ValidationInfo) -> str:
         if not v:
-            return values["PROJECT_NAME"]
+            return info.data["PROJECT_NAME"]
         return v
 
     EMAIL_RESET_TOKEN_EXPIRE_HOURS: int = 48
     EMAIL_TEMPLATES_DIR: str = "/app/app/email-templates/build"
     EMAILS_ENABLED: bool = False
 
-    @validator("EMAILS_ENABLED", pre=True)
-    def get_emails_enabled(cls, v: bool, values: Dict[str, Any]) -> bool:
+    @field_validator("EMAILS_ENABLED", mode="before")
+    def get_emails_enabled(cls, v: bool, info: ValidationInfo) -> bool:
         return bool(
-            values.get("SMTP_HOST")
-            and values.get("SMTP_PORT")
-            and values.get("EMAILS_FROM_EMAIL")
+            info.data.get("SMTP_HOST")
+            and info.data.get("SMTP_PORT")
+            and info.data.get("EMAILS_FROM_EMAIL")
         )
 
     EMAIL_TEST_USER: EmailStr = "test@example.com"  # type: ignore

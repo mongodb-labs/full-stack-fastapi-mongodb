@@ -10,9 +10,13 @@ if TYPE_CHECKING:
     from . import Token  # noqa: F401
 
 
+def datetime_now_sec():
+    return datetime.now().replace(microsecond=0)
+
+
 class User(Base):
-    created: datetime = Field(default_factory=datetime.now)
-    modified: datetime = Field(default_factory=datetime.now)
+    created: datetime = Field(default_factory=datetime_now_sec)
+    modified: datetime = Field(default_factory=datetime_now_sec)
     full_name: str = Field(default="")
     email: EmailStr
     hashed_password: Optional[str]

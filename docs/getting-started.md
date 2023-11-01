@@ -83,7 +83,7 @@ Running Cookiecutter to customise the deployment with your settings, and then bu
 
 ### Setting up a Mongo Connection
 
-A Mongo connection can be set up one of two ways: At the cookiecutter generation step, provide the `mongo_host`, `mongo_user`, `mongo_password`, and `mongo_database` to inform the generator on how to connect to an Atlas cloud instance. Additionally, in the generated file, you can manually set the .env.MONGO_DATABASE_URI and it will connect to the Atlas cluster made locally.
+A Mongo connection can be set up one of two ways: At the cookiecutter generation step, provide the `mongodb_uri`, and `mongo_database` to inform the generator on how to connect to an Atlas cloud instance. Additionally, in the generated file, you can manually set the .env.MONGO_DATABASE_URI and it will connect to the Atlas cluster made locally.
 
 Additionally, developers could configure a local mongo instance, but it would either have to be spun up in docker, or generated separately and also allow for non-localhost connections to be made.
 

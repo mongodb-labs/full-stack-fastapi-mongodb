@@ -151,7 +151,7 @@ services:
       dockerfile: celeryworker.dockerfile
       args:
         INSTALL_DEV: ${INSTALL_DEV-false}
-
+  
   frontend:
     image: "${DOCKER_IMAGE_FRONTEND?Variable not set}:${TAG-latest}"
     env_file:
@@ -165,6 +165,11 @@ services:
         - traefik.constraint-label-stack=${TRAEFIK_TAG?Variable not set}
         - traefik.http.routers.${STACK_NAME?Variable not set}-frontend-http.rule=PathPrefix(`/`)
         - traefik.http.services.${STACK_NAME?Variable not set}-frontend.loadbalancer.server.port=80
+
+  local-mongodb:
+    image: mongo
+    ports:
+      - 27017:27017
 
 volumes:
   app-db-data:

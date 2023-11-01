@@ -23,9 +23,7 @@
     "smtp_emails_from_name": "Symona Adaro",
     "smtp_emails_to_email": "info@{{cookiecutter.domain_main}}",
 
-    "mongo_host": "changethis",
-    "mongo_user": "changethis",
-    "mongodb_password": "changethis",
+    "mongodb_uri": "changethis",
     "mongodb_database": "changethis",
 
     "traefik_constraint_tag": "{{cookiecutter.domain_main}}",

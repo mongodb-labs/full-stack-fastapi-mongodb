@@ -22,7 +22,7 @@ async def create_user_profile(
     db: AgnosticDatabase = Depends(deps.get_db),
     password: str = Body(...),
     email: EmailStr = Body(...),
-    full_name: str = Body(None),
+    full_name: str = Body(""),
 ) -> Any:
     """
     Create new user without the need to be logged in.
@@ -50,9 +50,13 @@ async def update_user(
     Update user.
     """
     if current_user.hashed_password:
-        user = await crud.user.authenticate(db, email=current_user.email, password=obj_in.original)
+        user = await crud.user.authenticate(
+            db, email=current_user.email, password=obj_in.original
+        )
         if not obj_in.original or not user:
-            raise HTTPException(status_code=400, detail="Unable to authenticate this update.")
+            raise HTTPException(
+                status_code=400, detail="Unable to authenticate this update."
+            )
     current_user_data = jsonable_encoder(current_user)
     user_in = schemas.UserUpdate(**current_user_data)
     if obj_in.password is not None:
@@ -146,7 +150,9 @@ async def create_user(
         )
     user = await crud.user.create(db, obj_in=user_in)
     if settings.EMAILS_ENABLED and user_in.email:
-        send_new_account_email(email_to=user_in.email, username=user_in.email, password=user_in.password)
+        send_new_account_email(
+            email_to=user_in.email, username=user_in.email, password=user_in.password
+        )
     return user
 
 

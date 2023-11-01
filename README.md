@@ -101,7 +101,7 @@ See notes:
 - Replaced Backend native connection of PostgreSQL/SQLAlchemy with MongoDB Motor/Beanie ODM
 - Removed Neo4j plugin
 - Removed Alembic Usage
-- Introduced new cookiecutter environment variables `mongo_host`, `mongo_user`, `mongo_password`, and `mongo_database`
+- Introduced new cookiecutter environment variables `mongodb_uri`, and `mongo_database`
 - Introduced support for Pydantic 2
 
 [Historic changes from whythawk](https://github.com/whythawk/full-stack-fastapi-postgresql/releases)
