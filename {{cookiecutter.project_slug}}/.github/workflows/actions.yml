@@ -47,20 +47,21 @@ jobs:
 
       - name: Build Staging 
         run: |
-          DOMAIN={{cookiecutter.domain_staging}}
-          TRAEFIK_TAG={{cookiecutter.traefik_constraint_tag_staging}}
-          STACK_NAME={{cookiecutter.docker_swarm_stack_name_staging}}
-          TAG=staging
-          FRONTEND_ENV=staging
+          DOMAIN={{cookiecutter.domain_staging}} \
+          TRAEFIK_TAG={{cookiecutter.traefik_constraint_tag_staging}} \
+          STACK_NAME={{cookiecutter.docker_swarm_stack_name_staging}} \
+          TAG=staging \
+          FRONTEND_ENV=staging \
           sh ./scripts/build-push.sh
 
-      - name: Deploy Staging
-        run: |
-          DOMAIN={{cookiecutter.domain_staging}}
-          TRAEFIK_TAG={{cookiecutter.traefik_constraint_tag_staging}}
-          STACK_NAME={{cookiecutter.docker_swarm_stack_name_staging}}
-          TAG=staging
-          sh ./scripts/deploy.sh
+      # Uncomment to attempt deploying, need to valiate functionality
+      # - name: Deploy Staging
+      #   run: |
+      #     DOMAIN={{cookiecutter.domain_staging}} \
+      #     TRAEFIK_TAG={{cookiecutter.traefik_constraint_tag_staging}} \
+      #     STACK_NAME={{cookiecutter.docker_swarm_stack_name_staging}} \
+      #     TAG=staging \
+      #     sh ./scripts/deploy.sh
     needs: tests
 
   deploy-prod:
@@ -69,7 +70,6 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
-
 {% raw %}
       - name: Log in to Docker Registry
         uses: docker/login-action@v3
@@ -77,26 +77,26 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 {% endraw %}
-      
       - name: Install docker-auto-labels
         run: pip install docker-auto-labels
       
       - name: Build Production
         run: |
-          DOMAIN={{cookiecutter.domain_main}}
-          TRAEFIK_TAG={{cookiecutter.traefik_constraint_tag}}
-          STACK_NAME={{cookiecutter.docker_swarm_stack_name_main}}
-          TAG=prod
-          FRONTEND_ENV=production
+          DOMAIN={{cookiecutter.domain_main}} \
+          TRAEFIK_TAG={{cookiecutter.traefik_constraint_tag}} \
+          STACK_NAME={{cookiecutter.docker_swarm_stack_name_main}} \
+          TAG=prod \
+          FRONTEND_ENV=production \
           sh ./scripts/build-push.sh
 
-      - name: Deploy Production
-        run: |
-          DOMAIN={{cookiecutter.domain_main}}
-          TRAEFIK_TAG={{cookiecutter.traefik_constraint_tag}}
-          STACK_NAME={{cookiecutter.docker_swarm_stack_name_main}}
-          TAG=prod
-          sh ./scripts/deploy.sh
+      # Uncomment to attempt deploying, need to valiate functionality
+      # - name: Deploy Production
+      #   run: |
+      #     DOMAIN={{cookiecutter.domain_main}} \
+      #     TRAEFIK_TAG={{cookiecutter.traefik_constraint_tag}} \
+      #     STACK_NAME={{cookiecutter.docker_swarm_stack_name_main}} \
+      #     TAG=prod \
+      #     sh ./scripts/deploy.sh
     needs: tests
    
 
