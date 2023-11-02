@@ -14,7 +14,7 @@ class _MongoClientSingleton:
         return cls.instance
 
 
-def MongoDatabase(test=False) -> core.AgnosticDatabase:
+def MongoDatabase() -> core.AgnosticDatabase:
     return _MongoClientSingleton().mongo_client[settings.MONGO_DATABASE]
 
 

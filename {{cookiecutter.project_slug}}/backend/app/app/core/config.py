@@ -46,7 +46,7 @@ class Settings(BaseSettings):
 
     # COMPONENT SETTINGS
     MONGO_DATABASE: str
-    MONGO_DATABASE_URI: str = ""
+    MONGO_DATABASE_URI: str
 
     SMTP_TLS: bool = True
     SMTP_PORT: Optional[int] = None
