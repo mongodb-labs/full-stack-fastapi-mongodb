@@ -19,4 +19,4 @@ rm -rf ./full-stack-fastapi-mongodb/\{\{cookiecutter.project_slug\}\}/*
 
 rsync -a --exclude=node_modules ./dev-fsfp/* ./full-stack-fastapi-mongodb/\{\{cookiecutter.project_slug\}\}/
 
-rsync -a ./dev-fsfp/{.env,.gitignore,.gitlab-ci.yml} ./full-stack-fastapi-mongodb/\{\{cookiecutter.project_slug\}\}/
+rsync -a ./dev-fsfp/{.env,.gitignore,.github/workflows/actions.yml} ./full-stack-fastapi-mongodb/\{\{cookiecutter.project_slug\}\}/

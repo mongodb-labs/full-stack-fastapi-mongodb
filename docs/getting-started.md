@@ -39,7 +39,7 @@ This FastAPI, React, MongoDB repo will generate a complete web application stack
 - **Flower** for Celery jobs monitoring.
 - Load balancing between frontend and backend with **Traefik**, so you can have both under the same domain, separated by path, but served by different containers.
 - Traefik integration, including Let's Encrypt **HTTPS** certificates automatic generation.
-- GitLab **CI** (continuous integration), including frontend and backend testing.
+- **Github Actions** (continuous integration), including backend testing.
 
 
 

@@ -143,7 +143,7 @@ The file `./scripts/test.sh` has the commands to generate a testing `docker-stac
 
 The tests run with Pytest, modify and add tests to `./backend/app/app/tests/`.
 
-If you use GitLab CI the tests will run automatically.
+If you use Github Actions the tests will run automatically.
 
 #### Local tests
 
@@ -396,7 +396,7 @@ Done, you have a frontend-less (api-only) app. 🔥 🚀
 If you want, you can also remove the `FRONTEND` environment variables from:
 
 * `.env`
-* `.gitlab-ci.yml`
+* `.github/workflows/actions.yml`
 * `./scripts/*.sh`
 
 But it would be only to clean them up, leaving them won't really have any effect either way.
@@ -631,16 +631,18 @@ docker stack deploy -c docker-stack.yml --with-registry-auth "${STACK_NAME?Varia
 
 ### Continuous Integration / Continuous Delivery
 
-If you use GitLab CI, the included `.gitlab-ci.yml` can automatically deploy it. You may need to update it according to your GitLab configurations.
+In order to run properly in Github, you need to provide a `secrets.DOCKERHUB_USERNAME` and `secrets.DOCKERHUB_PASSWORD` in your Github repository secrets. Read more [here](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions) on how that is done.
 
-If you use any other CI / CD provider, you can base your deployment from that `.gitlab-ci.yml` file, as all the actual script steps are performed in `bash` scripts that you can easily re-use.
+If you use Github Actions, the included `actions.yml` can automatically deploy it. You may need to update it according to your Github configurations. Please check the `actions.yml` file for details on deployment steps
 
-GitLab CI is configured assuming 2 environments following GitLab flow:
+If you use any other CI / CD provider, you can base your deployment from that `actions.yml` file, as all the actual script steps are performed in `bash` scripts that you can easily re-use.
+
+Github Actions is configured assuming 2 environments following Github flow:
 
 * `prod` (production) from the `production` branch.
 * `stag` (staging) from the `master` branch.
 
-If you need to add more environments, for example, you could imagine using a client-approved `preprod` branch, you can just copy the configurations in `.gitlab-ci.yml` for `stag` and rename the corresponding variables. The Docker Compose file and environment variables are configured to support as many environments as you need, so that you only need to modify `.gitlab-ci.yml` (or whichever CI system configuration you are using).
+If you need to add more environments, for example, you could imagine using a client-approved `preprod` branch, you can just copy the configurations in `actions.yml` for `stag` and rename the corresponding variables. The Docker Compose file and environment variables are configured to support as many environments as you need, so that you only need to modify `actions.yml` (or whichever CI system configuration you are using).
 
 ## Docker Compose files and env vars
 

@@ -46,7 +46,7 @@ That will also contain all the generated files with the generated variables, but
 
 * `./scripts/discard-dev-files.sh`:
 
-After using `./scripts/dev-fsfp-back.sh`, there will be a bunch of generated files with the variables for the generated project that you don't want to commit, like `README.md` and `.gitlab-ci.yml`.
+After using `./scripts/dev-fsfp-back.sh`, there will be a bunch of generated files with the variables for the generated project that you don't want to commit, like `README.md` and `.actions.yml`.
 
 To discard all those changes at once, run `discard-dev-files.sh` from the root of the project, e.g.:
 

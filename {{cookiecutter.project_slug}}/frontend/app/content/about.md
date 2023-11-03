@@ -44,7 +44,7 @@ This project is a comprehensively updated React + MongoDB version of [Sebastián
 - **Flower** for Celery jobs monitoring.
 - Load balancing between frontend and backend with **Traefik**, so you can have both under the same domain, separated by path, but served by different containers.
 - Traefik integration, including Let's Encrypt **HTTPS** certificates automatic generation.
-- GitLab **CI** (continuous integration), including frontend and backend testing.
+- **Github Actions** (continuous integration), including backend testing.
 
 ## How to use it
 
@@ -103,8 +103,8 @@ The input variables, with their default values (some auto generated) are:
 
 - `sentry_dsn`: Key URL (DSN) of Sentry, for live error reporting. You can use the open source version or a free account. E.g.: `https://1234abcd:5678ef@sentry.example.com/30`.
 
-- `docker_image_prefix`: Prefix to use for Docker image names. If you are using GitLab Docker registry it would be based on your code repository. E.g.: `git.example.com/development-team/my-awesome-project/`.
-- `docker_image_backend`: Docker image name for the backend. By default, it will be based on your Docker image prefix, e.g.: `git.example.com/development-team/my-awesome-project/backend`. And depending on your environment, a different tag will be appended ( `prod`, `stag`, `branch` ). So, the final image names used will be like: `git.example.com/development-team/my-awesome-project/backend:prod`.
+- `docker_image_prefix`: Prefix to use for Docker image names. If you are using non-native Docker registry it would be based on your code repository. E.g.: `quay.io/development-team/my-awesome-project/`.
+- `docker_image_backend`: Docker image name for the backend. By default, it will be based on your Docker image prefix, e.g.: `quay.io/development-team/my-awesome-project/backend`. And depending on your environment, a different tag will be appended ( `prod`, `stag`, `branch` ). So, the final image names used will be like: `git.example.com/development-team/my-awesome-project/backend:prod`.
 - `docker_image_celeryworker`: Docker image for the celery worker. By default, based on your Docker image prefix.
 - `docker_image_frontend`: Docker image for the frontend. By default, based on your Docker image prefix.
 
