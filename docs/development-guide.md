@@ -22,7 +22,7 @@ Go to the directory where you want to create your project and run:
 
 ```bash
 pip install cookiecutter
-cookiecutter https://github.com/whythawk/full-stack-fastapi-postgresql
+cookiecutter https://github.com/mongodb-labs/full-stack-fastapi-mongodb.git
 ```
 
 ## Generate passwords
@@ -38,7 +38,7 @@ Copy the contents and use that as password / secret key. And run that again to g
 
 ## Input variables
 
-The generator (Cookiecutter) will ask you for data on a long list of fields which will be used to populate variables across the project, customising it for you out the box. You might want to have these on hand before generating the project.
+The generator (Cookiecutter) will ask you for data on a long list of fields which will be used to populate variables across the project, customising it for you out the box. **You might want to have these on hand before generating the project.**
 
 The input variables, with their default values (some auto generated) are:
 
