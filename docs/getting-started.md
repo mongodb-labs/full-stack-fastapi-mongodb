@@ -45,7 +45,7 @@ This FastAPI, React, MongoDB repo will generate a complete web application stack
 
 ## Who is it for?
 
-This project is a rock-solid foundation on which to build complex web applications which need parallel processing, scheduled event management, and a range of relational and graph database support. The base deployment requires about 2Gb of memory to run. 
+This project is a rock-solid foundation on which to build complex web applications which need parallel processing, scheduled event management, leveraging a NoSQL Datastore (MongoDB). The base deployment requires about 2Gb of memory to run. 
 
 This is **not** a light-weight system to deploy a blog or simple content-management-system.
 
@@ -83,9 +83,9 @@ Running Cookiecutter to customise the deployment with your settings, and then bu
 
 ### Setting up a Mongo Connection
 
-A Mongo connection can be set up one of two ways: At the cookiecutter generation step, provide the `mongodb_uri`, and `mongo_database` to inform the generator on how to connect to an Atlas cloud instance. Additionally, in the generated file, you can manually set the .env.MONGO_DATABASE_URI and it will connect to the Atlas cluster made locally.
+A Mongo connection can be set up one of two ways: At the cookiecutter generation step, provide the `mongodb_uri`, and `mongo_database` to inform the generator on how to connect to an Atlas cloud instance. Additionally, in the generated file, you can manually leave the `.env.MONGO_DATABASE_URI` as `mongodb` and it will automatically connect to the running mongodb docker instance.
 
-Additionally, developers could configure a local mongo instance, but it would either have to be spun up in docker, or generated separately and also allow for non-localhost connections to be made.
+Whilst the local instance is available, it is best advised to create or [connect to a MongoDB Atlas Cluster](https://www.mongodb.com/docs/atlas/tutorial/connect-to-your-cluster/).
 
 ### Deploying for production
 
@@ -105,7 +105,7 @@ After using this generator, your new project will contain an extensive `README.m
 
 ## Release Notes
 
-### 0.1.0
+### 2023.11.10
 - Experimental release of FARM-stack generator app
 
 ## License

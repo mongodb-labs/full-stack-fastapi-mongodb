@@ -95,7 +95,7 @@ The tests are broken and it would be great if someone could take that on. Other 
 
 See notes: 
 
-## 0.1.0
+## CalVer 2023.11.10
 
 - Replaced Next/Vue.js frontend framework with entirely React/Redux
 - Replaced Backend native connection of PostgreSQL/SQLAlchemy with MongoDB Motor/Beanie ODM

@@ -44,16 +44,16 @@ If your Docker is not running in `localhost` (the URLs above wouldn't work) chec
 **The backend and celery containers will fail to load if a proper Mongo URI is not configured**.
 
 Please ensure that either 
-- `MONGO_(HOST|USER|PASSWORD|DATABASE)` were properly set in the initial MongoDB setup phase
-- `MONGO_DATABASE_URI` has been set in `{{ cookiecutter.project_slug }}/.env`
+- `MONGO_DATABASE` is properly set in the initial Cookiecutter setup phase.
+- `MONGO_DATABASE_URI` has been set in `{{ cookiecutter.project_slug }}/.env`; leaving the initial value as `mongodb` will establish a connection to the docker instance of mongo created.
 
 To learn more about how to generate a MongoDB URI please look at the docs on [Connecting to your MongoDB Atlas Clutser](https://www.mongodb.com/docs/atlas/tutorial/connect-to-your-cluster/)
 
 ### Setting Up MongoDB Locally
 
-**Currently, the FARM-stack generator does not provide a running `mongod` within the docker container**
+The docker-compose file has a simple setup for a mongodb server to run in a docker container. It'll be exposed on port `27017` and reachable by setting the MONGO_DATABASE_URI to `mongodb`
 
-If running a local instance of MongoDB outside of a docker container that you want your backend to communicate with, you will need to set up [port forwarding in your docker config](https://docs.docker.com/desktop/networking/#use-cases-and-workarounds). Since the intention of this generator is to work with scalable production environments very quickly, providing a local container of MongoDB was not part of the initial charter in its creation. **We do strongly advise you connect to an Atlas cluster** 
+Since the intention of this generator is to work with scalable production environments very quickly, we provide a container of MongoDB, but **We do strongly advise you connect to an Atlas cluster** 
 
 To see how to use MongoDB with Docker, read through this article on [set-up steps](https://www.mongodb.com/compatibility/docker)
 
@@ -635,6 +635,8 @@ Github Actions is configured assuming 2 environments following Github flow:
 
 If you need to add more environments, for example, you could imagine using a client-approved `preprod` branch, you can just copy the configurations in `actions.yml` for `stag` and rename the corresponding variables. The Docker Compose file and environment variables are configured to support as many environments as you need, so that you only need to modify `actions.yml` (or whichever CI system configuration you are using).
 
+Support for the deployment to the desired host domain has been commented out as the functionality has not been tested by the MongoDB team. Feel free to uncomment and follow instructions for deployment steps at your own discretion.
+
 ## Docker Compose files and env vars
 
 There is a main `docker-compose.yml` file with all the configurations that apply to the whole stack, it is used automatically by `docker-compose`.
@@ -773,7 +775,7 @@ This project was generated using https://github.com/mongodb-labs/full-stack-fast
 
 ```bash
 pip install cookiecutter
-cookiecutter https://github.com/whythawk/full-stack-fastapi-mongodb
+cookiecutter https://github.com/mongodb-labs/full-stack-fastapi-mongodb.git
 ```
 
 You can check the variables used during generation in the file `cookiecutter-config-file.yml`.
