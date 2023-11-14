@@ -85,11 +85,6 @@ To align with [Inboard](https://inboard.bws.bio/), Poetry has been deprecated in
 
 This stack is in an experimental state, so there is no guarantee for bugs or issues. Please open an issue ticket against this repository to make us aware of issues and we will do our best to respond to them in a timely manner. Please leave feedback on features that would be very beneficial for developers who often leverage mongodb in their FastAPI stack.
 
-The tests are broken and it would be great if someone could take that on. Other potential roadmap items:
-
-- Translation: docs are all in English and it would be great if those could be in other languages.
-- Internationalisation: [nuxt/i18n](https://v8.i18n.nuxtjs.org/) is added, but the sample pages are not all translated.
-- Code review and optimisation: both the front- and backend stacks have seen some big generational changes, so would be good to have more eyes on the updates to this stack.
 
 ## Release Notes
 
