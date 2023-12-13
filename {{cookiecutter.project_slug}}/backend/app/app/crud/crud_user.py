@@ -12,7 +12,7 @@ from app.schemas.totp import NewTOTP
 # ODM, Schema, Schema
 class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
     async def get_by_email(self, db: AgnosticDatabase, *, email: str) -> Optional[User]:
-        return await User.find_one(User.email == email)
+        return await self.engine.find_one(User, User.email == email)
 
     async def create(self, db: AgnosticDatabase, *, obj_in: UserCreate) -> User:
         # TODO: Figure out what happens when you have a unique key like 'email'
@@ -24,7 +24,7 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
             "is_superuser": obj_in.is_superuser,
         }
 
-        return await User(**user).create()
+        return await self.engine.save(User(**user))
 
     async def update(self, db: AgnosticDatabase, *, db_obj: User, obj_in: Union[UserUpdate, Dict[str, Any]]) -> User:
         if isinstance(obj_in, dict):

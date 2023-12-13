@@ -1,13 +1,10 @@
 from pymongo.database import Database
-from beanie import init_beanie
 
 from app import crud, schemas
 from app.core.config import settings
-from app.models import MODELS
 
 
 async def init_db(db: Database) -> None:
-    await init_beanie(db, document_models=MODELS)
     user = await crud.user.get_by_email(db, email=settings.FIRST_SUPERUSER)
     if not user:
         # Create user auth

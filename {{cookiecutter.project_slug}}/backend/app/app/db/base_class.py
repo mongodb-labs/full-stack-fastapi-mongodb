@@ -1,3 +1,3 @@
-from beanie import Document
+from odmantic import Model
 
-Base = Document
+Base = Model

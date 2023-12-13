@@ -92,7 +92,7 @@ Next, open your editor at `./backend/app/` (instead of the project root: `./`), 
 $ code .
 ```
 
-Modify or add beanie models in `./backend/app/app/models/` (make sure to include them in `MODELS` within `.backend/app/app/models/__init__.py`), Pydantic schemas in `./backend/app/app/schemas/`, API endpoints in `./backend/app/app/api/`, CRUD (Create, Read, Update, Delete) utils in `./backend/app/app/crud/`. The easiest might be to copy the ones for Items (models, endpoints, and CRUD utils) and update them to your needs.
+Modify or add odmantic models in `./backend/app/app/models/` (make sure to include them in `MODELS` within `.backend/app/app/models/__init__.py`), Pydantic schemas in `./backend/app/app/schemas/`, API endpoints in `./backend/app/app/api/`, CRUD (Create, Read, Update, Delete) utils in `./backend/app/app/crud/`. The easiest might be to copy the ones for Items (models, endpoints, and CRUD utils) and update them to your needs.
 
 Add and modify tasks to the Celery worker in `./backend/app/app/worker.py`.
 

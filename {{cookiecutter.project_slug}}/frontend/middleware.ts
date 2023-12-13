@@ -30,6 +30,7 @@ export function middleware(request: NextRequest) {
   const from = request.headers.has("referer") ? request.headers.get("referer") : "/"
   const to = request.url
   const state = store.getState()
+  console.log("To this: " + to)
   if (from) {
       if (loggedIn(state) && anonymousRoutes.some(route => to.endsWith(route))) {
           if (redirectRoutes.some(route => from.endsWith(route))) {
