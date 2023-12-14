@@ -164,17 +164,11 @@ export const apiAuth = {
     return (await res.json()) as IMsg
   },
   async createUserProfile(token: string, data: IUserProfileCreate) {
-    console.log(`${apiCore.url}/users/create`, {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: apiCore.headers(token),
-    })
     const res = await fetch(`${apiCore.url}/users/create`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: apiCore.headers(token),
     })
-    console.log(res.body)
     return (await res.json()) as IUserProfile
   },
 }
