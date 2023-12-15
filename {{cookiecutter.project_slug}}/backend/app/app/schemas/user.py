@@ -1,6 +1,7 @@
 from typing import Optional
-from pydantic import BaseModel, Field, EmailStr, constr, field_validator
-from beanie import PydanticObjectId
+from typing_extensions import Annotated
+from pydantic import BaseModel, Field, EmailStr, StringConstraints, field_validator
+from odmantic import ObjectId
 
 
 class UserLogin(BaseModel):
@@ -20,17 +21,17 @@ class UserBase(BaseModel):
 # Properties to receive via API on creation
 class UserCreate(UserBase):
     email: EmailStr
-    password: Optional[constr(min_length=8, max_length=64)] = None
+    password: Optional[Annotated[str, StringConstraints(min_length=8, max_length=64)]] = None
 
 
 # Properties to receive via API on update
 class UserUpdate(UserBase):
-    original: Optional[constr(min_length=8, max_length=64)] = None
-    password: Optional[constr(min_length=8, max_length=64)] = None
+    original: Optional[Annotated[str, StringConstraints(min_length=8, max_length=64)]] = None
+    password: Optional[Annotated[str, StringConstraints(min_length=8, max_length=64)]] = None
 
 
 class UserInDBBase(UserBase):
-    id: Optional[PydanticObjectId] = None
+    id: Optional[ObjectId] = None
 
     class Config:
         from_attributes = True

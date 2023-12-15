@@ -1,16 +1,15 @@
 from typing import Optional
 from pydantic import BaseModel
-from beanie.odm.fields import PydanticObjectId
-from beanie import Document
+from odmantic import Model, ObjectId
 
 
 class RefreshTokenBase(BaseModel):
     token: str
-    authenticates: Optional[Document] = None
+    authenticates: Optional[Model] = None
 
 
 class RefreshTokenCreate(RefreshTokenBase):
-    authenticates: Document
+    authenticates: Model
 
 
 class RefreshTokenUpdate(RefreshTokenBase):
@@ -29,14 +28,14 @@ class Token(BaseModel):
 
 
 class TokenPayload(BaseModel):
-    sub: Optional[PydanticObjectId] = None
+    sub: Optional[ObjectId] = None
     refresh: Optional[bool] = False
     totp: Optional[bool] = False
 
 
 class MagicTokenPayload(BaseModel):
-    sub: Optional[PydanticObjectId] = None
-    fingerprint: Optional[PydanticObjectId] = None
+    sub: Optional[ObjectId] = None
+    fingerprint: Optional[ObjectId] = None
 
 
 class WebToken(BaseModel):

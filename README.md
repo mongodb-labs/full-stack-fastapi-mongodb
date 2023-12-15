@@ -4,7 +4,7 @@ Accelerate your next web development project with this FastAPI/React/MongoDB bas
 
 This project is for developers looking to build and maintain full-feature progressive web applications using Python on the backend / Typescript on the frontend, and want the complex-but-routine aspects of auth 'n auth, and component and deployment configuration, taken care of, including interactive API documentation. 
 
-This is an **experimental** fork of [Sebastián Ramírez's](https://github.com/tiangolo) [Full Stack FastAPI and PostgreSQL Base Project Generator](https://github.com/tiangolo/full-stack-fastapi-postgresql) and [Whythawk's](https://github.com/whythawk) [Full Stack FastAPI and PostgreSQL Base Project Generator](https://github.com/whythawk/full-stack-fastapi-postgresql). FastAPI is updated to version 0.103.2, MongoDB Motor 3.4, Beanie ODM 1.23, and the frontend to React.
+This is an **experimental** fork of [Sebastián Ramírez's](https://github.com/tiangolo) [Full Stack FastAPI and PostgreSQL Base Project Generator](https://github.com/tiangolo/full-stack-fastapi-postgresql) and [Whythawk's](https://github.com/whythawk) [Full Stack FastAPI and PostgreSQL Base Project Generator](https://github.com/whythawk/full-stack-fastapi-postgresql). FastAPI is updated to version 0.103.2, MongoDB Motor 3.4, ODMantic ODM 1.0.0, and the frontend to React.
 
 
 - [Screenshots](#screenshots)
@@ -50,7 +50,7 @@ This FastAPI, React, MongoDB repo will generate a complete web application stack
 - **Authentication** user management schemas, models, crud and apis already built, with OAuth2 JWT token support & default hashing. Offers _magic link_ authentication, with password fallback, with cookie management, including `access` and `refresh` tokens.
 - [**FastAPI**](https://github.com/tiangolo/fastapi) backend with [Inboard](https://inboard.bws.bio/) one-repo Docker images:
   - **MongoDB Motor** https://motor.readthedocs.io/en/stable/
-  - **MongoDB Beanie** for handling ODM creation https://beanie-odm.dev/
+  - **MongoDB ODMantic** for handling ODM creation https://art049.github.io/odmantic/
   - **Common CRUD** support via generic inheritance.
   - **Standards-based**: Based on (and fully compatible with) the open standards for APIs: [OpenAPI](https://github.com/OAI/OpenAPI-Specification) and [JSON Schema](http://json-schema.org/).
   - [**Many other features**]("https://fastapi.tiangolo.com/features/"): including automatic validation, serialization, interactive documentation, etc.
@@ -89,6 +89,9 @@ This stack is in an experimental state, so there is no guarantee for bugs or iss
 ## Release Notes
 
 See notes: 
+
+## CalVer 2023.12.XX
+- Replaced Beanie usage with ODMantic
 
 ## CalVer 2023.11.10
 

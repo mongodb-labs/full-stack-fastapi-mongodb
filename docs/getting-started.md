@@ -25,7 +25,7 @@ This FastAPI, React, MongoDB repo will generate a complete web application stack
 - **Authentication** user management schemas, models, crud and apis already built, with OAuth2 JWT token support & default hashing. Offers _magic link_ authentication, with password fallback, with cookie management, including `access` and `refresh` tokens.
 - [**FastAPI**](https://github.com/tiangolo/fastapi) backend with [Inboard](https://inboard.bws.bio/) one-repo Docker images:
   - **Mongo Motor** https://motor.readthedocs.io/en/stable/
-  - **Mongo Beanie** for handling ODM creation https://beanie-odm.dev/
+  - **MongoDB ODMantic** for handling ODM creation https://art049.github.io/odmantic/
   - **Common CRUD** support via generic inheritance.
   - **Standards-based**: Based on (and fully compatible with) the open standards for APIs: [OpenAPI](https://github.com/OAI/OpenAPI-Specification) and [JSON Schema](http://json-schema.org/).
   - [**Many other features**]("https://fastapi.tiangolo.com/features/"): including automatic validation, serialization, interactive documentation, etc.
