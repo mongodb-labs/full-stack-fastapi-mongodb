@@ -22,7 +22,7 @@ class CRUDToken(CRUDBase[Token, RefreshTokenCreate, RefreshTokenUpdate]):
             return new_token
 
     async def get(self, *, user: User, token: str) -> Token:
-        return await self.engine.find_one(User, ((User.id == user.id) & (User.refresh_tokens.token == token)))
+        return await self.engine.find_one(User, ((User.id == user.id) & (User.refresh_tokens == token)))
 
     async def get_multi(self, *, user: User, page: int = 0, page_break: bool = False) -> list[Token]:
         offset = {"skip": page * settings.MULTI_MAX, "limit": settings.MULTI_MAX} if page_break else {}
