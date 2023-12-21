@@ -46,6 +46,8 @@ function tokenParser(token: string) {
   return JSON.parse(Buffer.from(token.split(".")[1], "base64").toString())
 }
 
+const siteName = "{{ cookiecutter.project_name }}"
+
 export {
   generateUUID,
   getTimeInSeconds,
@@ -53,4 +55,5 @@ export {
   getKeyByValue,
   isValidHttpUrl,
   tokenParser,
+  siteName,
 }

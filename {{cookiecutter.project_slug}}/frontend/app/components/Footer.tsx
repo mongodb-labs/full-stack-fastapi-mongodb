@@ -1,8 +1,7 @@
 "use client"
 
 import Link from "next/link"
-
-const siteName: string = "{{cookiecutter.project_name}}"
+import { siteName } from "../lib/utilities/generic"
 
 const githubIcon = () => {
   return (
