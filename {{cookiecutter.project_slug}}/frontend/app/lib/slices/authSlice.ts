@@ -84,14 +84,15 @@ export const {
   deleteAuth,
 } = authSlice.actions
 
-export const isAdmin = (state: RootState) => {
-  return state.auth.id && state.auth.is_superuser && state.auth.is_active
-}
+
 export const profile = (state: RootState) => state.auth
 export const loggedIn = (state: RootState) => {
   const { auth, tokens: { refresh_token, token_type, access_token } = {} } = state
   const loginInformation = [auth.id, refresh_token, token_type, access_token]
   return loginInformation.every((value) => value !== "")
+}
+export const isAdmin = (state: RootState) => {
+  return loggedIn(state) && state.auth.is_superuser && state.auth.is_active
 }
 
 const handleGenericLogin = (loginAttempt: (payload: any) => any, payload: any) =>
