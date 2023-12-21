@@ -6,19 +6,20 @@ import {
   UserPlusIcon,
 } from "@heroicons/react/24/outline"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import UserTable from "../components/moderation/UserTable"
 import CreateUser from "../components/moderation/CreateUser"
+import { useAppSelector } from "../lib/hooks"
+import { isAdmin } from "../lib/slices/authSlice"
 
 const navigation = [
   { name: "Users", id: "USERS", icon: UsersIcon },
   { name: "Create", id: "CREATE", icon: UserPlusIcon },
 ]
-const title = "User moderation"
-const description = "Create, delete and update individual user settings."
 
 export default function Moderation() {
   const [selected, changeSelection] = useState("USERS")
+  const isValidAdmin = useAppSelector((state) => isAdmin(state))
 
   const router = useRouter()
 
@@ -51,6 +52,13 @@ export default function Moderation() {
       </button>
     ))
   }
+
+  useEffect(() => {
+    async function checkAdmin() {
+      if (!isValidAdmin) redirectTo("/settings")
+    }
+    checkAdmin()
+  }, [])
 
   return (
     <main className="flex min-h-full mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
