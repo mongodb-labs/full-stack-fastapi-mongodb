@@ -117,54 +117,15 @@ const handleGenericLogin = (loginAttempt: (payload: any) => any, payload: any) =
     }
   }
 
+
 export const login =
   (payload: { username: string; password?: string }) => handleGenericLogin(getTokens, payload)
 
 export const magicLogin =
-  (payload: { token: string }) =>
-    async (
-      dispatch: ThunkDispatch<any, void, Action>,
-      getState: () => RootState,
-    ) => {
-      try {
-        await dispatch(validateMagicTokens(payload.token))
-        const token = getState().tokens.access_token
-        await dispatch(getUserProfile(token))
-      } catch (error) {
-        dispatch(
-          addNotice({
-            title: "Login error",
-            content:
-              "Please check your details or internet connection and try again.",
-            icon: "error",
-          }),
-        )
-        dispatch(logout())
-      }
-    }
+  (payload: { token: string }) => handleGenericLogin(validateMagicTokens, payload.token)
 
 export const totpLogin =
-  (payload: { claim: string }) =>
-    async (
-      dispatch: ThunkDispatch<any, void, Action>,
-      getState: () => RootState,
-    ) => {
-      try {
-        await dispatch(validateTOTPClaim(payload.claim))
-        const token = getState().tokens.access_token
-        await dispatch(getUserProfile(token))
-      } catch (error) {
-        dispatch(
-          addNotice({
-            title: "Login error",
-            content:
-              "Please check your details or internet connection and try again.",
-            icon: "error",
-          }),
-        )
-        dispatch(logout())
-      }
-    }
+  (payload: { claim: string }) => handleGenericLogin(validateTOTPClaim, payload.claim)
 
 export const logout = () => (dispatch: Dispatch) => {
   dispatch(deleteAuth())

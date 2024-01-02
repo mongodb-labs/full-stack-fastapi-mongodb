@@ -132,8 +132,8 @@ export default function Page() {
 
   useEffect(() => {
     if (isLoggedIn) return redirectTo(redirectAfterLogin)
-    if (accessToken && tokenIsTOTP(accessToken)) return redirectTo(redirectTOTP)
-    if (accessToken && tokenParser(accessToken).hasOwnProperty("fingerprint"))
+    if (accessToken && tokenIsTOTP(accessToken) && !oauth) return redirectTo(redirectTOTP)
+    if (accessToken && tokenParser(accessToken).hasOwnProperty("fingerprint") && !oauth)
       return redirectTo(redirectAfterMagic)
   }, [isLoggedIn, accessToken]) // eslint-disable-line react-hooks/exhaustive-deps
 
