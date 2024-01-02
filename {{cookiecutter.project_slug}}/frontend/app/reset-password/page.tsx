@@ -48,7 +48,6 @@ export default function ResetPassword() {
   } = useForm()
 
   async function submit(values: any) {
-    console.log(values.password, query)
     await dispatch(resetPassword(values.password, query.get("token") as string))
     await new Promise((resolve) => {
       setTimeout(() => {
