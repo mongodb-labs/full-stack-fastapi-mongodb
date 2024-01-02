@@ -4,7 +4,6 @@ import {
   PayloadAction,
   ThunkDispatch,
   createSlice,
-  current,
 } from "@reduxjs/toolkit"
 import {
   IEnableTOTP,
