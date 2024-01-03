@@ -16,6 +16,8 @@ import {
 } from "../../lib/slices/authSlice"
 import { refreshTokens, token } from "../../lib/slices/tokensSlice"
 import { addNotice } from "../../lib/slices/toastsSlice"
+import { QRCodeSVG } from 'qrcode.react'
+
 
 const title = "Security"
 const redirectTOTP = "/settings"
@@ -323,7 +325,7 @@ export default function Security() {
                                 Open the app and scan the QR code below to pair
                                 your mobile with your account.
                               </p>
-                              {/* <QrcodeVue :value="totpNew.uri" :size="qrSize" level="M" render-as="svg" className="my-2 mx-auto"/> */}
+                              <QRCodeSVG value={totpNew.uri} size={qrSize} level="M" className="my-2 mx-auto"/>
                               <p>
                                 If you can&apos;t scan, you can type in the
                                 following key:
