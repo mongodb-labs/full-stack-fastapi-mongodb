@@ -26,12 +26,15 @@ export default function ToggleMod(props: ToggleModProps) {
       email: props.email,
       is_superuser: !props.check,
     }
-    const res = await apiAuth.toggleUserState(accessToken, data)
-    if (!res || !res.msg) {
+    try {
+      const res = await apiAuth.toggleUserState(accessToken, data)
+      if (!res.msg) throw res
+    } catch (results) {
       dispatch(
         addNotice({
           title: "Update error",
-          content: res ? res.msg : "Invalid request.",
+          //@ts-ignore
+          content: results?.msg ?? "Invalid request.",
           icon: "error",
         }),
       )
