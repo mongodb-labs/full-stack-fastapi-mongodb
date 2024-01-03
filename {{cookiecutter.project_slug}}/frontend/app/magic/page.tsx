@@ -8,22 +8,29 @@ import { useAppDispatch, useAppSelector } from "../lib/hooks"
 import Link from "next/link"
 import { RootState } from "../lib/store"
 import { useRouter } from "next/navigation"
-import { logout } from "../lib/slices/authSlice"
+import { loggedIn, logout } from "../lib/slices/authSlice"
 
 const redirectRoute = "/login"
 
 export default function Magic() {
   const router = useRouter()
   const accessToken = useAppSelector((state: RootState) => token(state))
+  const isLoggedIn = useAppSelector((state: RootState) => loggedIn(state))
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    if (
-      !(accessToken && tokenParser(accessToken).hasOwnProperty("fingerprint"))
-    ) {
-      router.push(redirectRoute)
+    async function checkCredentials(): Promise<void> {
+      if (isLoggedIn) {
+        router.push("/")
+      }
+      if (
+        !(accessToken && tokenParser(accessToken).hasOwnProperty("fingerprint"))
+      ) {
+        router.push(redirectRoute)
+      }
     }
-  }) // eslint-disable-line react-hooks/exhaustive-deps
+    checkCredentials()
+  }, [])
 
   const removeFingerprint = async () => {
     await dispatch(logout())
