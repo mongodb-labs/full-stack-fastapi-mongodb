@@ -7,10 +7,25 @@ This project is for developers looking to build and maintain full-feature progre
 This is an **experimental** fork of [Sebastián Ramírez's](https://github.com/tiangolo) [Full Stack FastAPI and PostgreSQL Base Project Generator](https://github.com/tiangolo/full-stack-fastapi-postgresql) and [Whythawk's](https://github.com/whythawk) [Full Stack FastAPI and PostgreSQL Base Project Generator](https://github.com/whythawk/full-stack-fastapi-postgresql). FastAPI is updated to version 0.103.2, MongoDB Motor 3.4, ODMantic ODM 1.0.0, and the frontend to React.
 
 
+## Requirements
+
+Please make sure you have these installed before proceeding!
+* [Docker Desktop]()
+* [Python 3.8+]()
+* [Cookiecutter]() -- The Python Cookiecutter library
+* [Hatch]()
+* [Node.js]()
+
+## QuickStart
+
+For those that what to dive in and play around with the generated code, here's quick start guide on how to do it. It is advised, though, once you have run through generating this app the first time, that you circle back and check out to more fleshed out [Building a Generated App](./docs/getting-started.md) section.
+
+**TODO**
+
 - [Screenshots](#screenshots)
 - [Key features](#key-features)
 - [How to use it](#how-to-use-it)
-  - [Getting started](./docs/getting-started.md)
+  - [Building a Generated App](./docs/getting-started.md)
   - [Development and installation](./docs/development-guide.md)
   - [Deployment for production](./docs/deployment-guide.md)
   - [Authentication and magic tokens](./docs/authentication-guide.md)
@@ -19,7 +34,8 @@ This is an **experimental** fork of [Sebastián Ramírez's](https://github.com/t
 - [Help needed](#help-needed)
 - [Release notes](#release-notes)
 - [License](#license)
-  
+
+
 ## Screenshots
 
 ### App landing page
@@ -55,8 +71,8 @@ This FastAPI, React, MongoDB repo will generate a complete web application stack
   - **Standards-based**: Based on (and fully compatible with) the open standards for APIs: [OpenAPI](https://github.com/OAI/OpenAPI-Specification) and [JSON Schema](http://json-schema.org/).
   - [**Many other features**]("https://fastapi.tiangolo.com/features/"): including automatic validation, serialization, interactive documentation, etc.
 - [**Nextjs/React**](https://nextjs.org/) frontend:
-  - **Authorisation** via middleware for page access, including logged in or superuser.
-  - **Form validation** with [Vee-Validate 4](https://vee-validate.logaretm.com/v4/).
+  - **Authorisation** route-based authentication, including logged in or superuser.
+  - **Form validation** with [React useForm](https://react-hook-form.com/docs/useform)
   - **State management** with [Redux](https://redux.js.org/)
   - **CSS and templates** with [TailwindCSS](https://tailwindcss.com/), [HeroIcons](https://heroicons.com/), and [HeadlessUI](https://headlessui.com/).
 - **Celery** worker that can import and use models and code from the rest of the backend selectively.
@@ -65,9 +81,9 @@ This FastAPI, React, MongoDB repo will generate a complete web application stack
 - Traefik integration, including Let's Encrypt **HTTPS** certificates automatic generation.
 - GitLab **CI** (continuous integration), including frontend and backend testing.
 
-## How to use it
+## How to use the Template
 
-- [Getting started](./docs/getting-started.md)
+- [Building a Generated App](./docs/getting-started.md)
 - [Development and installation](./docs/development-guide.md)
 - [Deployment for production](./docs/deployment-guide.md)
 - [Authentication and magic tokens](./docs/authentication-guide.md)
@@ -83,12 +99,17 @@ To align with [Inboard](https://inboard.bws.bio/), Poetry has been deprecated in
 
 ## Help needed
 
-This stack is in an experimental state, so there is no guarantee for bugs or issues. Please open an issue ticket against this repository to make us aware of issues and we will do our best to respond to them in a timely manner. Please leave feedback on features that would be very beneficial for developers who often leverage mongodb in their FastAPI stack.
+This stack is in an experimental state, so there is no guarantee for to not find bugs or issues. Please open an issue ticket against this repository to make us aware of issues and we will do our best to respond to them in a timely manner. Please leave feedback on features that would be very beneficial for developers who often leverage mongodb in their FastAPI stack.
 
 
 ## Release Notes
 
+For each release of the generated apps, please assume any changed introduced as the potential to be a backwards-breaking change.
+
 See notes: 
+
+## CalVer 2024.01.XX
+- **TODO**
 
 ## CalVer 2023.12.XX
 - Replaced Beanie usage with ODMantic
