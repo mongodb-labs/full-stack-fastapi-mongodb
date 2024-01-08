@@ -35,7 +35,7 @@ This project is a comprehensively updated React + MongoDB version of [Sebastián
   - [**Many other features**]("https://fastapi.tiangolo.com/features/"): including automatic validation, serialization, interactive documentation, etc.
 - [**Next/React**](https://react.dev/) frontend:
   - **Authentication** with JWT and cookie management, including `access` and `refresh` tokens,
-  - **Authorisation** via middleware for page access, including logged in or superuser.
+  - **Authorization** via middleware for page access, including logged in or superuser.
   - **Model blog** project, with [gray-matter](https://github.com/jonschlinkert/gray-matter) for writing Markdown pages.
   - **State management** with [Redux](https://redux.js.org/), and persistance with [redux-persist](https://github.com/rt2zz/redux-persist).
   - **CSS and templates** with [TailwindCSS](https://tailwindcss.com/), [HeroIcons](https://heroicons.com/), and [HeadlessUI](https://headlessui.com/).

@@ -30,7 +30,7 @@ This FastAPI, React, MongoDB repo will generate a complete web application stack
   - **Standards-based**: Based on (and fully compatible with) the open standards for APIs: [OpenAPI](https://github.com/OAI/OpenAPI-Specification) and [JSON Schema](http://json-schema.org/).
   - [**Many other features**]("https://fastapi.tiangolo.com/features/"): including automatic validation, serialization, interactive documentation, etc.
 - [**Nextjs/React**](https://nextjs.org/) frontend:
-  - **Authorisation** via middleware for page access, including logged in or superuser.
+  - **Authorization** via middleware for page access, including logged in or superuser.
   - **Model blog** project, with [Nuxt Content](https://content.nuxtjs.org/) for writing Markdown pages.
   - **Form validation** with [Vee-Validate 4](https://vee-validate.logaretm.com/v4/).
   - **State management** with [Redux](https://redux.js.org/)

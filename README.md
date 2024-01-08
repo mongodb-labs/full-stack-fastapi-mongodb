@@ -10,17 +10,48 @@ This is an **experimental** fork of [Sebastián Ramírez's](https://github.com/t
 ## Requirements
 
 Please make sure you have these installed before proceeding!
-* [Docker Desktop]()
-* [Python 3.8+]()
-* [Cookiecutter]() -- The Python Cookiecutter library
-* [Hatch]()
-* [Node.js]()
+* [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+* [Python 3.11+](https://www.python.org/downloads/)
+* [Cookiecutter](https://cookiecutter.readthedocs.io/en/stable/) -- The Python Cookiecutter library.
+* [Hatch](https://hatch.pypa.io/latest/)
+* [Node.js](https://nodejs.org/en)
+* [MongoDB Compass](https://www.mongodb.com/products/tools/compass) -- To help visualize local/remote database easily.
 
 ## QuickStart
 
 For those that what to dive in and play around with the generated code, here's quick start guide on how to do it. It is advised, though, once you have run through generating this app the first time, that you circle back and check out to more fleshed out [Building a Generated App](./docs/getting-started.md) section.
 
-**TODO**
+```
+// Make sure cookiecutter and python are installed on the device
+// This will generate a full-stack app in the directory ./example
+cookiecutter https://github.com/mongodb-labs/full-stack-fastapi-mongodb --no-input project_name="example"
+
+// change into that directory
+cd example
+
+// Make sure that you've opened Docker before this step
+// build
+docker compose build --no-cache
+
+// start the container in the background
+docker compose up -d 
+```
+
+Now, you can view the site by going to `localhost:3000`. You can also see all the logs of the running containers in your Docker Desktop app.
+
+The will only be one user on the site, `admin@example.com`. If you choose a different project name, then the email domain changes. i.e. `project_name=fullstackexample` the user email will be `admin@fullstackexample.com`. The default password will be set to `changethis` but that can be changed. Please check out the [Getting Started](./docs/getting-started.md) to understand the configuration details better.
+
+Here are all the local development URLS:
+
+- Frontend -- http://localhost:3000
+- Backend -- http://localhost/api/v1/
+- Automatic Documentation via Swagger UI -- http://localhost/docs
+- Alternative Documentation via ReDoc -- http://localhost/redoc
+- Flower: Admin tool of Celery Tasks -- http://localhost:5555
+- Traefik UI to see how routes are being handled by the proxy: http://localhost:8090
+
+See [Screenshot](#screenshots) section for images of what some of these pages will look like.
+
 
 - [Screenshots](#screenshots)
 - [Key features](#key-features)
@@ -71,7 +102,7 @@ This FastAPI, React, MongoDB repo will generate a complete web application stack
   - **Standards-based**: Based on (and fully compatible with) the open standards for APIs: [OpenAPI](https://github.com/OAI/OpenAPI-Specification) and [JSON Schema](http://json-schema.org/).
   - [**Many other features**]("https://fastapi.tiangolo.com/features/"): including automatic validation, serialization, interactive documentation, etc.
 - [**Nextjs/React**](https://nextjs.org/) frontend:
-  - **Authorisation** route-based authentication, including logged in or superuser.
+  - **Authorization** route-based authentication, including logged in or superuser.
   - **Form validation** with [React useForm](https://react-hook-form.com/docs/useform)
   - **State management** with [Redux](https://redux.js.org/)
   - **CSS and templates** with [TailwindCSS](https://tailwindcss.com/), [HeroIcons](https://heroicons.com/), and [HeadlessUI](https://headlessui.com/).

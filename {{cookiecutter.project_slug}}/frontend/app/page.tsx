@@ -102,7 +102,7 @@ export default function Page() {
                     token `access` and `refresh` support & default hashing.
                   </li>
                   <li>
-                    <span className="font-bold">Authorisation</span> via
+                    <span className="font-bold">Authorization</span> via
                     middleware for page access, including logged in or
                     superuser.
                   </li>
