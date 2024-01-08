@@ -387,14 +387,14 @@ export const resetPassword =
             localClaim["fingerprint"] === magicClaim["fingerprint"]
           ) {
             const res = await apiAuth.resetPassword(password, claim, token)
-            if (res.msg)
+            if (res.msg) {
               dispatch(
                 addNotice({
                   title: "Success",
                   content: res.msg,
                 }),
               )
-            else throw "Error"
+            } else throw "Error"
           }
         } catch (error) {
           dispatch(

@@ -1,11 +1,12 @@
 "use client"
 
 import Link from "next/link"
-import { useAppDispatch } from "../lib/hooks"
+import { useAppDispatch, useAppSelector } from "../lib/hooks"
 import { useForm } from "react-hook-form"
-import { recoverPassword } from "../lib/slices/authSlice"
+import { loggedIn, recoverPassword } from "../lib/slices/authSlice"
 import { useRouter } from "next/navigation"
-import Image from "next/image"
+import { useEffect } from "react"
+import { RootState } from "../lib/store"
 
 const redirectRoute = "/"
 const schema = {
@@ -14,6 +15,7 @@ const schema = {
 
 export default function RecoverPassword() {
   const dispatch = useAppDispatch()
+  const isLoggedIn = useAppSelector((state: RootState) => loggedIn(state))
 
   const router = useRouter()
 
@@ -32,6 +34,10 @@ export default function RecoverPassword() {
     })
     router.push(redirectRoute)
   }
+
+  useEffect(() => {
+    if (isLoggedIn) router.push(redirectRoute)
+  })
 
   return (
     <main className="flex min-h-full">
