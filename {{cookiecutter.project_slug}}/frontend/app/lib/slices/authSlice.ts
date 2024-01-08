@@ -118,6 +118,7 @@ const handleGenericLogin = (loginAttempt: (payload: any) => any, payload: any, g
     }
   }
 
+
 const isMagicAuthFirstPhase = (providedPassword?: string) => providedPassword === undefined
 
 export const login =
@@ -391,14 +392,14 @@ export const resetPassword =
             localClaim["fingerprint"] === magicClaim["fingerprint"]
           ) {
             const res = await apiAuth.resetPassword(password, claim, token)
-            if (res.msg)
+            if (res.msg) {
               dispatch(
                 addNotice({
                   title: "Success",
                   content: res.msg,
                 }),
               )
-            else throw "Error"
+            } else throw "Error"
           }
         } catch (error) {
           dispatch(
