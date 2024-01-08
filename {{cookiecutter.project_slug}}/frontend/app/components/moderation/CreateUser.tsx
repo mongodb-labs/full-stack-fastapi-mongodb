@@ -25,21 +25,22 @@ export default function CreateUser() {
         password: generateUUID(),
         fullName: values.fullName ? values.fullName : "",
       }
-      const res = await apiAuth.createUserProfile(accessToken, data)
-      if (!res.id) {
-        dispatch(
-          addNotice({
-            title: "Update error",
-            content: "Invalid request.",
-            icon: "error",
-          }),
-        )
-      } else {
+      try {
+        const res = await apiAuth.createUserProfile(accessToken, data)
+        if (!res.id) throw "Error"
         dispatch(
           addNotice({
             title: "User created",
             content:
               "An email has been sent to the user with their new login details.",
+          }),
+        )
+      } catch {
+        dispatch(
+          addNotice({
+            title: "Update error",
+            content: "Invalid request.",
+            icon: "error",
           }),
         )
       }

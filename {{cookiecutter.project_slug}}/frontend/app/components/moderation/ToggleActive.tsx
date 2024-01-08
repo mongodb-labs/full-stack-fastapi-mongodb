@@ -26,12 +26,15 @@ export default function ToggleActive(props: ToggleActiveProps) {
       email: props.email,
       is_active: !props.check,
     }
-    const res = await apiAuth.toggleUserState(accessToken, data)
-    if (!res || !res.msg) {
+    try {
+      const res = await apiAuth.toggleUserState(accessToken, data)
+      if (!res.msg) throw res
+    } catch (results) {
       dispatch(
         addNotice({
           title: "Update error",
-          content: res ? res.msg : "Invalid request.",
+          //@ts-ignore
+          content: results?.msg ?? "Invalid request.",
           icon: "error",
         }),
       )
@@ -39,5 +42,5 @@ export default function ToggleActive(props: ToggleActiveProps) {
     }
   }
 
-  return <CheckToggle check={props.check} onClick={submit} />
+  return <CheckToggle check={enabled} onClick={submit} />
 }

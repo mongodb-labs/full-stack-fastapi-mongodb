@@ -142,7 +142,9 @@ export const getUserProfile =
     if (token && !tokenIsTOTP(token)) {
       try {
         const res = await apiAuth.getProfile(token)
-        if (res) dispatch(setUserProfile(res))
+        if (res.id) {
+          dispatch(setUserProfile(res))
+        } else throw "Error"
       } catch (error) {
         dispatch(
           addNotice({
@@ -161,7 +163,9 @@ export const createUserProfile =
   (payload: IUserOpenProfileCreate) => async (dispatch: Dispatch) => {
     try {
       const res = await apiAuth.createProfile(payload)
-      if (res) dispatch(setUserProfile(res))
+      if (res.id) {
+        dispatch(setUserProfile(res))
+      } else throw "Error"
     } catch (error) {
       dispatch(
         addNotice({
@@ -184,7 +188,7 @@ export const updateUserProfile =
             currentState.tokens.access_token,
             payload,
           )
-          if (res) {
+          if (res.id) {
             dispatch(setUserProfile(res))
             dispatch(
               addNotice({
@@ -216,7 +220,7 @@ export const enableTOTPAuthentication =
             currentState.tokens.access_token,
             payload,
           )
-          if (res) {
+          if (res.msg) {
             dispatch(setTOTPAuthentication(true))
             dispatch(
               addNotice({
@@ -248,7 +252,7 @@ export const disableTOTPAuthentication =
             currentState.tokens.access_token,
             payload,
           )
-          if (res) {
+          if (res.msg) {
             dispatch(setTOTPAuthentication(false))
             dispatch(
               addNotice({
@@ -281,7 +285,7 @@ export const sendEmailValidation =
         const res = await apiAuth.requestValidationEmail(
           currentState.tokens.access_token,
         )
-        if (res) {
+        if (res.msg) {
           dispatch(
             addNotice({
               title: "Validation sent",
@@ -314,7 +318,7 @@ export const validateEmail =
             currentState.tokens.access_token,
             validationToken,
           )
-          if (res) {
+          if (res.msg) {
             dispatch(setEmailValidation(true))
             dispatch(
               addNotice({
@@ -341,7 +345,8 @@ export const recoverPassword =
     if (!loggedIn(currentState)) {
       try {
         const res = await apiAuth.recoverPassword(email)
-        if (res) {
+        //@ts-ignore
+        if (res?.msg || res?.claim) {
           if (res.hasOwnProperty("claim"))
             dispatch(setMagicToken(res as unknown as IWebToken))
           dispatch(
@@ -382,14 +387,14 @@ export const resetPassword =
             localClaim["fingerprint"] === magicClaim["fingerprint"]
           ) {
             const res = await apiAuth.resetPassword(password, claim, token)
-            if (res)
+            if (res.msg) {
               dispatch(
                 addNotice({
                   title: "Success",
                   content: res.msg,
                 }),
               )
-            else throw "Error"
+            } else throw "Error"
           }
         } catch (error) {
           dispatch(
