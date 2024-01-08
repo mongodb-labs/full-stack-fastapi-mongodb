@@ -6,6 +6,8 @@ This project is for developers looking to build and maintain full-feature progre
 
 This is an **experimental** fork of [Sebastián Ramírez's](https://github.com/tiangolo) [Full Stack FastAPI and PostgreSQL Base Project Generator](https://github.com/tiangolo/full-stack-fastapi-postgresql) and [Whythawk's](https://github.com/whythawk) [Full Stack FastAPI and PostgreSQL Base Project Generator](https://github.com/whythawk/full-stack-fastapi-postgresql). FastAPI is updated to version 0.103.2, MongoDB Motor 3.4, ODMantic ODM 1.0.0, and the frontend to React.
 
+![Landing page](img/landing.png)
+
 ## Index
 
 - [Requirements](#requirements)
@@ -56,7 +58,7 @@ docker compose up -d
 
 Now, you can view the site by going to `localhost:3000`. You can also see all the logs of the running containers in your Docker Desktop app.
 
-The will only be one user on the site, `admin@example.com`. If you choose a different project name, then the email domain changes. i.e. `project_name=fullstackexample` the user email will be `admin@fullstackexample.com`. The default password will be set to `changethis` but that can be changed. Please check out the [Building a Generated App](./docs/getting-started.md) to understand the configuration details better.
+The will only be one user on the site, `admin@example.com`. If you choose a different project name, then the email domain changes. i.e. `project_name=fullstackexample` the user email will be `admin@fullstackexample.com`. The default password will be set to `changethis` but that can be changed. 
 
 Here are all the local development URLS:
 
@@ -67,31 +69,8 @@ Here are all the local development URLS:
 - Flower: Admin tool of Celery Tasks -- http://localhost:5555
 - Traefik UI to see how routes are being handled by the proxy: http://localhost:8090
 
-See [Screenshot](#screenshots) section for images of what some of these pages will look like.
+See [Building a Generated App](./docs/getting-started.md) for images of what some of these pages will look like and to understand the configuration details better.
 
-
-
-## Screenshots
-
-### App landing page
-
-![Landing page](img/landing.png)
-
-### Dashboard Login
-
-![Magic-link login](img/login.png)
-
-### Dashboard User Management
-
-![Moderator user management](img/dashboard.png)
-
-### Interactive API documentation
-
-![Interactive API docs](img/redoc.png)
-
-### Enabling two-factor security (TOTP)
-
-![Enabling TOTP](img/totp.png)
 
 ## Key features
 
