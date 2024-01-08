@@ -125,14 +125,14 @@ export const validateTOTPClaim =
 export const refreshTokens =
   () => async (dispatch: Dispatch, getState: () => RootState) => {
     const currentState = getState()
-    let hasExpired = currentState.tokens.access_token
+    const hasAccessTokenExpired = currentState.tokens.access_token
       ? tokenExpired(currentState.tokens.access_token)
       : true
-    if (hasExpired) {
-      hasExpired = currentState.tokens.refresh_token
+    if (hasAccessTokenExpired) {
+      const hasRefreshTokenExpired = currentState.tokens.refresh_token
         ? tokenExpired(currentState.tokens.refresh_token)
         : true
-      if (!hasExpired) {
+      if (!hasRefreshTokenExpired) {
         try {
           const response = await apiAuth.getRefreshedToken(
             currentState.tokens.refresh_token,

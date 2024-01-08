@@ -15,6 +15,9 @@ import {
   updateUserProfile,
 } from "../../lib/slices/authSlice"
 import { refreshTokens, token } from "../../lib/slices/tokensSlice"
+import { addNotice } from "../../lib/slices/toastsSlice"
+import { QRCodeSVG } from 'qrcode.react'
+
 
 const title = "Security"
 const redirectTOTP = "/settings"
@@ -110,13 +113,22 @@ export default function Security() {
       }
       if (totpEnabled !== currentProfile.totp && totpEnabled) {
         await dispatch(refreshTokens())
-        const res = await apiAuth.requestNewTOTP(accessToken)
-        if (res) {
-          totpNew.key = res.key
-          totpNew.uri = res.uri
-          totpClaim.uri = res.uri
-          totpClaim.password = values.original
-          changeTotpModal(true)
+        try {
+          const res = await apiAuth.requestNewTOTP(accessToken)
+          if (res) {
+            totpNew.key = res.key
+            totpNew.uri = res.uri
+            totpClaim.uri = res.uri
+            totpClaim.password = values.original
+            changeTotpModal(true)
+          }
+        } catch (error) {
+          dispatch(
+            addNotice({
+              title: "Two-Factor Setup error",
+              content: "Failed to fetch a Two-Factor enablement code, please try again!"
+            })
+          )
         }
       }
       if (totpEnabled !== currentProfile.totp && !totpEnabled) {
@@ -313,7 +325,7 @@ export default function Security() {
                                 Open the app and scan the QR code below to pair
                                 your mobile with your account.
                               </p>
-                              {/* <QrcodeVue :value="totpNew.uri" :size="qrSize" level="M" render-as="svg" className="my-2 mx-auto"/> */}
+                              <QRCodeSVG value={totpNew.uri} size={qrSize} level="M" className="my-2 mx-auto"/>
                               <p>
                                 If you can&apos;t scan, you can type in the
                                 following key:

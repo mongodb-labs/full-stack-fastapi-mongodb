@@ -117,6 +117,7 @@ export default function Page() {
   const {
     register,
     handleSubmit,
+    unregister,
     formState: { errors },
   } = useForm()
 
@@ -126,14 +127,20 @@ export default function Page() {
     )
   }
 
+  const toggleOauth = (e: any) => {
+    // If previous state enabled oauth, unregister password valdiation
+    if (oauth) unregister('password')
+    setOauth(e)
+  }
+
   useEffect(() => {
     if (searchParams && searchParams.get("oauth")) setOauth(true)
   }, [searchParams])
 
   useEffect(() => {
     if (isLoggedIn) return redirectTo(redirectAfterLogin)
-    if (accessToken && tokenIsTOTP(accessToken)) return redirectTo(redirectTOTP)
-    if (accessToken && tokenParser(accessToken).hasOwnProperty("fingerprint"))
+    if (accessToken && tokenIsTOTP(accessToken) && !oauth) return redirectTo(redirectTOTP)
+    if (accessToken && tokenParser(accessToken).hasOwnProperty("fingerprint") && !oauth)
       return redirectTo(redirectAfterMagic)
   }, [isLoggedIn, accessToken]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -197,7 +204,7 @@ export default function Page() {
             </p>
             <Switch
               checked={oauth}
-              onChange={setOauth}
+              onChange={toggleOauth}
               className="group relative inline-flex h-5 w-10 flex-shrink-0 cursor-pointer items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-rose-600 focus:ring-offset-2"
             >
               <span className="sr-only">Use setting</span>
