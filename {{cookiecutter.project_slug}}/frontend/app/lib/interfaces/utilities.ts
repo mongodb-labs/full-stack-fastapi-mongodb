@@ -39,3 +39,8 @@ export interface INotification {
   icon?: "success" | "error" | "information"
   showProgress?: boolean
 }
+
+export interface IErrorResponse {
+  message: string
+  code: number
+}

@@ -1,4 +1,4 @@
-import { ITokenResponse, IWebToken } from "../interfaces"
+import { IErrorResponse, ITokenResponse, IWebToken } from "../interfaces"
 import { apiAuth } from "../api"
 import { tokenExpired, tokenParser } from "../utilities"
 import { Dispatch, PayloadAction, createSlice } from "@reduxjs/toolkit"
@@ -102,9 +102,9 @@ export const validateMagicTokens =
   }
 
 export const validateTOTPClaim =
-  (data: string) => async (dispatch: Dispatch, getState: () => TokensState) => {
+  (data: string) => async (dispatch: Dispatch, getState: () => RootState) => {
     try {
-      const access_token = getState().access_token
+      const access_token = getState().tokens.access_token
       const response = await apiAuth.loginWithTOTP(access_token, {
         claim: data,
       })
@@ -118,7 +118,6 @@ export const validateTOTPClaim =
           icon: "error",
         }),
       )
-      dispatch(deleteTokens())
     }
   }
 
