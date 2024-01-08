@@ -1,6 +1,6 @@
 # Building an App with the Base Project Generator
 
-This page will walk you through the fundamentals of how this app generator works as well as where to look for further details. **To learn how to 
+This page will walk you through the fundamentals of how this app generator works as well as where to look for further details. To learn more about making a production-ready generated application, please read the below sections.
 
 1. [Development and installation](development-guide.md)
 2. [Deployment for production](deployment-guide.md)
