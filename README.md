@@ -56,7 +56,7 @@ docker compose up -d
 
 Now, you can view the site by going to `localhost:3000`. You can also see all the logs of the running containers in your Docker Desktop app.
 
-The will only be one user on the site, `admin@example.com`. If you choose a different project name, then the email domain changes. i.e. `project_name=fullstackexample` the user email will be `admin@fullstackexample.com`. The default password will be set to `changethis` but that can be changed. Please check out the [Getting Started](./docs/getting-started.md) to understand the configuration details better.
+The will only be one user on the site, `admin@example.com`. If you choose a different project name, then the email domain changes. i.e. `project_name=fullstackexample` the user email will be `admin@fullstackexample.com`. The default password will be set to `changethis` but that can be changed. Please check out the [Building a Generated App](./docs/getting-started.md) to understand the configuration details better.
 
 Here are all the local development URLS:
 
