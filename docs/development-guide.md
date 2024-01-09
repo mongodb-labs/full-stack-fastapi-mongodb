@@ -1,29 +1,21 @@
 # Development and cookiecutter installation
 
-1. [Getting started](getting-started.md)
-2. [Development and installation](development-guide.md)
-3. [Deployment for production](deployment-guide.md)
-4. [Authentication and magic tokens](authentication-guide.md)
-5. [Websockets for interactive communication](websocket-guide.md)
+This section will walk through setting up your local environment for developing a generated app. **It is highly advised you read through the input variables before running the cookiecutter command**
+
+1. [Building a Generated App](getting-started.md)
+2. [Deployment for production](deployment-guide.md)
+3. [Authentication and magic tokens](authentication-guide.md)
+4. [Websockets for interactive communication](websocket-guide.md)
 
 ---
 
 ## Contents
 
-- [Run Cookiecutter](#run-cookiecutter)
 - [Generate passwords](#generate-passwords)
-- [Input variables](#input-variables)
+- [Understanding Input variables](#input-variables)
+- [Run Cookiecutter](#run-cookiecutter)
 - [Local development](#local-development)
 - [Starting Jupyter Lab](#starting-jupyter-lab)
-
-## Run Cookiecutter
-
-Go to the directory where you want to create your project and run:
-
-```bash
-pip install cookiecutter
-cookiecutter https://github.com/mongodb-labs/full-stack-fastapi-mongodb.git
-```
 
 ## Generate passwords
 
@@ -38,7 +30,9 @@ Copy the contents and use that as password / secret key. And run that again to g
 
 ## Input variables
 
-The generator (Cookiecutter) will ask you for data on a long list of fields which will be used to populate variables across the project, customising it for you out the box. **You might want to have these on hand before generating the project.**
+The generator (Cookiecutter) will ask you for data on a long list of fields which will be used to populate variables across the project, customizing it for you out the box. **You might want to have these on hand before generating the project.** 
+
+Take note, some of these inputs are production deployment specific, so you can opt to replace them later (their environment variable assignments will be located at the top level `.env` file in the generated app directory) or rewrite them in the provided `cookiecutter-config-file.yml` and [rerun cookiecutter supplying the file reference as a parameter in the new call](../{{cookiecutter.project_slug}}/README.md). 
 
 The input variables, with their default values (some auto generated) are:
 
@@ -51,6 +45,7 @@ The input variables, with their default values (some auto generated) are:
 - `docker_swarm_stack_name_main`: The name of the stack while deploying to Docker in Swarm mode for production. By default, based on the domain.
 - `docker_swarm_stack_name_staging`: The name of the stack while deploying to Docker in Swarm mode for staging. By default, based on the domain.
 - `secret_key`: Backend server secret key. Use the method above to generate it.
+- `totp_secret_key`: Time-based One Time Password secret key. Use the method above to generate it.
 - `first_superuser`: The first superuser generated, with it you will be able to create more users, etc. By default, based on the domain.
 - `first_superuser_password`: First superuser password. Use the method above to generate it.
 - `backend_cors_origins`: Origins (domains, more or less) that are enabled for CORS ([Cross Origin Resource Sharing](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)). This informs a frontend browser in one domain (e.g. `https://dashboard.example.com`) it can trust this backend, that could be living in another domain (e.g. `https://api.example.com`). It can also be used to allow your local frontend (with a custom `hosts` domain mapping, as described in the project's `README.md`) that could be living in `http://dev.example.com:8080` to communicate with the backend at `https://stag.example.com`. Notice the `http` vs `https` and the `dev.` prefix for local development vs the "staging" `stag.` prefix. By default, it includes origins for production, staging and development, with ports commonly used during local development by several popular frontend frameworks (Vue with `:8080`, React, Angular).
@@ -61,6 +56,7 @@ The input variables, with their default values (some auto generated) are:
 - `smtp_emails_from_email`: The email account to use as the sender in the notification emails, it could be something like `info@your-custom-domain.com`.
 - `smtp_emails_from_name`: The email account name to use as the sender in the notification emails, it could be something like `Symona Adaro`.
 - `smtp_emails_to_email`: The email account to use as the recipient for `contact us` emails, it could be something like `requests@your-custom-domain.com`.
+- `smtp_tls`: Enable TLS with SMTP. Defaults to true 
 - `mongodb_uri`: MongoDB URI for access to the cluster
 - `mongodb_database`: MongoDB database to have the application operate within
 - `traefik_constraint_tag`: The tag to be used by the internal Traefik load balancer (for example, to divide requests between backend and frontend) for production. Used to separate this stack from any other stack you might have. This should identify each stack in each environment (production, staging, etc).
@@ -73,9 +69,19 @@ The input variables, with their default values (some auto generated) are:
 - `docker_image_celeryworker`: Docker image for the celery worker. By default, based on your Docker image prefix.
 - `docker_image_frontend`: Docker image for the frontend. By default, based on your Docker image prefix.
 
+## Run Cookiecutter
+
+Go to the directory where you want to create your project and run:
+
+```bash
+pip install cookiecutter
+cookiecutter https://github.com/mongodb-labs/full-stack-fastapi-mongodb.git
+```
+
+
 ## Local development
 
-Once the Cookiecutter script has completed, you will have a folder populated with the base project and all input variables customised. 
+Once the Cookiecutter script has completed, you will have a folder populated with the base project and all input variables customized. 
 
 Change into the project folder and run the `docker-compose` script to build the project containers:
 
@@ -108,7 +114,7 @@ Make sure your editor uses the environment you just created with Hatch. For Visu
 $ code .
 ```
 
-**NOTE:** The Nuxt image does not automatically refresh while running in development mode. Any changes will need a rebuild. This gets tired fast, so it's easier to run Nuxt outside Docker and call through to the `backend` for API calls. You can then view the frontend at `http://localhost:3000` and the backend api endpoints at `http://localhost/redoc`. This problem won't be a concern in production.
+**NOTE:** The React image does not automatically refresh while running in development mode, and any changes will need a rebuild; there is an open [issue](https://github.com/mongodb-labs/full-stack-fastapi-mongodb/issues/15). This gets tired fast, so it's easier to run React outside Docker and call through to the `backend` for API calls. You can then view the frontend at `http://localhost:3000` and the backend api endpoints at `http://localhost/redoc`. This problem won't be a concern in production.
 
 Change into the `/frontend` folder, and:
 
