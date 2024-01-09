@@ -8,14 +8,19 @@ import {
   INewTOTP,
   IEnableTOTP,
   IMsg,
+  IErrorResponse,
 } from "../interfaces"
 import { apiCore } from "./core"
 
 const jsonify = async (response: Response) => {
-  if(response.ok) {
+  if (response.ok) {
     return await response.json()
+  } else {
+    throw {
+      message: `Request failed with ${response.status}: ${response.statusText}`,
+      code: response.status
+    } as IErrorResponse
   }
-  throw `Request failed with ${response.status}: ${response.statusText}`
 }
 
 export const apiAuth = {

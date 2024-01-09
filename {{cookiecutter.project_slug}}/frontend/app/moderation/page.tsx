@@ -58,7 +58,7 @@ export default function Moderation() {
       if (!isValidAdmin) redirectTo("/settings")
     }
     checkAdmin()
-  }, [])
+  }, [isValidAdmin]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <main className="flex min-h-full mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">

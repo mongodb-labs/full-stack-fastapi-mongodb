@@ -118,7 +118,7 @@ export default function Page() {
     register,
     handleSubmit,
     unregister,
-    formState: { errors },
+    formState: { errors, isSubmitSuccessful },
   } = useForm()
 
   async function submit(data: FieldValues) {
@@ -139,10 +139,10 @@ export default function Page() {
 
   useEffect(() => {
     if (isLoggedIn) return redirectTo(redirectAfterLogin)
-    if (accessToken && tokenIsTOTP(accessToken) && !oauth) return redirectTo(redirectTOTP)
+    if (accessToken && tokenIsTOTP(accessToken) && (!oauth || isSubmitSuccessful)) return redirectTo(redirectTOTP)
     if (accessToken && tokenParser(accessToken).hasOwnProperty("fingerprint") && !oauth)
       return redirectTo(redirectAfterMagic)
-  }, [isLoggedIn, accessToken]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isLoggedIn, accessToken, isSubmitSuccessful]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <main className="flex min-h-full">

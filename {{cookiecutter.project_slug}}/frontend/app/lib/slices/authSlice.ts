@@ -94,7 +94,7 @@ export const isAdmin = (state: RootState) => {
   return loggedIn(state) && state.auth.is_superuser && state.auth.is_active
 }
 
-const handleGenericLogin = (loginAttempt: (payload: any) => any, payload: any) =>
+const handleGenericLogin = (loginAttempt: (payload: any) => any, payload: any, getProfile: boolean = true) =>
   async (
     dispatch: ThunkDispatch<any, void, Action>,
     getState: () => RootState,
@@ -102,7 +102,9 @@ const handleGenericLogin = (loginAttempt: (payload: any) => any, payload: any) =
     try {
       await dispatch(loginAttempt(payload))
       const token = getState().tokens.access_token
-      await dispatch(getUserProfile(token))
+      if (getProfile) {
+        await dispatch(getUserProfile(token))
+      }
     } catch (error) {
       dispatch(
         addNotice({
@@ -117,8 +119,11 @@ const handleGenericLogin = (loginAttempt: (payload: any) => any, payload: any) =
   }
 
 
+const isMagicAuthFirstPhase = (providedPassword?: string) => providedPassword === undefined
+
 export const login =
-  (payload: { username: string; password?: string }) => handleGenericLogin(getTokens, payload)
+  (payload: { username: string; password?: string }) =>
+    handleGenericLogin(getTokens, payload, !isMagicAuthFirstPhase(payload.password))
 
 export const magicLogin =
   (payload: { token: string }) => handleGenericLogin(validateMagicTokens, payload.token)

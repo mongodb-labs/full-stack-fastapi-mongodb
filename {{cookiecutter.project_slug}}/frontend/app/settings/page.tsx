@@ -55,7 +55,7 @@ export default function Settings() {
       if (!isLoggedIn) redirectTo("/")
     }
     checkLoggedIn()
-  }, [])
+  }, [isLoggedIn]) // eslint-disable-line react-hooks/exhaustive-deps
 
 
   return (
