@@ -18,7 +18,6 @@ import { refreshTokens, token } from "../../lib/slices/tokensSlice"
 import { addNotice } from "../../lib/slices/toastsSlice"
 import { QRCodeSVG } from 'qrcode.react'
 
-
 const title = "Security"
 const redirectTOTP = "/settings"
 const qrSize = 200

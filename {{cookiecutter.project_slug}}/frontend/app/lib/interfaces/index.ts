@@ -13,6 +13,7 @@ import {
   ISendEmail,
   IMsg,
   INotification,
+  IErrorResponse,
 } from "./utilities"
 
 // https://stackoverflow.com/a/64782482/295606
@@ -33,4 +34,5 @@ export type {
   ISendEmail,
   IMsg,
   INotification,
+  IErrorResponse,
 }
