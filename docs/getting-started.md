@@ -1,10 +1,12 @@
-# Getting started with the Base Project Generator
+# Building an App with the Base Project Generator
 
-1. [Getting started](getting-started.md)
-2. [Development and installation](development-guide.md)
-3. [Deployment for production](deployment-guide.md)
-4. [Authentication and magic tokens](authentication-guide.md)
-5. [Websockets for interactive communication](websocket-guide.md)
+This page will walk you through the fundamentals of how this app generator works as well as where to look for further details. To learn more about making a production-ready generated application, please read the below sections.
+
+1. [Development and installation](development-guide.md)
+2. [Deployment for production](deployment-guide.md)
+3. [Authentication and magic tokens](authentication-guide.md)
+4. [Websockets for interactive communication](websocket-guide.md)
+5. [Generated project `README.md` template](../{{cookiecutter.project_slug}}/README.md)
 
 ---
 
@@ -30,9 +32,9 @@ This FastAPI, React, MongoDB repo will generate a complete web application stack
   - **Standards-based**: Based on (and fully compatible with) the open standards for APIs: [OpenAPI](https://github.com/OAI/OpenAPI-Specification) and [JSON Schema](http://json-schema.org/).
   - [**Many other features**]("https://fastapi.tiangolo.com/features/"): including automatic validation, serialization, interactive documentation, etc.
 - [**Nextjs/React**](https://nextjs.org/) frontend:
-  - **Authorisation** via middleware for page access, including logged in or superuser.
+  - **Authorization** route-based authentication, including support for detecting if a user is logged in or is a superuser.
   - **Model blog** project, with [Nuxt Content](https://content.nuxtjs.org/) for writing Markdown pages.
-  - **Form validation** with [Vee-Validate 4](https://vee-validate.logaretm.com/v4/).
+  - **Form validation** with [React useForm](https://react-hook-form.com/docs/useform)
   - **State management** with [Redux](https://redux.js.org/)
   - **CSS and templates** with [TailwindCSS](https://tailwindcss.com/), [HeroIcons](https://heroicons.com/), and [HeadlessUI](https://headlessui.com/).
 - **Celery** worker that can import and use models and code from the rest of the backend selectively.
@@ -40,7 +42,6 @@ This FastAPI, React, MongoDB repo will generate a complete web application stack
 - Load balancing between frontend and backend with **Traefik**, so you can have both under the same domain, separated by path, but served by different containers.
 - Traefik integration, including Let's Encrypt **HTTPS** certificates automatic generation.
 - **Github Actions** (continuous integration), including backend testing.
-
 
 
 ## Who is it for?
@@ -102,12 +103,3 @@ Time-based One-Time Password (TOTP) authentication extends the login process to 
 ### More details
 
 After using this generator, your new project will contain an extensive `README.md` with instructions for development, deployment, etc. You can pre-read [the project `README.md` template here too](../{{cookiecutter.project_slug}}/README.md).
-
-## Release Notes
-
-### 2023.11.10
-- Experimental release of FARM-stack generator app
-
-## License
-
-This project is licensed under the terms of the MIT license.
