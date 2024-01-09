@@ -23,7 +23,7 @@ While Websockets support multi-user sessions, this documentation is mainly focus
 
 ## Why Websockets?
 
-Web applications sessions are not persistent. You can maintain state at the back- _or_ frontend, but not both simultaneously. It's great that `Nuxt Pinia` allows your browser to store what you've been doing, but that will need to be communicated via your API to the backend on every page change.
+Web applications sessions are not persistent. You can maintain state at the back- _or_ frontend, but not both simultaneously. It's great that `React Redux` allows your browser to store what you've been doing, but that will need to be communicated via your API to the backend on every page change.
 
 There are ways around this, such as automatically polling the API (known as [long polling](https://ably.com/topic/long-polling)), but Websockets create a bidirectional session between the front- and backends, allowing you to run a synchronous interactive process.
 
@@ -42,7 +42,7 @@ The following general conditions apply:
 
 Here's how the workflow tends to play out:
 
-- `frontend` - initialise a socket by opening a session and sending an initial payload `request`, which may include a user token (if authentication is required).
+- `frontend` - initialize a socket by opening a session and sending an initial payload `request`, which may include a user token (if authentication is required).
 - `backend` - receive a socket `request`, validate the session (user or other), send a `response` to the `frontend`, and then enter a `while True` loop to keep the session open and keep listening for `requests`. 
 - `frontend` - each `response` triggers an event, updating the view.
 - `frontend` - send an instruction to close the socket when the user ends the sessions or, as fallback, when the user changes the page.
@@ -64,7 +64,7 @@ pip install websockets
 yarn install websocket-as-promised
 ```
 
-## Setting up the Nuxt `frontend`
+## Setting up the React `frontend`
 
 The API `backend` is reached at `ws://localhost/api/v1` (or `wss://<your-domain>/api/v1` in production).
 
