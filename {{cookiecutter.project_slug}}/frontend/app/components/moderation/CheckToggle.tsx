@@ -1,13 +1,13 @@
-import { Switch } from "@headlessui/react"
-import { useState } from "react"
+import { Switch } from "@headlessui/react";
+import { useState } from "react";
 
 interface CheckToggleProps {
-  check: boolean
-  onClick: any
+  check: boolean;
+  onClick: any;
 }
 
 export default function CheckToggle(props: CheckToggleProps) {
-  const [enabled, setEnabled] = useState(props.check)
+  const [enabled, setEnabled] = useState(props.check);
 
   return (
     <Switch
@@ -36,5 +36,5 @@ export default function CheckToggle(props: CheckToggleProps) {
         ].join(" ")}
       />
     </Switch>
-  )
+  );
 }

@@ -1,31 +1,31 @@
-"use client"
+"use client";
 
 import {
   Cog8ToothIcon,
   UsersIcon,
   UserPlusIcon,
-} from "@heroicons/react/24/outline"
-import { useRouter } from "next/navigation"
-import { useState, useEffect } from "react"
-import UserTable from "../components/moderation/UserTable"
-import CreateUser from "../components/moderation/CreateUser"
-import { useAppSelector } from "../lib/hooks"
-import { isAdmin } from "../lib/slices/authSlice"
+} from "@heroicons/react/24/outline";
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import UserTable from "../components/moderation/UserTable";
+import CreateUser from "../components/moderation/CreateUser";
+import { useAppSelector } from "../lib/hooks";
+import { isAdmin } from "../lib/slices/authSlice";
 
 const navigation = [
   { name: "Users", id: "USERS", icon: UsersIcon },
   { name: "Create", id: "CREATE", icon: UserPlusIcon },
-]
+];
 
 export default function Moderation() {
-  const [selected, changeSelection] = useState("USERS")
-  const isValidAdmin = useAppSelector((state) => isAdmin(state))
+  const [selected, changeSelection] = useState("USERS");
+  const isValidAdmin = useAppSelector((state) => isAdmin(state));
 
-  const router = useRouter()
+  const router = useRouter();
 
   const redirectTo = (route: string) => {
-    router.push(route)
-  }
+    router.push(route);
+  };
 
   const renderNavigation = () => {
     return navigation.map((item) => (
@@ -50,15 +50,15 @@ export default function Moderation() {
         />
         <span className="truncate">{item.name}</span>
       </button>
-    ))
-  }
+    ));
+  };
 
   useEffect(() => {
     async function checkAdmin() {
-      if (!isValidAdmin) redirectTo("/settings")
+      if (!isValidAdmin) redirectTo("/settings");
     }
-    checkAdmin()
-  }, [isValidAdmin]) // eslint-disable-line react-hooks/exhaustive-deps
+    checkAdmin();
+  }, [isValidAdmin]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <main className="flex min-h-full mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -89,5 +89,5 @@ export default function Moderation() {
         </div>
       </div>
     </main>
-  )
+  );
 }
