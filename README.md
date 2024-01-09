@@ -38,17 +38,19 @@ Please make sure you have these installed before proceeding!
 
 ## QuickStart
 
-For those that what to dive in and play around with the generated code, here's quick start guide on how to do it. It is advised, though, once you have run through generating this app the first time, that you circle back and check out to more fleshed out [Building a Generated App](./docs/getting-started.md) section. **NOTE: this will generate a local application that is not yet production-ready. Please go through all of the README information linked before creating a version to deploy to a production host**
+**NOTE: this will generate a local application that is not yet production-ready. Please go through all of the README information linked before creating a version to deploy to a production host**
+
+For those that want to dive in and play around with the generated code, here's quick start guide on how to do it. It is advised, though, once you have run through generating this app the first time, that you circle back and check out the more fleshed out [Building a Generated App](./docs/getting-started.md) section. 
 
 ```
 // Make sure cookiecutter and python are installed on the device
 // This will generate a full-stack app in the directory ./example
 cookiecutter https://github.com/mongodb-labs/full-stack-fastapi-mongodb --no-input project_name="example"
 
-// change into that directory
+// Move into that directory.
 cd example
 
-// Make sure that you've opened Docker before this step
+// Make sure that you've opened the Docker Desktop app before this step.
 // build
 docker compose build --no-cache
 
@@ -56,9 +58,9 @@ docker compose build --no-cache
 docker compose up -d 
 ```
 
-Now, you can view the site by going to `localhost:3000`. You can also see all the logs of the running containers in your Docker Desktop app.
+Now you can view the site by going to `localhost:3000`. You can also see all the logs of the running containers in your Docker Desktop app.
 
-The will only be one user on the site, `admin@example.com`. If you choose a different project name, then the email domain changes. i.e. `project_name=fullstackexample` the user email will be `admin@fullstackexample.com`. The default password will be set to `changethis` but that can be changed. 
+There will only be one user on the site: `admin@example.com`. If you choose a different project name, then the email domain changes.  For example, if you create your project using`project_name=fullstackexample` the user email will be `admin@fullstackexample.com`. The default password will be set to `changethis` but that can be changed. 
 
 Here are all the local development URLS:
 
@@ -85,7 +87,7 @@ This FastAPI, React, MongoDB repo will generate a complete web application stack
   - **Standards-based**: Based on (and fully compatible with) the open standards for APIs: [OpenAPI](https://github.com/OAI/OpenAPI-Specification) and [JSON Schema](http://json-schema.org/).
   - [**Many other features**]("https://fastapi.tiangolo.com/features/"): including automatic validation, serialization, interactive documentation, etc.
 - [**Nextjs/React**](https://nextjs.org/) frontend:
-  - **Authorization** route-based authentication, including logged in or superuser.
+  - **Authorization** route-based authentication, including support for detecting a user's logged in or superuser.
   - **Form validation** with [React useForm](https://react-hook-form.com/docs/useform)
   - **State management** with [Redux](https://redux.js.org/)
   - **CSS and templates** with [TailwindCSS](https://tailwindcss.com/), [HeroIcons](https://heroicons.com/), and [HeadlessUI](https://headlessui.com/).
@@ -95,7 +97,7 @@ This FastAPI, React, MongoDB repo will generate a complete web application stack
 - Traefik integration, including Let's Encrypt **HTTPS** certificates automatic generation.
 - GitLab **CI** (continuous integration), including frontend and backend testing.
 
-## How to use the Template
+## How to use the template
 
 - [Building a Generated App](./docs/getting-started.md)
 - [Development and installation](./docs/development-guide.md)
@@ -107,26 +109,34 @@ This FastAPI, React, MongoDB repo will generate a complete web application stack
 
 After using this generator, your new project (the directory created) will contain an extensive `README.md` with instructions for development, deployment, etc. You can pre-read [the project `README.md` template here too](./{{cookiecutter.project_slug}}/README.md).
 
-This current release (October 2023) is for FastAPI version 0.103 and introduces support for Pydantic 2. Since this is intended as a base stack on which you will build complex applications, there is no intention of backwards compatability between releases, and the objective is to ensure that each release has the latest long-term-support versions of the core libraries so that you can rely on your application core for as long as possible.
+This current release is for FastAPI version 0.103 and introduces support for Pydantic 2. Since this is intended as a base stack on which you will build complex applications, there is no intention of backwards compatability between releases, and the objective is to ensure that each release has the latest long-term-support versions of the core libraries so that you can rely on your application core for as long as possible.
 
 To align with [Inboard](https://inboard.bws.bio/), Poetry has been deprecated in favour of [Hatch](https://hatch.pypa.io/latest/). This will also, hopefully, sort out some Poetry-related Docker build errors.
 
 ## Help needed
 
-This stack is in an experimental state, so there is no guarantee for to not find bugs or issues. Please open an issue ticket against this repository to make us aware of issues and we will do our best to respond to them in a timely manner. Please leave feedback on features that would be very beneficial for developers who often leverage mongodb in their FastAPI stack.
+This project is currently experimental, so find bugs or issues may occur. Please open an issue ticket against this repository to make us aware of issues and we will do our best to respond to them in a timely manner. Please leave feedback on features that would be very beneficial for developers who often leverage MongoDB in their FastAPI stack.
 
 
 ## Release Notes
 
-For each release of the generated apps, please assume any changed introduced as the potential to be a backwards-breaking change.
+**NOTE: There is no intention to have backwards compatibility between releases.**
 
 See notes: 
 
 ## CalVer 2024.01.XX
-- **TODO**
-
-## CalVer 2023.12.XX
 - Replaced Beanie usage with ODMantic
+- Fixed TOTP login
+- Added Page-Level route authentication
+- Fixed issued with logged in user being unable to access `/settings` page
+- Throw errors on every non-ok auth.ts response
+- Fixed Poject Named generation in Footer.tsx
+- Removed unused CORS routes
+- Updated README
+  - Added QuickStart
+  - Added Requirements
+  - Added Container URL Information
+
 
 ## CalVer 2023.11.10
 
