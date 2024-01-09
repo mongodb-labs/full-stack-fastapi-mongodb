@@ -30,7 +30,7 @@ Copy the contents and use that as password / secret key. And run that again to g
 
 ## Input variables
 
-The generator (Cookiecutter) will ask you for data on a long list of fields which will be used to populate variables across the project, customizing it for you out the box. **You might want to have these on hand before generating the project.** 
+The generator (Cookiecutter) will ask you for data on a long list of fields which will be used to populate variables across the project, customizing it for you out of the box. **You might want to have these on hand before generating the project.** 
 
 Take note, some of these inputs are production deployment specific, so you can opt to replace them later (their environment variable assignments will be located at the top level `.env` file in the generated app directory) or rewrite them in the provided `cookiecutter-config-file.yml` and [rerun cookiecutter supplying the file reference as a parameter in the new call](../{{cookiecutter.project_slug}}/README.md). 
 
