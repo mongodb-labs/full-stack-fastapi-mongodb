@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import { ChevronRightIcon } from "@heroicons/react/20/solid"
-import Link from "next/link"
-import { useRouter, useSearchParams } from "next/navigation"
-import { useEffect } from "react"
-import { useAppDispatch, useAppSelector } from "./lib/hooks"
-import { loggedIn, magicLogin } from "./lib/slices/authSlice"
-import { tokenIsTOTP } from "./lib/utilities"
-import { token } from "./lib/slices/tokensSlice"
+import { ChevronRightIcon } from "@heroicons/react/20/solid";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "./lib/hooks";
+import { loggedIn, magicLogin } from "./lib/slices/authSlice";
+import { tokenIsTOTP } from "./lib/utilities";
+import { token } from "./lib/slices/tokensSlice";
 
 const github = {
   name: "GitHub",
@@ -21,21 +21,21 @@ const github = {
           clipRule="evenodd"
         />
       </svg>
-    )
+    );
   },
-}
+};
 
-const redirectTOTP = "/totp"
-const redirectAfterLogin = "/"
+const redirectTOTP = "/totp";
+const redirectAfterLogin = "/";
 
 export default function Page() {
-  const router = useRouter()
-  const query = useSearchParams()
+  const router = useRouter();
+  const query = useSearchParams();
 
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
-  const accessToken = useAppSelector((state) => token(state))
-  const isLoggedIn = useAppSelector((state) => loggedIn(state))
+  const accessToken = useAppSelector((state) => token(state));
+  const isLoggedIn = useAppSelector((state) => loggedIn(state));
 
   useEffect(() => {
     async function load() {
@@ -43,17 +43,17 @@ export default function Page() {
       if (query && query.get("magic")) {
         await new Promise((resolve) => {
           setTimeout(() => {
-            resolve(true)
-          }, 100)
-        })
+            resolve(true);
+          }, 100);
+        });
         if (!isLoggedIn)
-          await dispatch(magicLogin({ token: query.get("magic") as string }))
-        if (tokenIsTOTP(accessToken)) router.push(redirectTOTP)
-        else router.push(redirectAfterLogin)
+          await dispatch(magicLogin({ token: query.get("magic") as string }));
+        if (tokenIsTOTP(accessToken)) router.push(redirectTOTP);
+        else router.push(redirectAfterLogin);
       }
     }
-    load()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    load();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <main>
@@ -178,5 +178,5 @@ export default function Page() {
         </div>
       </div>
     </main>
-  )
+  );
 }

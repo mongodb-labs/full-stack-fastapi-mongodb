@@ -1,45 +1,45 @@
-"use client"
+"use client";
 
-import { IUserProfileUpdate } from "../../lib/interfaces"
-import { useAppDispatch, useAppSelector } from "../../lib/hooks"
-import { useForm } from "react-hook-form"
-import { profile, updateUserProfile } from "../../lib/slices/authSlice"
-import { useEffect, useState } from "react"
-import { RootState } from "../../lib/store"
+import { IUserProfileUpdate } from "../../lib/interfaces";
+import { useAppDispatch, useAppSelector } from "../../lib/hooks";
+import { useForm } from "react-hook-form";
+import { profile, updateUserProfile } from "../../lib/slices/authSlice";
+import { useEffect, useState } from "react";
+import { RootState } from "../../lib/store";
 
-const title = "Personal settings"
+const title = "Personal settings";
 const description =
-  "Changing your email address will change your login. Any changes will require you to enter your original password."
+  "Changing your email address will change your login. Any changes will require you to enter your original password.";
 
 //@ts-ignore
 const renderError = (type: LiteralUnion<keyof RegisterOptions, string>) => {
   const style =
-    "absolute left-5 top-5 translate-y-full w-48 px-2 py-1 bg-gray-700 rounded-lg text-center text-white text-sm after:content-[''] after:absolute after:left-1/2 after:bottom-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-t-transparent after:border-b-gray-700"
+    "absolute left-5 top-5 translate-y-full w-48 px-2 py-1 bg-gray-700 rounded-lg text-center text-white text-sm after:content-[''] after:absolute after:left-1/2 after:bottom-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-t-transparent after:border-b-gray-700";
   switch (type) {
     case "required":
-      return <div className={style}>This field is required.</div>
+      return <div className={style}>This field is required.</div>;
     case "minLength" || "maxLength":
       return (
         <div className={style}>
           Your password must be between 8 and 64 characters long.
         </div>
-      )
+      );
     default:
-      return <></>
+      return <></>;
   }
-}
+};
 
 export default function Profile() {
-  const [updatedProfile, setState] = useState({} as IUserProfileUpdate)
+  const [updatedProfile, setState] = useState({} as IUserProfileUpdate);
 
-  const dispatch = useAppDispatch()
-  const currentProfile = useAppSelector((state: RootState) => profile(state))
+  const dispatch = useAppDispatch();
+  const currentProfile = useAppSelector((state: RootState) => profile(state));
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm()
+  } = useForm();
 
   const schema = {
     original: {
@@ -49,31 +49,31 @@ export default function Profile() {
     },
     fullName: { required: false },
     email: { required: true },
-  }
+  };
 
   const resetProfile = () => {
     setState({
       fullName: currentProfile.fullName,
       email: currentProfile.email,
-    })
-  }
+    });
+  };
 
   useEffect(() => {
-    resetProfile()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    resetProfile();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function submit(values: any) {
-    let newProfile = {} as IUserProfileUpdate
+    let newProfile = {} as IUserProfileUpdate;
     if (
       (!currentProfile.password && !values.original) ||
       (currentProfile.password && values.original)
     ) {
-      if (values.original) newProfile.original = values.original
+      if (values.original) newProfile.original = values.original;
       if (values.email) {
-        newProfile.email = values.email
-        if (values.fullName) newProfile.fullName = values.fullName
-        await dispatch(updateUserProfile(newProfile))
-        resetProfile()
+        newProfile.email = values.email;
+        if (values.fullName) newProfile.fullName = values.fullName;
+        await dispatch(updateUserProfile(newProfile));
+        resetProfile();
       }
     }
   }
@@ -162,5 +162,5 @@ export default function Profile() {
         </div>
       </form>
     </div>
-  )
+  );
 }

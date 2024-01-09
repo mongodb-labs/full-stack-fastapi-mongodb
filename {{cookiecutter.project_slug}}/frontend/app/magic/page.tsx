@@ -1,40 +1,40 @@
-"use client"
+"use client";
 
-import { LinkIcon, EnvelopeIcon } from "@heroicons/react/24/outline"
-import { tokenParser } from "../lib/utilities"
-import { token } from "../lib/slices/tokensSlice"
-import { useEffect } from "react"
-import { useAppDispatch, useAppSelector } from "../lib/hooks"
-import Link from "next/link"
-import { RootState } from "../lib/store"
-import { useRouter } from "next/navigation"
-import { loggedIn, logout } from "../lib/slices/authSlice"
+import { LinkIcon, EnvelopeIcon } from "@heroicons/react/24/outline";
+import { tokenParser } from "../lib/utilities";
+import { token } from "../lib/slices/tokensSlice";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../lib/hooks";
+import Link from "next/link";
+import { RootState } from "../lib/store";
+import { useRouter } from "next/navigation";
+import { loggedIn, logout } from "../lib/slices/authSlice";
 
-const redirectRoute = "/login"
+const redirectRoute = "/login";
 
 export default function Magic() {
-  const router = useRouter()
-  const accessToken = useAppSelector((state: RootState) => token(state))
-  const isLoggedIn = useAppSelector((state: RootState) => loggedIn(state))
-  const dispatch = useAppDispatch()
+  const router = useRouter();
+  const accessToken = useAppSelector((state: RootState) => token(state));
+  const isLoggedIn = useAppSelector((state: RootState) => loggedIn(state));
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     async function checkCredentials(): Promise<void> {
       if (isLoggedIn) {
-        router.push("/")
+        router.push("/");
       }
       if (
         !(accessToken && tokenParser(accessToken).hasOwnProperty("fingerprint"))
       ) {
-        router.push(redirectRoute)
+        router.push(redirectRoute);
       }
     }
-    checkCredentials()
-  }, [])
+    checkCredentials();
+  }, [accessToken, isLoggedIn]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const removeFingerprint = async () => {
-    await dispatch(logout())
-  }
+    await dispatch(logout());
+  };
 
   return (
     <main className="flex min-h-full">
@@ -58,7 +58,11 @@ export default function Magic() {
             </p>
           </div>
 
-          <Link href="/login?oauth=true" className="mt-8 flex" onClick={removeFingerprint}>
+          <Link
+            href="/login?oauth=true"
+            className="mt-8 flex"
+            onClick={removeFingerprint}
+          >
             <LinkIcon
               className="text-rose-500 h-4 w-4 mr-1"
               aria-hidden="true"
@@ -77,5 +81,5 @@ export default function Magic() {
         />
       </div>
     </main>
-  )
+  );
 }

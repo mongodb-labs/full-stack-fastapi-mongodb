@@ -1,76 +1,80 @@
-"use client"
+"use client";
 
-import { Switch, Dialog, Transition } from "@headlessui/react"
-import { QrCodeIcon } from "@heroicons/react/24/outline"
-import { apiAuth } from "../../lib/api"
-import { useAppDispatch, useAppSelector } from "../../lib/hooks"
-import { useForm } from "react-hook-form"
-import { useEffect, useState } from "react"
-import { RootState } from "../../lib/store"
-import { IEnableTOTP, INewTOTP, IUserProfileUpdate } from "../../lib/interfaces"
+import { Switch, Dialog, Transition } from "@headlessui/react";
+import { QrCodeIcon } from "@heroicons/react/24/outline";
+import { apiAuth } from "../../lib/api";
+import { useAppDispatch, useAppSelector } from "../../lib/hooks";
+import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { RootState } from "../../lib/store";
+import {
+  IEnableTOTP,
+  INewTOTP,
+  IUserProfileUpdate,
+} from "../../lib/interfaces";
 import {
   disableTOTPAuthentication,
   enableTOTPAuthentication,
   profile,
   updateUserProfile,
-} from "../../lib/slices/authSlice"
-import { refreshTokens, token } from "../../lib/slices/tokensSlice"
-import { addNotice } from "../../lib/slices/toastsSlice"
-import { QRCodeSVG } from 'qrcode.react'
+} from "../../lib/slices/authSlice";
+import { refreshTokens, token } from "../../lib/slices/tokensSlice";
+import { addNotice } from "../../lib/slices/toastsSlice";
+import { QRCodeSVG } from "qrcode.react";
 
-const title = "Security"
-const redirectTOTP = "/settings"
-const qrSize = 200
+const title = "Security";
+const redirectTOTP = "/settings";
+const qrSize = 200;
 
 const resetProfile = () => {
   return {
     password: "",
-  }
-}
+  };
+};
 
 //@ts-ignore
 const renderError = (type: LiteralUnion<keyof RegisterOptions, string>) => {
   const style =
-    "absolute left-5 top-5 translate-y-full w-48 px-2 py-1 bg-gray-700 rounded-lg text-center text-white text-sm after:content-[''] after:absolute after:left-1/2 after:bottom-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-t-transparent after:border-b-gray-700"
+    "absolute left-5 top-5 translate-y-full w-48 px-2 py-1 bg-gray-700 rounded-lg text-center text-white text-sm after:content-[''] after:absolute after:left-1/2 after:bottom-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-t-transparent after:border-b-gray-700";
   switch (type) {
     case "required":
-      return <div className={style}>This field is required.</div>
+      return <div className={style}>This field is required.</div>;
     case "minLength" || "maxLength":
       return (
         <div className={style}>
           Your password must be between 8 and 64 characters long.
         </div>
-      )
+      );
     case "match":
-      return <div className={style}>Your passwords do not match.</div>
+      return <div className={style}>Your passwords do not match.</div>;
     default:
-      return <></>
+      return <></>;
   }
-}
+};
 
 export default function Security() {
-  const [updatedProfile, setProfile] = useState({} as IUserProfileUpdate)
-  const [totpEnabled, changeTotpEnabled] = useState(false)
-  const [totpModal, changeTotpModal] = useState(false)
-  const [totpNew, changeTotpNew] = useState({} as INewTOTP)
-  const [totpClaim, changeTotpClaim] = useState({} as IEnableTOTP)
+  const [updatedProfile, setProfile] = useState({} as IUserProfileUpdate);
+  const [totpEnabled, changeTotpEnabled] = useState(false);
+  const [totpModal, changeTotpModal] = useState(false);
+  const [totpNew, changeTotpNew] = useState({} as INewTOTP);
+  const [totpClaim, changeTotpClaim] = useState({} as IEnableTOTP);
 
-  const dispatch = useAppDispatch()
-  const currentProfile = useAppSelector((state: RootState) => profile(state))
-  const accessToken = useAppSelector((state: RootState) => token(state))
+  const dispatch = useAppDispatch();
+  const currentProfile = useAppSelector((state: RootState) => profile(state));
+  const accessToken = useAppSelector((state: RootState) => token(state));
 
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm()
+  } = useForm();
 
   const {
     register: registerTotp,
     handleSubmit: handleSubmitTotp,
     formState: { errors: errorsTotp },
-  } = useForm()
+  } = useForm();
 
   const schema = {
     original: {
@@ -80,58 +84,59 @@ export default function Security() {
     },
     password: { required: false, minLength: 8, maxLength: 64 },
     confirmation: { required: false },
-  }
+  };
 
   const totpSchema = {
     claim: { required: true, minLength: 6, maxLength: 7 },
-  }
+  };
 
   useEffect(() => {
-    setProfile(resetProfile())
-    changeTotpEnabled(currentProfile.totp)
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    setProfile(resetProfile());
+    changeTotpEnabled(currentProfile.totp);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // @ts-ignore
   async function enableTOTP(values: any) {
-    totpClaim.claim = values.claim
-    await dispatch(enableTOTPAuthentication(totpClaim))
-    changeTotpModal(false)
+    totpClaim.claim = values.claim;
+    await dispatch(enableTOTPAuthentication(totpClaim));
+    changeTotpModal(false);
   }
 
   // @ts-ignore
   async function submit(values: any) {
-    let newProfile = {} as IUserProfileUpdate
+    let newProfile = {} as IUserProfileUpdate;
     if (
       (!currentProfile.password && !values.original) ||
       (currentProfile.password && values.original)
     ) {
-      if (values.original) newProfile.original = values.original
+      if (values.original) newProfile.original = values.original;
       if (values.password && values.password !== values.original) {
-        newProfile.password = values.password
-        await dispatch(updateUserProfile(newProfile))
+        newProfile.password = values.password;
+        await dispatch(updateUserProfile(newProfile));
       }
       if (totpEnabled !== currentProfile.totp && totpEnabled) {
-        await dispatch(refreshTokens())
+        await dispatch(refreshTokens());
         try {
-          const res = await apiAuth.requestNewTOTP(accessToken)
+          const res = await apiAuth.requestNewTOTP(accessToken);
           if (res) {
-            totpNew.key = res.key
-            totpNew.uri = res.uri
-            totpClaim.uri = res.uri
-            totpClaim.password = values.original
-            changeTotpModal(true)
+            totpNew.key = res.key;
+            totpNew.uri = res.uri;
+            totpClaim.uri = res.uri;
+            totpClaim.password = values.original;
+            changeTotpModal(true);
           }
         } catch (error) {
           dispatch(
             addNotice({
               title: "Two-Factor Setup error",
-              content: "Failed to fetch a Two-Factor enablement code, please try again!"
-            })
-          )
+              content:
+                "Failed to fetch a Two-Factor enablement code, please try again!",
+            }),
+          );
         }
       }
       if (totpEnabled !== currentProfile.totp && !totpEnabled) {
-        await dispatch(disableTOTPAuthentication(newProfile))
+        await dispatch(disableTOTPAuthentication(newProfile));
       }
       // resetForm()
     }
@@ -324,7 +329,12 @@ export default function Security() {
                                 Open the app and scan the QR code below to pair
                                 your mobile with your account.
                               </p>
-                              <QRCodeSVG value={totpNew.uri} size={qrSize} level="M" className="my-2 mx-auto"/>
+                              <QRCodeSVG
+                                value={totpNew.uri}
+                                size={qrSize}
+                                level="M"
+                                className="my-2 mx-auto"
+                              />
                               <p>
                                 If you can&apos;t scan, you can type in the
                                 following key:
@@ -397,5 +407,5 @@ export default function Security() {
         </Dialog>
       </Transition>
     </div>
-  )
+  );
 }

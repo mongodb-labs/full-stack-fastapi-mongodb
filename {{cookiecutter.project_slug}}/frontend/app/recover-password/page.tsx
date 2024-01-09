@@ -1,43 +1,43 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { useAppDispatch, useAppSelector } from "../lib/hooks"
-import { useForm } from "react-hook-form"
-import { loggedIn, recoverPassword } from "../lib/slices/authSlice"
-import { useRouter } from "next/navigation"
-import { useEffect } from "react"
-import { RootState } from "../lib/store"
+import Link from "next/link";
+import { useAppDispatch, useAppSelector } from "../lib/hooks";
+import { useForm } from "react-hook-form";
+import { loggedIn, recoverPassword } from "../lib/slices/authSlice";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { RootState } from "../lib/store";
 
-const redirectRoute = "/"
+const redirectRoute = "/";
 const schema = {
   email: { required: true },
-}
+};
 
 export default function RecoverPassword() {
-  const dispatch = useAppDispatch()
-  const isLoggedIn = useAppSelector((state: RootState) => loggedIn(state))
+  const dispatch = useAppDispatch();
+  const isLoggedIn = useAppSelector((state: RootState) => loggedIn(state));
 
-  const router = useRouter()
+  const router = useRouter();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm()
+  } = useForm();
 
   async function submit(values: any) {
-    await dispatch(recoverPassword(values.email))
+    await dispatch(recoverPassword(values.email));
     await new Promise((resolve) => {
       setTimeout(() => {
-        resolve(true)
-      }, 2000)
-    })
-    router.push(redirectRoute)
+        resolve(true);
+      }, 2000);
+    });
+    router.push(redirectRoute);
   }
 
   useEffect(() => {
-    if (isLoggedIn) router.push(redirectRoute)
-  })
+    if (isLoggedIn) router.push(redirectRoute);
+  });
 
   return (
     <main className="flex min-h-full">
@@ -115,5 +115,5 @@ export default function RecoverPassword() {
         </div>
       </div>
     </main>
-  )
+  );
 }

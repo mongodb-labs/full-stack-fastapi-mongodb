@@ -1,23 +1,23 @@
-import { Metadata } from "next"
-import { getPostData } from "../lib/utilities/posts"
+import { Metadata } from "next";
+import { getPostData } from "../lib/utilities/posts";
 
 type Post = {
-  id: string
-  content: string
-  title: string
-  description: string
-  author: string
-  publishedAt: string
-}
+  id: string;
+  content: string;
+  title: string;
+  description: string;
+  author: string;
+  publishedAt: string;
+};
 
-const aboutPath = "app/content/"
+const aboutPath = "app/content/";
 
 export const metadata: Metadata = {
   title: "Getting started with a base project",
-}
+};
 
 export default async function About() {
-  const data: Post = await getPostData("about", aboutPath)
+  const data: Post = await getPostData("about", aboutPath);
 
   return (
     <>
@@ -25,5 +25,5 @@ export default async function About() {
         <div dangerouslySetInnerHTML={{ __html: data.content }} />
       </div>
     </>
-  )
+  );
 }

@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
-import { apiAuth } from "../../lib/api"
-import { IUserProfile } from "../../lib/interfaces"
-import CheckState from "./CheckState"
-import ToggleActive from "./ToggleActive"
-import ToggleMod from "./ToggleMod"
-import { useAppDispatch, useAppSelector } from "../../lib/hooks"
-import { RootState } from "../../lib/store"
-import { useEffect, useState } from "react"
-import { refreshTokens, token } from "../../lib/slices/tokensSlice"
-import { addNotice } from "../../lib/slices/toastsSlice"
+import { apiAuth } from "../../lib/api";
+import { IUserProfile } from "../../lib/interfaces";
+import CheckState from "./CheckState";
+import ToggleActive from "./ToggleActive";
+import ToggleMod from "./ToggleMod";
+import { useAppDispatch, useAppSelector } from "../../lib/hooks";
+import { RootState } from "../../lib/store";
+import { useEffect, useState } from "react";
+import { refreshTokens, token } from "../../lib/slices/tokensSlice";
+import { addNotice } from "../../lib/slices/toastsSlice";
 
 const renderUserProfiles = (userProfiles: IUserProfile[]) => {
   return userProfiles.map((profile) => (
@@ -38,38 +38,39 @@ const renderUserProfiles = (userProfiles: IUserProfile[]) => {
         <ToggleMod check={profile.is_superuser} email={profile.email} />
       </td>
     </tr>
-  ))
-}
+  ));
+};
 
 export default function UserTable() {
-  const dispatch = useAppDispatch()
-  const accessToken = useAppSelector((state: RootState) => token(state))
+  const dispatch = useAppDispatch();
+  const accessToken = useAppSelector((state: RootState) => token(state));
 
-  const [userProfiles, setUserProfiles] = useState([] as IUserProfile[])
+  const [userProfiles, setUserProfiles] = useState([] as IUserProfile[]);
 
   async function getAllUsers() {
-    await dispatch(refreshTokens())
+    await dispatch(refreshTokens());
     try {
-      const res = await apiAuth.getAllUsers(accessToken)
-      if (res && res.length) setUserProfiles(res)
+      const res = await apiAuth.getAllUsers(accessToken);
+      if (res && res.length) setUserProfiles(res);
     } catch {
       dispatch(
         addNotice({
           title: "User Fetch Issue",
-          content: "Failed to fetch all users, please check logged in permissions",
+          content:
+            "Failed to fetch all users, please check logged in permissions",
           icon: "error",
-        })
-      )
+        }),
+      );
     }
   }
 
   useEffect(() => {
     async function fetchUsers() {
-      await getAllUsers()
+      await getAllUsers();
     }
 
-    fetchUsers()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    fetchUsers();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="shadow sm:overflow-hidden sm:rounded-md min-w-max">
@@ -113,5 +114,5 @@ export default function UserTable() {
         </tbody>
       </table>
     </div>
-  )
+  );
 }

@@ -1,18 +1,18 @@
-import Link from "next/link"
-import { getSortedPostsData } from "../lib/utilities/posts"
-import { readableDate } from "../lib/utilities/textual"
+import Link from "next/link";
+import { getSortedPostsData } from "../lib/utilities/posts";
+import { readableDate } from "../lib/utilities/textual";
 
 type PostMeta = {
-  id: string
-  title: string
-  description: string
-  author: string
-  publishedAt: string
-  categories: string[]
-}
+  id: string;
+  title: string;
+  description: string;
+  author: string;
+  publishedAt: string;
+  categories: string[];
+};
 
-const title = "Recent blog posts"
-const description = "Thoughts from the world of me."
+const title = "Recent blog posts";
+const description = "Thoughts from the world of me.";
 
 const renderPost = (post: PostMeta) => {
   let categories = post.categories.map((category) => (
@@ -22,7 +22,7 @@ const renderPost = (post: PostMeta) => {
     >
       {category.trim()}
     </span>
-  ))
+  ));
 
   return (
     <div key={post.id}>
@@ -42,12 +42,12 @@ const renderPost = (post: PostMeta) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default function BlogHome() {
-  const postsList: PostMeta[] = getSortedPostsData()
-  const posts = postsList.map((post) => renderPost(post))
+  const postsList: PostMeta[] = getSortedPostsData();
+  const posts = postsList.map((post) => renderPost(post));
 
   return (
     <main className="max-w-none mx-auto sm:w-3/5 bg-white px-4 pt-10 pb-20 sm:px-6">
@@ -63,5 +63,5 @@ export default function BlogHome() {
         </div>
       </div>
     </main>
-  )
+  );
 }

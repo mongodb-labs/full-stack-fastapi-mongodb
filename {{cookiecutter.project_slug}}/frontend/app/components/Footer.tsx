@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { siteName } from "../lib/utilities/generic"
+import Link from "next/link";
+import { siteName } from "../lib/utilities/generic";
 
 const githubIcon = () => {
   return (
@@ -17,8 +17,8 @@ const githubIcon = () => {
         clipRule="evenodd"
       />
     </svg>
-  )
-}
+  );
+};
 
 const mastodonIcon = () => {
   return (
@@ -34,8 +34,8 @@ const mastodonIcon = () => {
         clipRule="evenodd"
       />
     </svg>
-  )
-}
+  );
+};
 
 const footerNavigation = {
   main: [
@@ -57,7 +57,7 @@ const footerNavigation = {
       icon: mastodonIcon,
     },
   ],
-}
+};
 
 const renderNavigation = () => {
   return footerNavigation.main.map((item) => (
@@ -69,8 +69,8 @@ const renderNavigation = () => {
         {item.name}
       </Link>
     </div>
-  ))
-}
+  ));
+};
 
 const renderSocials = () => {
   return footerNavigation.social.map((item) => (
@@ -82,8 +82,8 @@ const renderSocials = () => {
       <span className="sr-only">{item.name}</span>
       {item.icon()}
     </a>
-  ))
-}
+  ));
+};
 
 export default function Footer() {
   return (
@@ -105,5 +105,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }

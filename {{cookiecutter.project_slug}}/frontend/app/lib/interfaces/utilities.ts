@@ -1,46 +1,46 @@
 /* eslint-disable camelcase */
 
 export interface ITokenResponse {
-  access_token: string
-  refresh_token: string
-  token_type: string
+  access_token: string;
+  refresh_token: string;
+  token_type: string;
 }
 
 export interface IWebToken {
-  claim: string
+  claim: string;
 }
 
 export interface INewTOTP {
-  secret?: string
-  key: string
-  uri: string
+  secret?: string;
+  key: string;
+  uri: string;
 }
 
 export interface IEnableTOTP {
-  claim: string
-  uri: string
-  password?: string
+  claim: string;
+  uri: string;
+  password?: string;
 }
 
 export interface ISendEmail {
-  email: string
-  subject: string
-  content: string
+  email: string;
+  subject: string;
+  content: string;
 }
 
 export interface IMsg {
-  msg: string
+  msg: string;
 }
 
 export interface INotification {
-  uid?: string
-  title: string
-  content: string
-  icon?: "success" | "error" | "information"
-  showProgress?: boolean
+  uid?: string;
+  title: string;
+  content: string;
+  icon?: "success" | "error" | "information";
+  showProgress?: boolean;
 }
 
 export interface IErrorResponse {
-  message: string
-  code: number
+  message: string;
+  code: number;
 }

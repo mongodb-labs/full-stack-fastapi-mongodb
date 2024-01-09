@@ -3,7 +3,7 @@ import {
   IUserProfileUpdate,
   IUserProfileCreate,
   IUserOpenProfileCreate,
-} from "./profile"
+} from "./profile";
 
 import {
   ITokenResponse,
@@ -14,11 +14,11 @@ import {
   IMsg,
   INotification,
   IErrorResponse,
-} from "./utilities"
+} from "./utilities";
 
 // https://stackoverflow.com/a/64782482/295606
 interface IKeyable {
-  [key: string]: any | any[]
+  [key: string]: any | any[];
 }
 
 export type {
@@ -35,4 +35,4 @@ export type {
   IMsg,
   INotification,
   IErrorResponse,
-}
+};

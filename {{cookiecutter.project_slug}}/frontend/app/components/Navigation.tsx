@@ -1,36 +1,36 @@
-"use client"
+"use client";
 
-import { Disclosure } from "@headlessui/react"
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"
-import Link from "next/link"
-import AlertsButton from "./alerts/AlertsButton"
-import dynamic from "next/dynamic"
+import { Disclosure } from "@headlessui/react";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
+import AlertsButton from "./alerts/AlertsButton";
+import dynamic from "next/dynamic";
 const AuthenticationNavigation = dynamic(
   () => import("./authentication/AuthenticationNavigation"),
   { ssr: false },
-)
+);
 
 const navigation = [
   { name: "About", to: "/about" },
   { name: "Authentication", to: "/authentication" },
   { name: "Blog", to: "/blog" },
-]
+];
 
 const renderIcon = (open: boolean) => {
   if (!open) {
-    return <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
+    return <Bars3Icon className="block h-6 w-6" aria-hidden="true" />;
   } else {
-    return <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
+    return <XMarkIcon className="block h-6 w-6" aria-hidden="true" />;
   }
-}
+};
 
 const renderNavLinks = (style: string) => {
   return navigation.map((nav) => (
     <Link href={nav.to} key={nav.name} className={style}>
       {nav.name}
     </Link>
-  ))
-}
+  ));
+};
 export default function Navigation() {
   return (
     <header>
@@ -84,5 +84,5 @@ export default function Navigation() {
         )}
       </Disclosure>
     </header>
-  )
+  );
 }
