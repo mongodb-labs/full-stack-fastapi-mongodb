@@ -40,7 +40,7 @@ Please make sure you have these installed before proceeding!
 
 **NOTE: this will generate a local application that is not yet production-ready. Please go through all of the README information linked before creating a version to deploy to a production host**
 
-For those that want to dive in and play around with the generated code, here's quick start guide on how to do it. It is advised, though, once you have run through generating this app the first time, that you circle back and check out the more fleshed out [Building a Generated App](./docs/getting-started.md) section. 
+For those that want to dive in and play around with the generated code, here's a quick start guide on how to do it. It is advised, though, once you have run through generating this app the first time, that you circle back and check out the more fleshed out [Building a Generated App](./docs/getting-started.md) section. 
 
 ```
 // Make sure cookiecutter and python are installed on the device
