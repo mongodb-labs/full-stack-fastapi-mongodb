@@ -2,7 +2,7 @@
 
 This section will walk through setting up your local environment for developing a generated app. **It is highly advised you read through the input variables before running the cookiecutter command**
 
-1. [Building a Generated App](getting-started.md)
+1. [Building a generated app](getting-started.md)
 2. [Deployment for production](deployment-guide.md)
 3. [Authentication and magic tokens](authentication-guide.md)
 4. [Websockets for interactive communication](websocket-guide.md)
@@ -15,7 +15,7 @@ This section will walk through setting up your local environment for developing 
 - [Understanding input variables](#input-variables)
 - [Run Cookiecutter](#run-cookiecutter)
 - [Local development](#local-development)
-- [Starting Jupyter Lab](#starting-jupyter-lab)
+- [Starting JupyterLab](#starting-jupyter-lab)
 
 ## Generate passwords
 
