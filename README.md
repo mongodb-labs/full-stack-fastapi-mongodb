@@ -38,7 +38,7 @@ Please make sure you have these installed before proceeding!
 
 ## QuickStart
 
-**NOTE: this will generate a local application that is not yet production-ready. Please go through all of the README information linked before creating a version to deploy to a production host**
+> **NOTE** This will generate a local application that is not yet production-ready. Please go through all of the README information linked before creating a version to deploy to a production host
 
 For those that want to dive in and play around with the generated code, here's a quick start guide on how to do it. It is advised, though, once you have run through generating this app the first time, that you circle back and check out the more fleshed out [Building a generated app](./docs/getting-started.md) section. 
 
@@ -124,7 +124,7 @@ This project is currently experimental, so bugs or issues may occur. Please open
 
 See notes: 
 
-## CalVer 2024.01.XX
+## CalVer 2024.01.10
 - Replaced Beanie usage with ODMantic
 - Fixed TOTP login
 - Added Page-Level route authentication
@@ -136,6 +136,10 @@ See notes:
   - Added QuickStart
   - Added Requirements
   - Added Container URL Information
+- Updated docs/
+  - Placed docker_example.png
+  - Removed lingering Nuxt and Beanie references
+  - Updated Indexing
 
 
 ## CalVer 2023.11.10
