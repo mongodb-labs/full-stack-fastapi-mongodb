@@ -15,7 +15,7 @@ This section will walk through setting up your local environment for developing 
 - [Understanding input variables](#input-variables)
 - [Run Cookiecutter](#run-cookiecutter)
 - [Local development](#local-development)
-- [Starting JupyterLab](#starting-jupyter-lab)
+- [Starting JupyterLab](#starting-jupyterlab)
 
 ## Generate passwords
 
