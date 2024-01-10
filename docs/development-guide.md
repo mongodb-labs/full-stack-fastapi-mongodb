@@ -12,7 +12,7 @@ This section will walk through setting up your local environment for developing 
 ## Contents
 
 - [Generate passwords](#generate-passwords)
-- [Understanding Input variables](#input-variables)
+- [Understanding input variables](#input-variables)
 - [Run Cookiecutter](#run-cookiecutter)
 - [Local development](#local-development)
 - [Starting Jupyter Lab](#starting-jupyter-lab)
