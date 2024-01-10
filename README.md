@@ -15,7 +15,7 @@ This is an **experimental** fork of [Sebastián Ramírez's](https://github.com/t
 - [Screenshots](#screenshots)
 - [Key features](#key-features)
 - [How to use it](#how-to-use-it)
-  - [Building a generated App](./docs/getting-started.md)
+  - [Building a generated app](./docs/getting-started.md)
   - [Development and installation](./docs/development-guide.md)
   - [Deployment for production](./docs/deployment-guide.md)
   - [Authentication and magic tokens](./docs/authentication-guide.md)
@@ -40,7 +40,7 @@ Please make sure you have these installed before proceeding!
 
 **NOTE: this will generate a local application that is not yet production-ready. Please go through all of the README information linked before creating a version to deploy to a production host**
 
-For those that want to dive in and play around with the generated code, here's a quick start guide on how to do it. It is advised, though, once you have run through generating this app the first time, that you circle back and check out the more fleshed out [Building a generated App](./docs/getting-started.md) section. 
+For those that want to dive in and play around with the generated code, here's a quick start guide on how to do it. It is advised, though, once you have run through generating this app the first time, that you circle back and check out the more fleshed out [Building a generated app](./docs/getting-started.md) section. 
 
 ```
 // Make sure cookiecutter and python are installed on the device
@@ -71,7 +71,7 @@ Here are all the local development URLS:
 - Flower: Admin tool of Celery Tasks -- http://localhost:5555
 - Traefik UI to see how routes are being handled by the proxy: http://localhost:8090
 
-See [Building a generated App](./docs/getting-started.md) for examples of what these pages look like.
+See [Building a generated app](./docs/getting-started.md) for examples of what these pages look like.
 
 
 ## Key features
@@ -99,7 +99,7 @@ This FastAPI, React, MongoDB repo will generate a complete web application stack
 
 ## How to use the template
 
-- [Building a generated App](./docs/getting-started.md)
+- [Building a generated app](./docs/getting-started.md)
 - [Development and installation](./docs/development-guide.md)
 - [Deployment for production](./docs/deployment-guide.md)
 - [Authentication and magic tokens](./docs/authentication-guide.md)

@@ -1,6 +1,6 @@
 # Authentication with Magic and Oauth2
 
-1. [Building a generated App](getting-started.md)
+1. [Building a generated app](getting-started.md)
 2. [Development and installation](development-guide.md)
 3. [Deployment for production](deployment-guide.md)
 5. [Websockets for interactive communication](websocket-guide.md)
