@@ -71,7 +71,7 @@ Here are all the local development URLS:
 - Flower: Admin tool of Celery Tasks -- http://localhost:5555
 - Traefik UI to see how routes are being handled by the proxy: http://localhost:8090
 
-See [Building a Generated App](./docs/getting-started.md) for images of what some of these pages will look like and to understand the configuration details better.
+See [Building a Generated App](./docs/getting-started.md) for examples of what these pages look like.
 
 
 ## Key features
