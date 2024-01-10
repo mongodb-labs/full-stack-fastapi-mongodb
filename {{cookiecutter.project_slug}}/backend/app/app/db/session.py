@@ -17,18 +17,17 @@ class _MongoClientSingleton:
             cls.instance.mongo_client = motor_asyncio.AsyncIOMotorClient(
                 settings.MONGO_DATABASE_URI, driver=DRIVER_INFO
             )
-            cls.instance.engine = AIOEngine(
-                client=cls.instance.mongo_client,
-                database=settings.MONGO_DATABASE
-            )
+            cls.instance.engine = AIOEngine(client=cls.instance.mongo_client, database=settings.MONGO_DATABASE)
         return cls.instance
 
 
 def MongoDatabase() -> core.AgnosticDatabase:
     return _MongoClientSingleton().mongo_client[settings.MONGO_DATABASE]
 
+
 def get_engine() -> AIOEngine:
     return _MongoClientSingleton().engine
+
 
 async def ping():
     await MongoDatabase().command("ping")
