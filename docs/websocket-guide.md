@@ -18,7 +18,7 @@ While Websockets support multi-user sessions, this documentation is mainly focus
 - [Why Websockets?](#why-websockets)
 - [High-level architecture and workflow](#high-level-architecture-and-workflow)
 - [Requirements](#requirements)
-- [Setting up the Nuxt `frontend`](#setting-up-the-nuxt-frontend)
+- [Setting up the React `frontend`](#setting-up-the-react-frontend)
 - [Setting up the FastAPI `backend`](#setting-up-the-fastapi-backend)
 
 ## Why Websockets?
