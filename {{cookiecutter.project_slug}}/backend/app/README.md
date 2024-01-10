@@ -667,7 +667,7 @@ Flower: https://flower.stag.base-project.com
 
 Development URLs, for local development.
 
-Frontend: http://localhost
+Frontend: http://localhost:3000
 
 Backend: http://localhost/api/
 
