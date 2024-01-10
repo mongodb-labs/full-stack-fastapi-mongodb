@@ -129,7 +129,7 @@ yarn dev
 
 FastAPI `backend` updates will refresh automatically, but the `celeryworker` container must be restarted before changes take effect.
 
-## Starting Jupyter Lab
+## Starting JupyterLab
 
 If you like to do algorithmic development and testing in Jupyter Notebooks, then launch the `backend` terminal and start Jupyter as follows:
 
