@@ -95,6 +95,10 @@ And start them:
 docker-compose up -d 
 ```
 
+Your Docker Desktop app should look like this:
+
+![Docker Desktop](../img/docker_example.png)
+
 By default, `backend` Python dependencies are managed with [Hatch](https://hatch.pypa.io/latest/). From `./backend/app/` you can install all the dependencies with:
 
 ```console
