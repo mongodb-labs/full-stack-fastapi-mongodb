@@ -1,5 +1,7 @@
 # Full Stack FastAPI, React, MongoDB (FARM) Base Project Generator
 
+Show your love for this project by starring our repo :star2:, so we can continue to innovate :slightly_smiling_face:
+
 Accelerate your next web development project with this FastAPI/React/MongoDB base project generator.
 
 This project is for developers looking to build and maintain full-feature progressive web applications using Python on the backend / Typescript on the frontend, and want the complex-but-routine aspects of auth 'n auth, and component and deployment configuration, taken care of, including interactive API documentation. 
@@ -7,18 +9,21 @@ This project is for developers looking to build and maintain full-feature progre
 This is an **experimental** fork of [Sebastián Ramírez's](https://github.com/tiangolo) [Full Stack FastAPI and PostgreSQL Base Project Generator](https://github.com/tiangolo/full-stack-fastapi-postgresql) and [Whythawk's](https://github.com/whythawk) [Full Stack FastAPI and PostgreSQL Base Project Generator](https://github.com/whythawk/full-stack-fastapi-postgresql). FastAPI is updated to version 0.103.2, MongoDB Motor 3.4, ODMantic ODM 1.0.0, and the frontend to React.
 
 
-- [Screenshots](#screenshots)
-- [Key features](#key-features)
-- [How to use it](#how-to-use-it)
-  - [Getting started](./docs/getting-started.md)
-  - [Development and installation](./docs/development-guide.md)
-  - [Deployment for production](./docs/deployment-guide.md)
-  - [Authentication and magic tokens](./docs/authentication-guide.md)
-  - [Websockets for interactive communication](./docs/websocket-guide.md)
-- [More details](#more-details)
-- [Help needed](#help-needed)
-- [Release notes](#release-notes)
-- [License](#license)
+- [Full Stack FastAPI, React, MongoDB (FARM) Base Project Generator](#full-stack-fastapi-react-mongodb-farm-base-project-generator)
+  - [Screenshots](#screenshots)
+    - [App landing page](#app-landing-page)
+    - [Dashboard Login](#dashboard-login)
+    - [Dashboard User Management](#dashboard-user-management)
+    - [Interactive API documentation](#interactive-api-documentation)
+    - [Enabling two-factor security (TOTP)](#enabling-two-factor-security-totp)
+  - [Key features](#key-features)
+  - [How to use it](#how-to-use-it)
+  - [More details](#more-details)
+  - [Help needed](#help-needed)
+  - [Release Notes](#release-notes)
+  - [CalVer 2023.12.XX](#calver-202312xx)
+  - [CalVer 2023.11.10](#calver-20231110)
+  - [License](#license)
   
 ## Screenshots
 
