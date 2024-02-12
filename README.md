@@ -1,5 +1,7 @@
 # Full Stack FastAPI, React, MongoDB (FARM) Base Project Generator
 
+Show your love for this project by starring our repo :star2:, so we can continue to innovate :slightly_smiling_face:
+
 Accelerate your next web development project with this FastAPI/React/MongoDB base project generator.
 
 This project is for developers looking to build and maintain full-feature progressive web applications using Python on the backend / Typescript on the frontend, and want the complex-but-routine aspects of auth 'n auth, and component and deployment configuration, taken care of, including interactive API documentation. 
