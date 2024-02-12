@@ -1,7 +1,7 @@
-import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/outline"
+import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
 
 interface CheckStateProps {
-  check: boolean
+  check: boolean;
 }
 
 export default function CheckState(props: CheckStateProps) {
@@ -19,5 +19,5 @@ export default function CheckState(props: CheckStateProps) {
         />
       )}
     </div>
-  )
+  );
 }

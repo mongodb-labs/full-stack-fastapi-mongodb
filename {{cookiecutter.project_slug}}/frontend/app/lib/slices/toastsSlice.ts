@@ -3,27 +3,27 @@ import {
   PayloadAction,
   createAsyncThunk,
   createSlice,
-} from "@reduxjs/toolkit"
-import { INotification } from "../interfaces"
-import { generateUUID } from "../utilities"
-import { RootState } from "../store"
+} from "@reduxjs/toolkit";
+import { INotification } from "../interfaces";
+import { generateUUID } from "../utilities";
+import { RootState } from "../store";
 
 interface ToastsState {
-  notifications: INotification[]
+  notifications: INotification[];
 }
 
 const initialState: ToastsState = {
   notifications: [],
-}
+};
 
 export const toastsSlice = createSlice({
   name: "toasts",
   initialState,
   reducers: {
     addNotice: (state: ToastsState, action: PayloadAction<INotification>) => {
-      action.payload.uid = generateUUID()
-      if (!action.payload.icon) action.payload.icon = "success"
-      state.notifications.push(action.payload)
+      action.payload.uid = generateUUID();
+      if (!action.payload.icon) action.payload.icon = "success";
+      state.notifications.push(action.payload);
     },
     removeNotice: (
       state: ToastsState,
@@ -31,29 +31,29 @@ export const toastsSlice = createSlice({
     ) => {
       state.notifications = state.notifications.filter(
         (notice) => notice.uid !== action.payload.uid,
-      )
+      );
     },
     deleteNotices: () => {
-      return initialState
+      return initialState;
     },
   },
-})
+});
 
-export const { addNotice, removeNotice, deleteNotices } = toastsSlice.actions
+export const { addNotice, removeNotice, deleteNotices } = toastsSlice.actions;
 
 export const timeoutNotice =
   (payload: INotification, timeout: number = 2000) =>
   async (dispatch: Dispatch) => {
     await new Promise((resolve) => {
       setTimeout(() => {
-        dispatch(removeNotice(payload))
-        resolve(true)
-      }, timeout)
-    })
-  }
+        dispatch(removeNotice(payload));
+        resolve(true);
+      }, timeout);
+    });
+  };
 
 export const first = (state: RootState) =>
-  state.toasts.notifications.length > 0 && state.toasts.notifications[0]
-export const notices = (state: RootState) => state.toasts.notifications
+  state.toasts.notifications.length > 0 && state.toasts.notifications[0];
+export const notices = (state: RootState) => state.toasts.notifications;
 
-export default toastsSlice.reducer
+export default toastsSlice.reducer;

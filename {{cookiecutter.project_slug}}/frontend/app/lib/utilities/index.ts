@@ -5,9 +5,9 @@ import {
   getKeyByValue,
   isValidHttpUrl,
   tokenParser,
-} from "./generic"
-import { readableDate } from "./textual"
-import { tokenIsTOTP } from "./totp"
+} from "./generic";
+import { readableDate } from "./textual";
+import { tokenIsTOTP } from "./totp";
 
 export {
   generateUUID,
@@ -18,4 +18,4 @@ export {
   tokenParser,
   readableDate,
   tokenIsTOTP,
-}
+};

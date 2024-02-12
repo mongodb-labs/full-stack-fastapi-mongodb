@@ -24,9 +24,7 @@ async def test_authenticate_user(db: AgnosticDatabase) -> None:
     password = random_lower_string()
     user_in = UserCreate(email=email, password=password)
     user = await crud.user.create(db, obj_in=user_in)
-    authenticated_user = await crud.user.authenticate(
-        db, email=email, password=password
-    )
+    authenticated_user = await crud.user.authenticate(db, email=email, password=password)
     assert authenticated_user
     assert user.email == authenticated_user.email
 
@@ -103,6 +101,4 @@ async def test_update_user(db: AgnosticDatabase) -> None:
     user_2 = await crud.user.get(db, id=user.id)
     assert user_2
     assert user.email == user_2.email
-    assert verify_password(
-        plain_password=new_password, hashed_password=user_2.hashed_password
-    )
+    assert verify_password(plain_password=new_password, hashed_password=user_2.hashed_password)

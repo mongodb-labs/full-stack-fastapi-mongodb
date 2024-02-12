@@ -1,32 +1,32 @@
-import { getPostData } from "../../lib/utilities/posts"
-import { readableDate } from "../../lib/utilities/textual"
+import { getPostData } from "../../lib/utilities/posts";
+import { readableDate } from "../../lib/utilities/textual";
 
 type Params = {
-  id: string
-}
+  id: string;
+};
 
 type Props = {
-  params: Params
-}
+  params: Params;
+};
 
 type Post = {
-  title: string
-  publishedAt: string
-  content: string
-  author: string
-}
+  title: string;
+  publishedAt: string;
+  content: string;
+  author: string;
+};
 
 export async function generateMetadata({ params }: Props) {
-  const postData: Post = await getPostData(params.id)
+  const postData: Post = await getPostData(params.id);
 
   return {
     title: postData.title,
-  }
+  };
 }
 
 // -< Post >-
 export default async function Post({ params }: Props) {
-  const data: Post = await getPostData(params.id)
+  const data: Post = await getPostData(params.id);
 
   return (
     <>
@@ -39,5 +39,5 @@ export default async function Post({ params }: Props) {
         <div dangerouslySetInnerHTML={{ __html: data.content }} />
       </div>
     </>
-  )
+  );
 }

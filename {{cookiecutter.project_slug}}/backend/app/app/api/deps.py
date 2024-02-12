@@ -49,9 +49,7 @@ async def get_current_user(
     return user
 
 
-async def get_totp_user(
-    db: AgnosticDatabase = Depends(get_db), token: str = Depends(reusable_oauth2)
-) -> models.User:
+async def get_totp_user(db: AgnosticDatabase = Depends(get_db), token: str = Depends(reusable_oauth2)) -> models.User:
     token_data = get_token_payload(token)
     if token_data.refresh or not token_data.totp:
         # Refresh token is not a valid access token and TOTP False cannot be used to validate TOTP
@@ -115,9 +113,7 @@ async def get_current_active_superuser(
     current_user: models.User = Depends(get_current_user),
 ) -> models.User:
     if not crud.user.is_superuser(current_user):
-        raise HTTPException(
-            status_code=400, detail="The user doesn't have enough privileges"
-        )
+        raise HTTPException(status_code=400, detail="The user doesn't have enough privileges")
     return current_user
 
 

@@ -47,9 +47,5 @@ def superuser_token_headers(client: TestClient) -> Dict[str, str]:
 
 
 @pytest_asyncio.fixture(scope="module")
-async def normal_user_token_headers(
-    client: TestClient, db: AgnosticDatabase
-) -> Dict[str, str]:
-    return await authentication_token_from_email(
-        client=client, email=settings.EMAIL_TEST_USER, db=db
-    )
+async def normal_user_token_headers(client: TestClient, db: AgnosticDatabase) -> Dict[str, str]:
+    return await authentication_token_from_email(client=client, email=settings.EMAIL_TEST_USER, db=db)
