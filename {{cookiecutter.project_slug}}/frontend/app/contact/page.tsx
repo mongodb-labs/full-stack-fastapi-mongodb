@@ -1,49 +1,49 @@
-"use client"
+"use client";
 
-import Link from "next/link"
+import Link from "next/link";
 import {
   BuildingOffice2Icon,
   EnvelopeIcon,
   PhoneIcon,
-} from "@heroicons/react/24/outline"
-import { ISendEmail } from "../lib/interfaces"
-import { apiService } from "../lib/api"
-import { useAppDispatch } from "../lib/hooks"
-import { useForm } from "react-hook-form"
-import { addNotice } from "../lib/slices/toastsSlice"
-import { useRouter } from "next/navigation"
+} from "@heroicons/react/24/outline";
+import { ISendEmail } from "../lib/interfaces";
+import { apiService } from "../lib/api";
+import { useAppDispatch } from "../lib/hooks";
+import { useForm } from "react-hook-form";
+import { addNotice } from "../lib/slices/toastsSlice";
+import { useRouter } from "next/navigation";
 
 const schema = {
   email: { required: true },
   message: { required: true },
-}
+};
 
 export default function Contact() {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm()
+  } = useForm();
 
-  const router = useRouter()
+  const router = useRouter();
 
   async function submit(values: any) {
     const data: ISendEmail = {
       email: values.email,
       subject: `Website contact from: ${values.email} `,
       content: values.message,
-    }
+    };
     try {
-      await apiService.postEmailContact(data)
+      await apiService.postEmailContact(data);
       dispatch(
         addNotice({
           title: "Message sent",
           content: "Thanks so much for contacting us.",
         }),
-      )
-      router.push("/")
+      );
+      router.push("/");
     } catch (error) {
       dispatch(
         addNotice({
@@ -52,7 +52,7 @@ export default function Contact() {
             "Something went wrong with your email. Please check your details, or internet connection, and try again.",
           icon: "error",
         }),
-      )
+      );
     }
   }
 
@@ -224,5 +224,5 @@ export default function Contact() {
         </form>
       </div>
     </div>
-  )
+  );
 }

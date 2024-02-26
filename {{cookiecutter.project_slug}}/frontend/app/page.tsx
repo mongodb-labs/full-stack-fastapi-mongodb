@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { ChevronRightIcon } from "@heroicons/react/20/solid"
 import Link from "next/link"
@@ -8,7 +8,6 @@ import { useAppDispatch, useAppSelector } from "./lib/hooks"
 import { loggedIn, magicLogin } from "./lib/slices/authSlice"
 import { tokenIsTOTP } from "./lib/utilities"
 import { token } from "./lib/slices/tokensSlice"
-
 const github = {
   name: "GitHub",
   href: "https://github.com/mongodb-labs/full-stack-fastapi-mongodb",
@@ -21,21 +20,21 @@ const github = {
           clipRule="evenodd"
         />
       </svg>
-    )
+    );
   },
-}
+};
 
-const redirectTOTP = "/totp"
-const redirectAfterLogin = "/"
+const redirectTOTP = "/totp";
+const redirectAfterLogin = "/";
 
 function UnsuspendedPage() {
   const router = useRouter()
   const query = useSearchParams()
 
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
-  const accessToken = useAppSelector((state) => token(state))
-  const isLoggedIn = useAppSelector((state) => loggedIn(state))
+  const accessToken = useAppSelector((state) => token(state));
+  const isLoggedIn = useAppSelector((state) => loggedIn(state));
 
   useEffect(() => {
     async function load() {
@@ -43,17 +42,17 @@ function UnsuspendedPage() {
       if (query && query.get("magic")) {
         await new Promise((resolve) => {
           setTimeout(() => {
-            resolve(true)
-          }, 100)
-        })
+            resolve(true);
+          }, 100);
+        });
         if (!isLoggedIn)
-          await dispatch(magicLogin({ token: query.get("magic") as string }))
-        if (tokenIsTOTP(accessToken)) router.push(redirectTOTP)
-        else router.push(redirectAfterLogin)
+          await dispatch(magicLogin({ token: query.get("magic") as string }));
+        if (tokenIsTOTP(accessToken)) router.push(redirectTOTP);
+        else router.push(redirectAfterLogin);
       }
     }
-    load()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    load();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <main>
@@ -102,7 +101,7 @@ function UnsuspendedPage() {
                     token `access` and `refresh` support & default hashing.
                   </li>
                   <li>
-                    <span className="font-bold">Authorisation</span> via
+                    <span className="font-bold">Authorization</span> via
                     middleware for page access, including logged in or
                     superuser.
                   </li>
@@ -178,7 +177,7 @@ function UnsuspendedPage() {
         </div>
       </div>
     </main>
-  )
+  );
 }
 
 export default function Page() {

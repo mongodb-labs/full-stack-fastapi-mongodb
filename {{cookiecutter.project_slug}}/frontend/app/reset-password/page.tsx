@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useRouter, useSearchParams } from "next/navigation"
 import { useAppDispatch } from "../lib/hooks"
@@ -10,57 +10,59 @@ import Image from "next/image"
 const schema = {
   password: { required: true, minLength: 8, maxLength: 64 },
   confirmation: { required: true },
-}
+};
 
-const redirectRoute = "/login"
+const redirectRoute = "/login";
 
 //@ts-ignore
 const renderError = (type: LiteralUnion<keyof RegisterOptions, string>) => {
   const style =
-    "absolute left-5 top-5 translate-y-full w-48 px-2 py-1 bg-gray-700 rounded-lg text-center text-white text-sm after:content-[''] after:absolute after:left-1/2 after:bottom-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-t-transparent after:border-b-gray-700"
+    "absolute left-5 top-5 translate-y-full w-48 px-2 py-1 bg-gray-700 rounded-lg text-center text-white text-sm after:content-[''] after:absolute after:left-1/2 after:bottom-[100%] after:-translate-x-1/2 after:border-8 after:border-x-transparent after:border-t-transparent after:border-b-gray-700";
   switch (type) {
     case "required":
-      return <div className={style}>This field is required.</div>
+      return <div className={style}>This field is required.</div>;
     case "minLength" || "maxLength":
       return (
         <div className={style}>
           Your password must be between 8 and 64 characters long.
         </div>
-      )
+      );
     case "match":
-      return <div className={style}>Your passwords do not match.</div>
+      return <div className={style}>Your passwords do not match.</div>;
     default:
-      return <></>
+      return <></>;
   }
-}
+};
 
 function UnsuspendedResetPassword() {
   const dispatch = useAppDispatch()
 
-  const router = useRouter()
-  const query = useSearchParams()
+  const router = useRouter();
+  const query = useSearchParams();
 
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm()
+  } = useForm();
 
   async function submit(values: any) {
-    await dispatch(resetPassword(values.password, query.get("token") as string))
+    await dispatch(
+      resetPassword(values.password, query.get("token") as string),
+    );
     await new Promise((resolve) => {
       setTimeout(() => {
-        resolve(true)
-      }, 2000)
-    })
+        resolve(true);
+      }, 2000);
+    });
 
-    router.push(redirectRoute)
+    router.push(redirectRoute);
   }
 
   useEffect(() => {
-    if (!query || !query.get("token")) router.push("/")
-  }) // eslint-disable-line react-hooks/exhaustive-deps
+    if (!query || !query.get("token")) router.push("/");
+  }); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <main className="flex min-h-full">
@@ -150,7 +152,7 @@ function UnsuspendedResetPassword() {
         />
       </div>
     </main>
-  )
+  );
 }
 
 export default function ResetPassword() {

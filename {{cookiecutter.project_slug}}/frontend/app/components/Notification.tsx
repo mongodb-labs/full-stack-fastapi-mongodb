@@ -1,56 +1,56 @@
-"use client"
+"use client";
 
 import {
   CheckCircleIcon,
   ExclamationCircleIcon,
   InformationCircleIcon,
-} from "@heroicons/react/24/outline"
-import { XMarkIcon } from "@heroicons/react/20/solid"
-import { useEffect, useState } from "react"
-import { first, removeNotice, timeoutNotice } from "../lib/slices/toastsSlice"
-import { useAppDispatch, useAppSelector } from "../lib/hooks"
-import { RootState } from "../lib/store"
-import { Transition } from "@headlessui/react"
+} from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/20/solid";
+import { useEffect, useState } from "react";
+import { first, removeNotice, timeoutNotice } from "../lib/slices/toastsSlice";
+import { useAppDispatch, useAppSelector } from "../lib/hooks";
+import { RootState } from "../lib/store";
+import { Transition } from "@headlessui/react";
 
 const renderIcon = (iconName?: string) => {
   if (iconName === "success") {
     return (
       <CheckCircleIcon className="h-6 w-6 text-green-500" aria-hidden="true" />
-    )
+    );
   } else if (iconName === "error") {
     return (
       <ExclamationCircleIcon
         className="h-6 w-6 text-red-500"
         aria-hidden="true"
       />
-    )
+    );
   } else if (iconName === "information") {
     return (
       <InformationCircleIcon
         className="h-6 w-6 text-blue-500"
         aria-hidden="true"
       />
-    )
+    );
   }
-}
+};
 
 export default function Notification() {
-  const [show, setShow] = useState(false)
-  const dispatch = useAppDispatch()
+  const [show, setShow] = useState(false);
+  const dispatch = useAppDispatch();
 
-  const firstNotification = useAppSelector((state: RootState) => first(state))
+  const firstNotification = useAppSelector((state: RootState) => first(state));
 
   useEffect(() => {
     async function push() {
       if (firstNotification) {
-        setShow(true)
-        await dispatch(timeoutNotice(firstNotification))
-        setShow(false)
+        setShow(true);
+        await dispatch(timeoutNotice(firstNotification));
+        setShow(false);
       }
     }
 
-    push()
-  })
+    push();
+  });
 
   return (
     <div
@@ -102,5 +102,5 @@ export default function Notification() {
         </Transition>
       </div>
     </div>
-  )
+  );
 }
