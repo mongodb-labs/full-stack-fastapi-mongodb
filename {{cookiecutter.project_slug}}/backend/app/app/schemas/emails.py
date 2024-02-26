@@ -1,5 +1,4 @@
-from pydantic import BaseModel, EmailStr
-from typing import List
+from pydantic import BaseModel, EmailStr, SecretStr
 
 
 class EmailContent(BaseModel):
@@ -11,4 +10,4 @@ class EmailContent(BaseModel):
 class EmailValidation(BaseModel):
     email: EmailStr
     subject: str
-    token: str
+    token: SecretStr

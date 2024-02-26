@@ -1,6 +1,6 @@
 from typing import Optional
 from typing_extensions import Annotated
-from pydantic import BaseModel, Field, EmailStr, StringConstraints, field_validator
+from pydantic import BaseModel, Field, EmailStr, StringConstraints, field_validator, SecretStr
 from odmantic import ObjectId
 
 
@@ -60,6 +60,6 @@ class User(UserInDBBase):
 
 # Additional properties stored in DB
 class UserInDB(UserInDBBase):
-    hashed_password: Optional[str] = None
-    totp_secret: Optional[str] = None
+    hashed_password: Optional[SecretStr] = None
+    totp_secret: Optional[SecretStr] = None
     totp_counter: Optional[int] = None
