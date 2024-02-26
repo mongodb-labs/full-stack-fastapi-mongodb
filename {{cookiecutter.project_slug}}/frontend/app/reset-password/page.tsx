@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { useAppDispatch } from "../lib/hooks"
 import { useForm } from "react-hook-form"
 import { resetPassword } from "../lib/slices/authSlice"
-import { useEffect } from "react"
+import { Suspense, useEffect } from "react"
 import Image from "next/image"
 
 const schema = {
@@ -34,7 +34,7 @@ const renderError = (type: LiteralUnion<keyof RegisterOptions, string>) => {
   }
 }
 
-export default function ResetPassword() {
+function UnsuspendedResetPassword() {
   const dispatch = useAppDispatch()
 
   const router = useRouter()
@@ -151,4 +151,8 @@ export default function ResetPassword() {
       </div>
     </main>
   )
+}
+
+export default function ResetPassword() {
+  return <Suspense><UnsuspendedResetPassword /></Suspense>
 }

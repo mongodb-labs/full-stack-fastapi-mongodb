@@ -5,7 +5,7 @@ import { login, loggedIn } from "../lib/slices/authSlice"
 import { useRouter, useSearchParams } from "next/navigation"
 import { tokenIsTOTP, tokenParser } from "../lib/utilities"
 import { Switch } from "@headlessui/react"
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import {
   FieldErrors,
   FieldValues,
@@ -101,7 +101,7 @@ function LoginMessage(oauth: boolean) {
     )
 }
 
-export default function Page() {
+function UnsuspendedPage() {
   const [oauth, setOauth] = useState(false)
   const dispatch = useAppDispatch()
   const accessToken = useAppSelector((state) => state.tokens.access_token)
@@ -239,4 +239,8 @@ export default function Page() {
       </div>
     </main>
   )
+}
+
+export default function Page() {
+  return <Suspense><UnsuspendedPage /></Suspense>
 }

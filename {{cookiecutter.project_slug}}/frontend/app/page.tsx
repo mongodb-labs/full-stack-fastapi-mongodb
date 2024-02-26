@@ -3,7 +3,7 @@
 import { ChevronRightIcon } from "@heroicons/react/20/solid"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
-import { useEffect } from "react"
+import { Suspense, useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "./lib/hooks"
 import { loggedIn, magicLogin } from "./lib/slices/authSlice"
 import { tokenIsTOTP } from "./lib/utilities"
@@ -28,7 +28,7 @@ const github = {
 const redirectTOTP = "/totp"
 const redirectAfterLogin = "/"
 
-export default function Page() {
+function UnsuspendedPage() {
   const router = useRouter()
   const query = useSearchParams()
 
@@ -179,4 +179,8 @@ export default function Page() {
       </div>
     </main>
   )
+}
+
+export default function Page() {
+  return <Suspense><UnsuspendedPage /></Suspense>
 }
