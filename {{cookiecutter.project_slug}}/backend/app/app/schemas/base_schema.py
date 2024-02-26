@@ -1,5 +1,5 @@
 from __future__ import annotations
-from pydantic import BaseModel, Field
+from pydantic import ConfigDict, BaseModel, Field
 from typing import Optional
 from uuid import UUID
 from datetime import date, datetime
@@ -50,8 +50,4 @@ class MetadataBaseInDBBase(MetadataBaseSchema):
         ...,
         description="Whether the resource is private to team members with appropriate authorisation.",
     )
-
-    class Config:
-        # https://github.com/samuelcolvin/pydantic/issues/1334#issuecomment-745434257
-        # Call PydanticModel.from_orm(dbQuery)
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

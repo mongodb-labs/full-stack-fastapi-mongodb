@@ -1,5 +1,5 @@
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import ConfigDict, BaseModel
 from odmantic import Model, ObjectId
 
 
@@ -17,8 +17,7 @@ class RefreshTokenUpdate(RefreshTokenBase):
 
 
 class RefreshToken(RefreshTokenUpdate):
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class Token(BaseModel):
