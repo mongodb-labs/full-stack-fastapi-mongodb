@@ -98,7 +98,9 @@ async def get_refresh_user(
             detail="Could not validate credentials",
         )
     await crud.token.remove(db, db_obj=token_obj)
-    return user
+
+    # Make sure to revoke all other refresh tokens
+    return await crud.user.get(id=token_data.sub)
 
 
 async def get_current_active_user(
