@@ -1,10 +1,10 @@
 from typing import Optional
-from pydantic import ConfigDict, BaseModel
+from pydantic import BaseModel, ConfigDict, SecretStr
 from odmantic import Model, ObjectId
 
 
 class RefreshTokenBase(BaseModel):
-    token: str
+    token: SecretStr
     authenticates: Optional[Model] = None
 
 
@@ -21,8 +21,8 @@ class RefreshToken(RefreshTokenUpdate):
 
 
 class Token(BaseModel):
-    access_token: str
-    refresh_token: Optional[str] = None
+    access_token: SecretStr
+    refresh_token: Optional[SecretStr] = None
     token_type: str
 
 

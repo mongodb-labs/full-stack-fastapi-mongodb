@@ -1,9 +1,9 @@
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, SecretStr
 
 
 class NewTOTP(BaseModel):
-    secret: Optional[str] = None
+    secret: Optional[SecretStr] = None
     key: str
     uri: str
 
@@ -11,4 +11,4 @@ class NewTOTP(BaseModel):
 class EnableTOTP(BaseModel):
     claim: str
     uri: str
-    password: Optional[str] = None
+    password: Optional[SecretStr] = None
