@@ -1,14 +1,13 @@
 "use client";
 
-import { ChevronRightIcon } from "@heroicons/react/20/solid";
-import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "./lib/hooks";
-import { loggedIn, magicLogin } from "./lib/slices/authSlice";
-import { tokenIsTOTP } from "./lib/utilities";
-import { token } from "./lib/slices/tokensSlice";
-
+import { ChevronRightIcon } from "@heroicons/react/20/solid"
+import Link from "next/link"
+import { useRouter, useSearchParams } from "next/navigation"
+import { Suspense, useEffect } from "react"
+import { useAppDispatch, useAppSelector } from "./lib/hooks"
+import { loggedIn, magicLogin } from "./lib/slices/authSlice"
+import { tokenIsTOTP } from "./lib/utilities"
+import { token } from "./lib/slices/tokensSlice"
 const github = {
   name: "GitHub",
   href: "https://github.com/mongodb-labs/full-stack-fastapi-mongodb",
@@ -28,9 +27,9 @@ const github = {
 const redirectTOTP = "/totp";
 const redirectAfterLogin = "/";
 
-export default function Page() {
-  const router = useRouter();
-  const query = useSearchParams();
+function UnsuspendedPage() {
+  const router = useRouter()
+  const query = useSearchParams()
 
   const dispatch = useAppDispatch();
 
@@ -179,4 +178,8 @@ export default function Page() {
       </div>
     </main>
   );
+}
+
+export default function Page() {
+  return <Suspense><UnsuspendedPage /></Suspense>
 }

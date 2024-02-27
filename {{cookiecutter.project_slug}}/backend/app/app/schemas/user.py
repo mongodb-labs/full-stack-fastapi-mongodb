@@ -1,6 +1,6 @@
 from typing import Optional
 from typing_extensions import Annotated
-from pydantic import BaseModel, Field, EmailStr, StringConstraints, field_validator, SecretStr
+from pydantic import BaseModel, ConfigDict, Field, EmailStr, StringConstraints, field_validator, SecretStr
 from odmantic import ObjectId
 
 
@@ -32,18 +32,14 @@ class UserUpdate(UserBase):
 
 class UserInDBBase(UserBase):
     id: Optional[ObjectId] = None
-
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Additional properties to return via API
 class User(UserInDBBase):
     hashed_password: bool = Field(default=False, alias="password")
     totp_secret: bool = Field(default=False, alias="totp")
-
-    class Config:
-        populate_by_name = True
+    model_config = ConfigDict(populate_by_name=True)
 
     @field_validator("hashed_password", mode="before")
     def evaluate_hashed_password(cls, hashed_password):
