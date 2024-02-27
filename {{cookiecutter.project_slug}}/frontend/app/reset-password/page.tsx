@@ -1,11 +1,11 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { useAppDispatch } from "../lib/hooks";
-import { useForm } from "react-hook-form";
-import { resetPassword } from "../lib/slices/authSlice";
-import { useEffect } from "react";
-import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation"
+import { useAppDispatch } from "../lib/hooks"
+import { useForm } from "react-hook-form"
+import { resetPassword } from "../lib/slices/authSlice"
+import { Suspense, useEffect } from "react"
+import Image from "next/image"
 
 const schema = {
   password: { required: true, minLength: 8, maxLength: 64 },
@@ -34,8 +34,8 @@ const renderError = (type: LiteralUnion<keyof RegisterOptions, string>) => {
   }
 };
 
-export default function ResetPassword() {
-  const dispatch = useAppDispatch();
+function UnsuspendedResetPassword() {
+  const dispatch = useAppDispatch()
 
   const router = useRouter();
   const query = useSearchParams();
@@ -153,4 +153,8 @@ export default function ResetPassword() {
       </div>
     </main>
   );
+}
+
+export default function ResetPassword() {
+  return <Suspense><UnsuspendedResetPassword /></Suspense>
 }

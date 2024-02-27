@@ -1,11 +1,11 @@
-"use client";
+"use client"
 
-import { useAppDispatch, useAppSelector } from "../lib/hooks";
-import { login, loggedIn } from "../lib/slices/authSlice";
-import { useRouter, useSearchParams } from "next/navigation";
-import { tokenIsTOTP, tokenParser } from "../lib/utilities";
-import { Switch } from "@headlessui/react";
-import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../lib/hooks"
+import { login, loggedIn } from "../lib/slices/authSlice"
+import { useRouter, useSearchParams } from "next/navigation"
+import { tokenIsTOTP, tokenParser } from "../lib/utilities"
+import { Switch } from "@headlessui/react"
+import { Suspense, useEffect, useState } from "react"
 import {
   FieldErrors,
   FieldValues,
@@ -101,12 +101,11 @@ function LoginMessage(oauth: boolean) {
     );
 }
 
-export default function Page() {
-  const [oauth, setOauth] = useState(false);
-  const dispatch = useAppDispatch();
-  const accessToken = useAppSelector((state) => state.tokens.access_token);
-  const isLoggedIn = useAppSelector((state) => loggedIn(state));
-
+function UnsuspendedPage() {
+  const [oauth, setOauth] = useState(false)
+  const dispatch = useAppDispatch()
+  const accessToken = useAppSelector((state) => state.tokens.access_token)
+  const isLoggedIn = useAppSelector((state) => loggedIn(state))
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -248,4 +247,8 @@ export default function Page() {
       </div>
     </main>
   );
+}
+
+export default function Page() {
+  return <Suspense><UnsuspendedPage /></Suspense>
 }
