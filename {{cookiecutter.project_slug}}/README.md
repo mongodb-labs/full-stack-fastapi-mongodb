@@ -47,7 +47,7 @@ Please ensure that either
 - `MONGO_DATABASE` is properly set in the initial Cookiecutter setup phase.
 - `MONGO_DATABASE_URI` has been set in `{{ cookiecutter.project_slug }}/.env`; leaving the initial value as `mongodb` will establish a connection to the docker instance of mongo created.
 
-To learn more about how to generate a MongoDB URI please look at the docs on [Connecting to your MongoDB Atlas Clutser](https://www.mongodb.com/docs/atlas/tutorial/connect-to-your-cluster/)
+To learn more about how to generate a MongoDB URI please look at the docs on [Connecting to your MongoDB Atlas Cluster](https://www.mongodb.com/docs/atlas/tutorial/connect-to-your-cluster/)
 
 ### Setting Up MongoDB Locally
 
