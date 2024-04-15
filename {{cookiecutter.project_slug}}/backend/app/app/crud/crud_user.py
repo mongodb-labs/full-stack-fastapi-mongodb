@@ -78,19 +78,19 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         return await self.update(db=db, db_obj=db_obj, obj_in=obj_in)
 
     @staticmethod
-    def has_password(self, user: User) -> bool:
+    def has_password(user: User) -> bool:
         return user.hashed_password is not None
 
     @staticmethod
-    def is_active(self, user: User) -> bool:
+    def is_active(user: User) -> bool:
         return user.is_active
 
     @staticmethod
-    def is_superuser(self, user: User) -> bool:
+    def is_superuser(user: User) -> bool:
         return user.is_superuser
 
     @staticmethod
-    def is_email_validated(self, user: User) -> bool:
+    def is_email_validated(user: User) -> bool:
         return user.email_validated
 
 
