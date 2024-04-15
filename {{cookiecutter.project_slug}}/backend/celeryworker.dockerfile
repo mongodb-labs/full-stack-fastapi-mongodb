@@ -13,12 +13,10 @@ ENV \
   PIPX_VERSION=$PIPX_VERSION \
   PYTHONPATH=/app
 COPY ./app/ /app/
-RUN <<HEREDOC
-python -m pip install --no-cache-dir --upgrade pip "pipx==$PIPX_VERSION"
-pipx install "hatch==$HATCH_VERSION"
-hatch env prune && hatch env create production
-chmod +x /app/worker-start.sh
-HEREDOC
+RUN python -m pip install --no-cache-dir --upgrade pip "pipx==$PIPX_VERSION"
+RUN pipx install "hatch==$HATCH_VERSION"
+RUN hatch env prune && hatch env create production
+RUN chmod +x /app/worker-start.sh
 
 # For development, Jupyter remote kernel, Hydrogen
 # Using inside the container:
