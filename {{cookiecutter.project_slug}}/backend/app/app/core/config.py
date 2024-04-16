@@ -1,10 +1,16 @@
 import secrets
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Union, Annotated
 
-from pydantic import AnyHttpUrl, EmailStr, HttpUrl, field_validator
+from pydantic import AnyHttpUrl, EmailStr, HttpUrl, field_validator, BeforeValidator
 from pydantic_core.core_schema import ValidationInfo
 from pydantic_settings import BaseSettings
 
+def parse_cors(v: Any) -> list[str] | str:
+    if isinstance(v, str) and not v.startswith("["):
+        return [i.strip() for i in v.split(",")]
+    elif isinstance(v, list | str):
+        return v
+    raise ValueError(v)
 
 class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
@@ -21,15 +27,9 @@ class Settings(BaseSettings):
     # BACKEND_CORS_ORIGINS is a JSON-formatted list of origins
     # e.g: '["http://localhost", "http://localhost:4200", "http://localhost:3000", \
     # "http://localhost:8080", "http://local.dockertoolbox.tiangolo.com"]'
-    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []
-
-    @field_validator("BACKEND_CORS_ORIGINS", mode="before")
-    def assemble_cors_origins(cls, v: Union[str, List[str]]) -> Union[List[str], str]:
-        if isinstance(v, str) and not v.startswith("["):
-            return [i.strip() for i in v.split(",")]
-        elif isinstance(v, (list, str)):
-            return v
-        raise ValueError(v)
+    BACKEND_CORS_ORIGINS: Annotated[
+        list[AnyHttpUrl] | str, BeforeValidator(parse_cors)
+    ] = []
 
     PROJECT_NAME: str
     SENTRY_DSN: Optional[HttpUrl] = None
