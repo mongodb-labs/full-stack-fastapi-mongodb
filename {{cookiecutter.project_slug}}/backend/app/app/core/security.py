@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from typing import Any, Union, Optional
+from typing import Any, Union
 
 from jose import jwt
 from passlib.context import CryptContext
@@ -64,7 +64,7 @@ def create_magic_tokens(*, subject: Union[str, Any], expires_delta: timedelta = 
     return magic_tokens
 
 
-def create_new_totp(*, label: str, uri: Optional[str] = None) -> NewTOTP:
+def create_new_totp(*, label: str, uri: str | None = None) -> NewTOTP:
     if not uri:
         totp = totp_factory.new()
     else:

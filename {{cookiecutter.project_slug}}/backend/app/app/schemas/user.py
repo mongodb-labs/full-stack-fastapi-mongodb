@@ -1,4 +1,3 @@
-from typing import Optional
 from typing_extensions import Annotated
 from pydantic import BaseModel, ConfigDict, Field, EmailStr, StringConstraints, field_validator, SecretStr
 from odmantic import ObjectId
@@ -11,27 +10,27 @@ class UserLogin(BaseModel):
 
 # Shared properties
 class UserBase(BaseModel):
-    email: Optional[EmailStr] = None
-    email_validated: Optional[bool] = False
-    is_active: Optional[bool] = True
-    is_superuser: Optional[bool] = False
+    email: EmailStr | None = None
+    email_validated: bool | None = False
+    is_active: bool | None = True
+    is_superuser: bool | None = False
     full_name: str = ""
 
 
 # Properties to receive via API on creation
 class UserCreate(UserBase):
     email: EmailStr
-    password: Optional[Annotated[str, StringConstraints(min_length=8, max_length=64)]] = None
+    password: Annotated[str | None, StringConstraints(min_length=8, max_length=64)] = None # noqa
 
 
 # Properties to receive via API on update
 class UserUpdate(UserBase):
-    original: Optional[Annotated[str, StringConstraints(min_length=8, max_length=64)]] = None
-    password: Optional[Annotated[str, StringConstraints(min_length=8, max_length=64)]] = None
+    original: Annotated[str | None, StringConstraints(min_length=8, max_length=64)] = None # noqa
+    password: Annotated[str | None, StringConstraints(min_length=8, max_length=64)] = None  # noqa
 
 
 class UserInDBBase(UserBase):
-    id: Optional[ObjectId] = None
+    id: ObjectId | None = None
     model_config = ConfigDict(from_attributes=True)
 
 
@@ -56,6 +55,6 @@ class User(UserInDBBase):
 
 # Additional properties stored in DB
 class UserInDB(UserInDBBase):
-    hashed_password: Optional[SecretStr] = None
-    totp_secret: Optional[SecretStr] = None
-    totp_counter: Optional[int] = None
+    hashed_password: SecretStr | None = None
+    totp_secret: SecretStr | None = None
+    totp_counter: int | None = None
