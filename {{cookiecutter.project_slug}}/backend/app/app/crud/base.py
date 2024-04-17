@@ -1,4 +1,4 @@
-from typing import Any, Dict, Generic, Optional, Type, TypeVar, Union
+from typing import Any, Dict, Generic, Type, TypeVar, Union
 
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
@@ -27,20 +27,20 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         self.model = model
         self.engine: AIOEngine = get_engine()
 
-    async def get(self, db: AgnosticDatabase, id: Any) -> Optional[ModelType]:
+    async def get(self, db: AgnosticDatabase, id: Any) -> ModelType | None:
         return await self.engine.find_one(self.model, self.model.id == id)
 
-    async def get_multi(self, db: AgnosticDatabase, *, page: int = 0, page_break: bool = False) -> list[ModelType]:
-        offset = {"skip": page * settings.MULTI_MAX, "limit": settings.MULTI_MAX} if page_break else {}
+    async def get_multi(self, db: AgnosticDatabase, *, page: int = 0, page_break: bool = False) -> list[ModelType]: # noqa
+        offset = {"skip": page * settings.MULTI_MAX, "limit": settings.MULTI_MAX} if page_break else {} # noqa
         return await self.engine.find(self.model, **offset)
 
-    async def create(self, db: AgnosticDatabase, *, obj_in: CreateSchemaType) -> ModelType:
+    async def create(self, db: AgnosticDatabase, *, obj_in: CreateSchemaType) -> ModelType: # noqa
         obj_in_data = jsonable_encoder(obj_in)
         db_obj = self.model(**obj_in_data)  # type: ignore
         return await self.engine.save(db_obj)
 
     async def update(
-        self, db: AgnosticDatabase, *, db_obj: ModelType, obj_in: Union[UpdateSchemaType, Dict[str, Any]]
+        self, db: AgnosticDatabase, *, db_obj: ModelType, obj_in: Union[UpdateSchemaType, Dict[str, Any]] # noqa
     ) -> ModelType:
         obj_data = jsonable_encoder(db_obj)
         if isinstance(obj_in, dict):

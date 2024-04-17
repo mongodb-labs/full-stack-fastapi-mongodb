@@ -1,5 +1,5 @@
 import secrets
-from typing import Any, Dict, List, Optional, Union, Annotated
+from typing import Any, Dict, List, Union, Annotated
 
 from pydantic import AnyHttpUrl, EmailStr, HttpUrl, field_validator, BeforeValidator
 from pydantic_core.core_schema import ValidationInfo
@@ -32,10 +32,10 @@ class Settings(BaseSettings):
     ] = []
 
     PROJECT_NAME: str
-    SENTRY_DSN: Optional[HttpUrl] = None
+    SENTRY_DSN: HttpUrl | None = None
 
     @field_validator("SENTRY_DSN", mode="before")
-    def sentry_dsn_can_be_blank(cls, v: str) -> Optional[str]:
+    def sentry_dsn_can_be_blank(cls, v: str) -> str | None:
         if isinstance(v, str) and len(v) == 0:
             return None
         return v
@@ -49,16 +49,16 @@ class Settings(BaseSettings):
     MONGO_DATABASE_URI: str
 
     SMTP_TLS: bool = True
-    SMTP_PORT: Optional[int] = None
-    SMTP_HOST: Optional[str] = None
-    SMTP_USER: Optional[str] = None
-    SMTP_PASSWORD: Optional[str] = None
-    EMAILS_FROM_EMAIL: Optional[EmailStr] = None
-    EMAILS_FROM_NAME: Optional[str] = None
-    EMAILS_TO_EMAIL: Optional[EmailStr] = None
+    SMTP_PORT: int = 587
+    SMTP_HOST: str | None = None
+    SMTP_USER: str | None = None
+    SMTP_PASSWORD: str | None = None
+    EMAILS_FROM_EMAIL: EmailStr | None = None
+    EMAILS_FROM_NAME: str | None = None
+    EMAILS_TO_EMAIL: EmailStr | None = None
 
     @field_validator("EMAILS_FROM_NAME")
-    def get_project_name(cls, v: Optional[str], info: ValidationInfo) -> str:
+    def get_project_name(cls, v: str | None, info: ValidationInfo) -> str:
         if not v:
             return info.data["PROJECT_NAME"]
         return v

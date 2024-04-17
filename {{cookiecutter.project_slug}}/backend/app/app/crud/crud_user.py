@@ -1,4 +1,4 @@
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, Union
 
 from motor.core import AgnosticDatabase
 
@@ -11,22 +11,22 @@ from app.schemas.totp import NewTOTP
 
 # ODM, Schema, Schema
 class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
-    async def get_by_email(self, db: AgnosticDatabase, *, email: str) -> Optional[User]:
+    async def get_by_email(self, db: AgnosticDatabase, *, email: str) -> User | None: # noqa
         return await self.engine.find_one(User, User.email == email)
 
-    async def create(self, db: AgnosticDatabase, *, obj_in: UserCreate) -> User:
+    async def create(self, db: AgnosticDatabase, *, obj_in: UserCreate) -> User: # noqa
         # TODO: Figure out what happens when you have a unique key like 'email'
         user = {
             **obj_in.model_dump(),
             "email": obj_in.email,
-            "hashed_password": get_password_hash(obj_in.password) if obj_in.password is not None else None,
+            "hashed_password": get_password_hash(obj_in.password) if obj_in.password is not None else None, # noqa
             "full_name": obj_in.full_name,
             "is_superuser": obj_in.is_superuser,
         }
 
         return await self.engine.save(User(**user))
 
-    async def update(self, db: AgnosticDatabase, *, db_obj: User, obj_in: Union[UserUpdate, Dict[str, Any]]) -> User:
+    async def update(self, db: AgnosticDatabase, *, db_obj: User, obj_in: Union[UserUpdate, Dict[str, Any]]) -> User: # noqa
         if isinstance(obj_in, dict):
             update_data = obj_in
         else:
@@ -39,39 +39,39 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
             update_data["email_validated"] = False
         return await super().update(db, db_obj=db_obj, obj_in=update_data)
 
-    async def authenticate(self, db: AgnosticDatabase, *, email: str, password: str) -> Optional[User]:
+    async def authenticate(self, db: AgnosticDatabase, *, email: str, password: str) -> User | None: # noqa
         user = await self.get_by_email(db, email=email)
         if not user:
             return None
-        if not verify_password(plain_password=password, hashed_password=user.hashed_password):
+        if not verify_password(plain_password=password, hashed_password=user.hashed_password): # noqa
             return None
         return user
 
-    async def validate_email(self, db: AgnosticDatabase, *, db_obj: User) -> User:
+    async def validate_email(self, db: AgnosticDatabase, *, db_obj: User) -> User: # noqa
         obj_in = UserUpdate(**UserInDB.model_validate(db_obj).model_dump())
         obj_in.email_validated = True
         return await self.update(db=db, db_obj=db_obj, obj_in=obj_in)
 
-    async def activate_totp(self, db: AgnosticDatabase, *, db_obj: User, totp_in: NewTOTP) -> User:
+    async def activate_totp(self, db: AgnosticDatabase, *, db_obj: User, totp_in: NewTOTP) -> User: # noqa
         obj_in = UserUpdate(**UserInDB.model_validate(db_obj).model_dump())
         obj_in = obj_in.model_dump(exclude_unset=True)
         obj_in["totp_secret"] = totp_in.secret
         return await self.update(db=db, db_obj=db_obj, obj_in=obj_in)
 
-    async def deactivate_totp(self, db: AgnosticDatabase, *, db_obj: User) -> User:
+    async def deactivate_totp(self, db: AgnosticDatabase, *, db_obj: User) -> User: # noqa
         obj_in = UserUpdate(**UserInDB.model_validate(db_obj).model_dump())
         obj_in = obj_in.model_dump(exclude_unset=True)
         obj_in["totp_secret"] = None
         obj_in["totp_counter"] = None
         return await self.update(db=db, db_obj=db_obj, obj_in=obj_in)
 
-    async def update_totp_counter(self, db: AgnosticDatabase, *, db_obj: User, new_counter: int) -> User:
+    async def update_totp_counter(self, db: AgnosticDatabase, *, db_obj: User, new_counter: int) -> User:  # noqa
         obj_in = UserUpdate(**UserInDB.model_validate(db_obj).model_dump())
         obj_in = obj_in.model_dump(exclude_unset=True)
         obj_in["totp_counter"] = new_counter
         return await self.update(db=db, db_obj=db_obj, obj_in=obj_in)
 
-    async def toggle_user_state(self, db: AgnosticDatabase, *, obj_in: Union[UserUpdate, Dict[str, Any]]) -> User:
+    async def toggle_user_state(self, db: AgnosticDatabase, *, obj_in: Union[UserUpdate, Dict[str, Any]]) -> User: # noqa
         db_obj = await self.get_by_email(db, email=obj_in.email)
         if not db_obj:
             return None
