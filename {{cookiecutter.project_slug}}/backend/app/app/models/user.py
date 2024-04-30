@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Optional
 from datetime import datetime
 from pydantic import EmailStr
 from odmantic import ObjectId, Field
@@ -21,7 +21,7 @@ class User(Base):
     email: EmailStr
     hashed_password: Any = Field(default=None)
     totp_secret: Any = Field(default=None)
-    totp_counter: int | None = Field(default=None)
+    totp_counter: Optional[int] = Field(default=None)
     email_validated: bool = Field(default=False)
     is_active: bool = Field(default=False)
     is_superuser: bool = Field(default=False)
