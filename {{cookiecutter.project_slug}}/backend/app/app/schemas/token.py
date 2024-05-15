@@ -20,8 +20,8 @@ class RefreshToken(RefreshTokenUpdate):
 
 
 class Token(BaseModel):
-    access_token: SecretStr
-    refresh_token: SecretStr | None = None
+    access_token: str
+    refresh_token: str | None = None
     token_type: str
 
 
