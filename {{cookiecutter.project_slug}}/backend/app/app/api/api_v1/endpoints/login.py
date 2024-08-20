@@ -1,5 +1,7 @@
 from typing import Any, Union
 
+from bson import ObjectId
+
 from fastapi import APIRouter, Body, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from motor.core import AgnosticDatabase
@@ -14,6 +16,8 @@ from app.utilities import (
 )
 
 router = APIRouter()
+
+
 
 """
 https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Authentication_Cheat_Sheet.md
@@ -64,7 +68,7 @@ async def validate_magic_link(
     """
     claim_in = deps.get_magic_token(token=obj_in.claim)
     # Get the user
-    user = await crud.user.get(db, id=magic_in.sub)
+    user = await crud.user.get(db, id=ObjectId(magic_in.sub))
     # Test the claims
     if (
         (claim_in.sub == magic_in.sub)
@@ -241,7 +245,7 @@ async def reset_password(
     """
     claim_in = deps.get_magic_token(token=claim)
     # Get the user
-    user = await crud.user.get(db, id=magic_in.sub)
+    user = await crud.user.get(db, id=ObjectId(magic_in.sub))
     # Test the claims
     if (
         (claim_in.sub == magic_in.sub)
