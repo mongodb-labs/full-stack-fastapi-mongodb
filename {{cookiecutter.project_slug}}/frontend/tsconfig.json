@@ -19,8 +19,8 @@
       }
     ],
     "paths": {
-      "@": ["/Users/nstapp/Github/full-stack-fastapi-mongodb-react/app/"],
-      "@/*": ["/Users/nstapp/Github/full-stack-fastapi-mongodb-react/app/*"]
+      "@": ["./"],
+      "@/*": ["./*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
