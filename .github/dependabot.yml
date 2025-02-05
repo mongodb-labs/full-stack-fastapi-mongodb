@@ -1,0 +1,27 @@
+version: 2
+updates:
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      actions:
+        patterns:
+          - "*"
+    assignees:
+      - "@mongodb/dbx-python"
+  # Python
+  - package-ecosystem: "pip"
+    directory: "{{cookiecutter.project_slug}}/backend"
+    schedule:
+      interval: "weekly"
+    assignees:
+      - "@mongodb/dbx-python"
+  # Node
+  - package-ecosystem: "npm"
+    directory: "{{cookiecutter.project_slug}}/frontend"
+    schedule:
+      interval: "weekly"
+    assignees:
+      - "@mongodb/dbx-python"

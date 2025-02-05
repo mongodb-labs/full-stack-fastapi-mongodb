@@ -1,0 +1,105 @@
+name: build and deploy template
+on:
+  push:
+    branches:
+      - main
+      - production
+
+env:
+  TRAEFIK_PUBLIC_NETWORK: traefik-public
+  STACK_NAME: example-com
+  DOCKER_IMAGE_CELERYWORKER: celeryworker
+  TRAEFIK_TAG: example.com
+  TRAEFIK_PUBLIC_TAG: traefik-public
+  DOCKER_IMAGE_BACKEND: backend
+  DOCKER_IMAGE_FRONTEND: frontend
+  PROJECT_NAME: example
+  DOMAIN: localhost
+  SMTP_HOST:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Run Tests
+        run: sh ./scripts/test.sh
+
+  deploy-staging:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+
+      - name: Log in to Docker Registry
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+
+      - name: Install docker-auto-labels
+        run: pip install docker-auto-labels
+
+      - name: Build Staging 
+        run: |
+          DOMAIN=stag.example.com \
+          TRAEFIK_TAG=stag.example.com \
+          STACK_NAME=stag-example-com \
+          TAG=staging \
+          FRONTEND_ENV=staging \
+          sh ./scripts/build-push.sh
+
+      # Uncomment to attempt deploying, need to valiate functionality
+      # - name: Deploy Staging
+      #   run: |
+      #     DOMAIN=stag.example.com \
+      #     TRAEFIK_TAG=stag.example.com \
+      #     STACK_NAME=stag-example-com \
+      #     TAG=staging \
+      #     sh ./scripts/deploy.sh
+    needs: tests
+
+  deploy-prod:
+    if: github.ref == 'refs/heads/production'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Registry
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Install docker-auto-labels
+        run: pip install docker-auto-labels
+      
+      - name: Build Production
+        run: |
+          DOMAIN=example.com \
+          TRAEFIK_TAG=example.com \
+          STACK_NAME=example-com \
+          TAG=prod \
+          FRONTEND_ENV=production \
+          sh ./scripts/build-push.sh
+
+      # Uncomment to attempt deploying, need to valiate functionality
+      # - name: Deploy Production
+      #   run: |
+      #     DOMAIN=example.com \
+      #     TRAEFIK_TAG=example.com \
+      #     STACK_NAME=example-com \
+      #     TAG=prod \
+      #     sh ./scripts/deploy.sh
+    needs: tests
+   
+
+  
+  
+    

@@ -1,0 +1,52 @@
+<mjml>
+  <mj-body>
+    <mj-section>
+      <mj-column>
+        <mj-image
+          width="60px"
+          src="https://tailwindui.com/img/logos/mark.svg?color=rose&shade=500"
+          href="{{ server_host }}"
+        ></mj-image>
+        <mj-divider border-color="#f43f5e"></mj-divider>
+        <mj-text font-size="16px" font-weight="bold" color="#635246"
+          >Confirm your email address</mj-text
+        >
+        <mj-text font-size="16px" color="#635246" font-family="helvetica"
+          >Hi,</mj-text
+        >
+        <mj-text font-size="16px" color="#635246" font-family="helvetica"
+          >You'll need to validate this email address before you can offer your
+          work. All you need to do is click this button.</mj-text
+        >
+        <mj-button
+          background-color="#f43f5e"
+          color="white"
+          font-family="helvetica"
+          href="{{ link }}"
+        >
+          Confirm your email
+        </mj-button>
+        <mj-text font-size="16px" color="#635246" font-family="helvetica"
+          >Or open the following link:</mj-text
+        >
+        <mj-text font-size="16px" color="#635246" font-family="helvetica"
+          ><a href="{{ link }}">{{ link }}</a></mj-text
+        >
+        <mj-text font-size="16px" color="#635246" font-family="helvetica"
+          >If you have no idea what this is about, then don't worry. You can
+          safely ignore and delete this email.</mj-text
+        >
+        <mj-text font-size="16px" color="#635246" font-family="helvetica"
+          >For any concerns or queries, just email me.</mj-text
+        >
+        <mj-text
+          font-size="16px"
+          font-weight="bold"
+          color="#635246"
+          font-family="helvetica"
+          >{{ server_bot }} @ {{ server_name }}</mj-text
+        >
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

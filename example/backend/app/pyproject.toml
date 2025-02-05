@@ -1,0 +1,119 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "app"
+dynamic = ["version"]
+description = ''
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "U.N. Owen", email = "admin@dev-fsfp.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+  "inboard[fastapi]==0.56.*",
+  "python-multipart>=0.0.5",
+  "email-validator>=1.3.0",
+  "requests>=2.28.1",
+  "celery>=5.2.7",
+  "passlib[bcrypt]>=1.7.4",
+  "tenacity>=8.1.0",
+  "emails>=0.6.0",
+  "raven>=6.10.0",
+  "jinja2>=3.1.2",
+  "python-jose[cryptography]>=3.3.0",
+  "pydantic>=2.0,<2.7",
+  "pydantic-settings>=2.0.3",
+  "httpx>=0.23.1",
+  "psycopg2-binary>=2.9.5",
+  "setuptools>=65.6.3",
+  "motor>=3.3.1",
+  "pytest==7.4.2",
+  "pytest-cov==4.1.0",
+  "pytest-asyncio>=0.21.0",
+  "argon2-cffi==23.1.0",
+  "argon2-cffi-bindings==21.2.0",
+  "odmantic>=1.0,<2.0",
+]
+
+[project.optional-dependencies]
+checks = [
+  "black>=23.1.0",
+  "mypy>=1.0.0",
+  "isort>=5.11.2",
+  "autoflake>=2.0.0",
+  "flake8>=6.0.0",
+]
+
+[project.urls]
+Documentation = "https://github.com/unknown/app#readme"
+Issues = "https://github.com/unknown/app/issues"
+Source = "https://github.com/unknown/app"
+
+[tool.hatch.version]
+path = "app/__version__.py"
+
+[dirs.env]
+virtual = "./.venv"
+
+[tool.hatch.envs.default]
+dev-mode = true
+python="3.11"
+dependencies = []
+
+[tool.hatch.build.targets.sdist]
+include = ["/app"]
+
+[tool.hatch.envs.production]
+dev-mode = false
+features = []
+path = ".venv"
+
+[tool.hatch.envs.lint]
+detached = true
+dependencies = [
+  "black>=23.1.0",
+  "mypy>=1.0.0",
+  "isort>=5.11.2",
+  "python>=3.11",
+]
+[tool.hatch.envs.lint.scripts]
+style = [
+  "isort --check --diff {args:.}",
+  "black --check --diff {args:.}",
+]
+fmt = [
+  "black {args:.}",
+  "isort {args:.}",
+  "style",
+]
+all = [
+  "style",
+  "typing",
+]
+
+[tool.black]
+target-version = ["py311"]
+line-length = 120
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+line_length = 120
+src_paths = ["app", "tests"]
+
+[tool.mypy]
+files = ["**/*.py"]
+plugins = "pydantic.mypy"
+show_error_codes = true
+strict = true
