@@ -1,4 +1,0 @@
-# Get rid of .venv when copying
-# https://docs.docker.com/engine/reference/builder/#dockerignore-file
-*/.venv
-*/*/.venv

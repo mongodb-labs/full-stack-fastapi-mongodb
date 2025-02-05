@@ -1,3 +1,0 @@
-# Get rid of .venv when copying
-*/.venv
-*/*/.venv
