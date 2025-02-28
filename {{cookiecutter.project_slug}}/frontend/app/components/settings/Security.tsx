@@ -39,7 +39,8 @@ const renderError = (type: LiteralUnion<keyof RegisterOptions, string>) => {
   switch (type) {
     case "required":
       return <div className={style}>This field is required.</div>;
-    case "minLength" || "maxLength":
+    case "minLength":
+    case "maxLength":
       return (
         <div className={style}>
           Your password must be between 8 and 64 characters long.
