@@ -1,6 +1,6 @@
 import type { Config } from "tailwindcss";
+import colors from "tailwindcss/colors";
 
-const colors: import("tailwindcss").Config = require("tailwindcss/colors");
 module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
