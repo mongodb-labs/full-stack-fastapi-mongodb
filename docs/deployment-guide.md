@@ -44,7 +44,7 @@ This guide uses [DigitalOcean Droplets](https://www.digitalocean.com/pricing/dro
 
 Ensure you add your SSH encryption keys on launch so that your server can be secure from the beginning.
 
-Deploy on whatever server image your prefer, although the default would be Ubuntu 20.04 (22.04 is the latest). End-of-life for 20.04 is April 2030, and for 22.04 is April 2032. You have time. The underlying image isn't that critical, as you'll be using the Docker images at their current versions.
+Deploy on whatever server image you prefer, although the default would be Ubuntu 22.04 (24.04 is the latest). End-of-life for 22.04 is April 2032, and for 24.04 is April 2034. The underlying image isn't that critical, as you'll be using the Docker images at their current versions.
 
 ### Domain name and email
 
@@ -83,7 +83,7 @@ rm get-docker.sh
 
 ### Clone your repository
 
-The basic approach is to clone from GitHub then set up the appropriate `.env` files and any custom `conf` files called from `docker-compose`. If yours is a private repo, review the GitHub docs for how to set that up.
+The basic approach is to clone from GitHub then set up the appropriate `.env` files and any custom `conf` files called from `docker compose`. If yours is a private repo, review the GitHub docs for how to set that up.
 
 Remember you can create new passwords as follows:
 

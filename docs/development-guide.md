@@ -83,16 +83,16 @@ cookiecutter https://github.com/mongodb-labs/full-stack-fastapi-mongodb.git
 
 Once the Cookiecutter script has completed, you will have a folder populated with the base project and all input variables customized. 
 
-Change into the project folder and run the `docker-compose` script to build the project containers:
+Change into the project folder and run `docker compose` to build the project containers:
 
 ```bash
-docker-compose build --no-cache
+docker compose build --no-cache
 ```
 
 And start them:
 
 ```bash
-docker-compose up -d 
+docker compose up -d
 ```
 
 Your Docker Desktop app should look like this:
@@ -123,8 +123,8 @@ $ code .
 Change into the `/frontend` folder, and:
 
 ```bash
-yarn install
-yarn dev
+npm install
+npm run dev
 ```
 
 FastAPI `backend` updates will refresh automatically, but the `celeryworker` container must be restarted before changes take effect.
@@ -134,7 +134,7 @@ FastAPI `backend` updates will refresh automatically, but the `celeryworker` con
 If you like to do algorithmic development and testing in Jupyter Notebooks, then launch the `backend` terminal and start Jupyter as follows:
 
 ```bash
-docker-compose exec backend bash
+docker compose exec backend bash
 ```
 
 From the terminal:

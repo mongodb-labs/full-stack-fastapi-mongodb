@@ -58,128 +58,126 @@ If the user is joining a multi-user session, then each update to the session is 
 pip install websockets
 ```
 
-- There are multiple JavaScript libraries for Websockets, but I like [WebSocketAs Promised](https://github.com/vitalets/websocket-as-promised#readme):
-
-```
-yarn install websocket-as-promised
-```
+- The frontend uses the browser's native [WebSocket API](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) — no additional packages required.
 
 ## Setting up the React `frontend`
 
-The API `backend` is reached at `ws://localhost/api/v1` (or `wss://<your-domain>/api/v1` in production).
+The WebSocket backend is reached by converting your `NEXT_PUBLIC_API_URL` from `http` to `ws` (or `https` to `wss` in production). The connection is managed in a `useRef` so it persists across renders without triggering re-renders.
 
-Create an appropriate `websocketAPI.ts` file:
+In the relevant `page.tsx` (or component):
 
-```
-import WebSocketAsPromised from "websocket-as-promised"
-import { apiCore } from "./core"
+```typescript
+"use client";
 
-export const apiSockets = {
-  socketRequest() {
-    return new WebSocketAsPromised(`${apiCore.wsurl()}/socket`, {
-      packMessage: (data) => JSON.stringify(data),
-      unpackMessage: (data) => JSON.parse(data as string),
-    })
-  },
+import { useEffect, useRef, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../lib/hooks";
+import { token, refreshTokens } from "../lib/slices/tokensSlice";
+import { addNotice } from "../lib/slices/toastsSlice";
+import { RootState } from "../lib/store";
+
+interface ISocketResponse {
+  state: string;
+  data: Record<string, unknown>;
+  error?: string;
+}
+
+interface ISocketRequest {
+  state: string;
+  data: Record<string, unknown>;
+}
+
+export default function SocketPage() {
+  const dispatch = useAppDispatch();
+  const accessToken = useAppSelector((state: RootState) => token(state));
+  const wsRef = useRef<WebSocket | null>(null);
+  const [streaming, setStreaming] = useState(false);
+
+  function sendSocketRequest(state: string, data: Record<string, unknown>) {
+    if (wsRef.current?.readyState === WebSocket.OPEN) {
+      const payload: ISocketRequest = { state, data };
+      wsRef.current.send(JSON.stringify(payload));
+    }
+  }
+
+  function watchRequestSocket(request: ISocketRequest) {
+    switch (request.state) {
+      case "something":
+        // Request-specific options
+        break;
+      default:
+        sendSocketRequest(request.state, request.data);
+    }
+  }
+
+  function watchResponseSocket(response: ISocketResponse) {
+    // response: { state, data, error }
+    switch (response.state) {
+      case "initialised":
+        // User session is authenticated and you can now launch the process
+        watchRequestSocket({ state: "startThings", data: {} });
+        break;
+      case "somethingHappened":
+        // Do stuff
+        break;
+      case "somethingElse":
+        // Do some other stuff
+        break;
+      case "error":
+        dispatch(
+          addNotice({
+            title: "Some error",
+            content: `Error: ${response.error}`,
+            icon: "error",
+          }),
+        );
+        break;
+    }
+  }
+
+  useEffect(() => {
+    async function initialiseSocket() {
+      await dispatch(refreshTokens());
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? "";
+      const wsUrl = apiUrl.replace(/^http/, "ws");
+      const ws = new WebSocket(`${wsUrl}/socket`);
+      wsRef.current = ws;
+
+      ws.onopen = () => {
+        // Deliberately sending a user token to authenticate the session
+        ws.send(JSON.stringify({ token: accessToken }));
+        setStreaming(true);
+      };
+
+      ws.onmessage = (event) => {
+        const response = JSON.parse(event.data as string) as ISocketResponse;
+        watchResponseSocket(response);
+      };
+
+      ws.onerror = () => {
+        dispatch(
+          addNotice({
+            title: "Connection error",
+            content: "WebSocket connection failed.",
+            icon: "error",
+          }),
+        );
+      };
+    }
+
+    initialiseSocket();
+
+    // Close the socket when the component unmounts or the user navigates away
+    return () => {
+      if (wsRef.current) {
+        wsRef.current.close();
+        setStreaming(false);
+      }
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return <div>{/* page content */}</div>;
 }
 ```
-
-Then, in the relevant `page.ts` (or component), you create a `websocket` variable (`wsp`) and attach a `watcher` to it so that you can respond to events as it is updated:
-
-```
-<script setup lang="ts">
-	import WebSocketAsPromised from "websocket-as-promised"
-	import { IKeyable, ISocketRequest, ISocketResponse } from "@/interfaces"
-	import { apiSockets } from "@/api"
-	import { useAuthStore } from "@/stores"
-
-	// SETUP
-	let wsp = {} as WebSocketAsPromised
-	const authStore = useAuthStore()
-	const streaming = ref(false)
-
-	onMounted(async () => {
-	  await authStore.refreshTokens()
-	  await initialiseSocket()
-	})
-
-	async function initialiseSocket() {
-	  wsp = apiSockets.socketRequest()
-	  await wsp.open()
-	  wsp.onUnpackedMessage.addListener((data) => watchResponseSocket(data))
-	  // Deliberately sending a user token to authenticate the session
-	  const jsonData: IKeyable = {
-	    token: authStore.authTokens.token
-	  }
-	  wsp.sendPacked(jsonData)
-	  streaming.value = true
-	}
-	
-	function closeSocket() {
-	  wsp.onUnpackedMessage.removeListener((data) => watchResponseSocket(data))
-	  if (streaming.value) {
-	    wsp.close()
-	    streaming.value = false
-	  }
-	}
-	
-	onBeforeRouteLeave((to, from, next) => {
-	  closeSocket()
-	  next()
-	})
-
-	// SESSION
-	async function watchResponseSocket(response: ISocketResponse) {
-	  // response: { state, data, error }
-	  console.log("response: ", response.state, response.data)
-	  switch (response.state) {
-	    case "initialised":
-	      // User session is authenticated and you can now launch the process
-	      await watchRequestSocket({
-	        state: "startThings",
-	        data: {}
-	      })
-	      break
-	    case "somethingHappened":
-	      // Do stuff
-	      break
-	    case "somethingElse":
-	      // Do some other stuff
-	      break
-	    case "error":
-	      toast.addNotice({
-	        title: "Some error",
-	        content: `Error: ${response.error}`,
-	        icon: "error"
-	      })
-	      break
-	  }
-	}
-	
-	async function watchRequestSocket(request: ISocketRequest) {
-	  // request: { state, data }
-	  switch (request.state) {
-	    case "something":
-	      // Request-specific options
-	      break
-	    default:
-	      sendSocketRequest(request.state, request.data)
-	  }
-	}
-	
-	function sendSocketRequest(state: string, data: IKeyable) {
-	  try {
-	    const payload: ISocketRequest = {
-	      state,
-	      data
-	    }
-	    wsp.sendPacked(payload)
-	  } catch (e) {
-	    console.log(e)
-	    // closeSocket()
-	  }
-	}
-</script>
 ```
 
 The `response` is a `switch` statement which identifies and responds to the appropriate event. 
