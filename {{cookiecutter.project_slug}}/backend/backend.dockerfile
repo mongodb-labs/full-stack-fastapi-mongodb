@@ -4,7 +4,7 @@ FROM ghcr.io/br3ndonland/inboard:fastapi-0.51-python3.11
 COPY ./app/ /app/
 WORKDIR /app/
 ENV HATCH_ENV_TYPE_VIRTUAL_PATH=.venv
-RUN hatch env prune && hatch env create production && pip install --upgrade setuptools
+RUN hatch env prune && hatch env create production && pip install --upgrade setuptools && .venv/bin/pip install --upgrade setuptools "gunicorn>=22.0.0"
 
 # /start Project-specific dependencies
 # RUN apt-get update && apt-get install -y --no-install-recommends \

@@ -7,9 +7,12 @@ DOMAIN=${DOMAIN?Variable not set} \
 TRAEFIK_TAG=${TRAEFIK_TAG?Variable not set} \
 STACK_NAME=${STACK_NAME?Variable not set} \
 TAG=${TAG?Variable not set} \
-docker-compose \
+docker compose \
 -f docker-compose.yml \
-config > docker-stack.yml
+config \
+| sed '/^name:/d' \
+| sed 's/published: "\([0-9]*\)"/published: \1/g' \
+> docker-stack.yml
 
 docker-auto-labels docker-stack.yml
 
