@@ -1,4 +1,3 @@
-version: "3.3"
 services:
   proxy:
     image: traefik:v2.2
@@ -77,13 +76,15 @@ services:
       - ./conf/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
 
   flower:
-    image: mher/flower:0.9.7
+    image: mher/flower:2.0.1
     networks:
       - ${TRAEFIK_PUBLIC_NETWORK?Variable not set}
       - default
     env_file:
       - .env
     command:
+      - celery
+      - flower
       - "--broker=amqp://guest@queue:5672//"
       # For the "Broker" tab to work in the flower UI, uncomment the following command argument,
       # and change the queue service's image as well

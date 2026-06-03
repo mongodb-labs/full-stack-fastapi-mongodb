@@ -33,7 +33,6 @@ This FastAPI, React, MongoDB repo will generate a complete web application stack
   - [**Many other features**]("https://fastapi.tiangolo.com/features/"): including automatic validation, serialization, interactive documentation, etc.
 - [**Nextjs/React**](https://nextjs.org/) frontend:
   - **Authorization** route-based authentication, including support for detecting if a user is logged in or is a superuser.
-  - **Model blog** project, with [Nuxt Content](https://content.nuxtjs.org/) for writing Markdown pages.
   - **Form validation** with [React useForm](https://react-hook-form.com/docs/useform)
   - **State management** with [Redux](https://redux.js.org/)
   - **CSS and templates** with [TailwindCSS](https://tailwindcss.com/), [HeroIcons](https://heroicons.com/), and [HeadlessUI](https://headlessui.com/).
