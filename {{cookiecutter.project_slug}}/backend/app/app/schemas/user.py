@@ -1,6 +1,7 @@
 from typing_extensions import Annotated
 from pydantic import BaseModel, ConfigDict, Field, EmailStr, StringConstraints, field_validator, SecretStr
-from odmantic import ObjectId
+
+from app.db.base_class import PyObjectId
 
 
 class UserLogin(BaseModel):
@@ -30,7 +31,7 @@ class UserUpdate(UserBase):
 
 
 class UserInDBBase(UserBase):
-    id: ObjectId | None = None
+    id: PyObjectId | None = None
     model_config = ConfigDict(from_attributes=True)
 
 

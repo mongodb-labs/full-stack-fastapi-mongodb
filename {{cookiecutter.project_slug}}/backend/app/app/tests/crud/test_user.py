@@ -1,5 +1,5 @@
 from fastapi.encoders import jsonable_encoder
-from motor.core import AgnosticDatabase
+from pymongo.asynchronous.database import AsyncDatabase
 import pytest
 
 from app import crud
@@ -9,7 +9,7 @@ from app.tests.utils.utils import random_email, random_lower_string
 
 
 @pytest.mark.asyncio
-async def test_create_user(db: AgnosticDatabase) -> None:
+async def test_create_user(db: AsyncDatabase) -> None:
     email = random_email()
     password = random_lower_string()
     user_in = UserCreate(email=email, password=password)
@@ -19,7 +19,7 @@ async def test_create_user(db: AgnosticDatabase) -> None:
 
 
 @pytest.mark.asyncio
-async def test_authenticate_user(db: AgnosticDatabase) -> None:
+async def test_authenticate_user(db: AsyncDatabase) -> None:
     email = random_email()
     password = random_lower_string()
     user_in = UserCreate(email=email, password=password)
@@ -30,7 +30,7 @@ async def test_authenticate_user(db: AgnosticDatabase) -> None:
 
 
 @pytest.mark.asyncio
-async def test_not_authenticate_user(db: AgnosticDatabase) -> None:
+async def test_not_authenticate_user(db: AsyncDatabase) -> None:
     email = random_email()
     password = random_lower_string()
     user = await crud.user.authenticate(db, email=email, password=password)
@@ -38,7 +38,7 @@ async def test_not_authenticate_user(db: AgnosticDatabase) -> None:
 
 
 @pytest.mark.asyncio
-async def test_check_if_user_is_active(db: AgnosticDatabase) -> None:
+async def test_check_if_user_is_active(db: AsyncDatabase) -> None:
     email = random_email()
     password = random_lower_string()
     user_in = UserCreate(email=email, password=password)
@@ -48,7 +48,7 @@ async def test_check_if_user_is_active(db: AgnosticDatabase) -> None:
 
 
 @pytest.mark.asyncio
-async def test_check_if_user_is_active_inactive(db: AgnosticDatabase) -> None:
+async def test_check_if_user_is_active_inactive(db: AsyncDatabase) -> None:
     email = random_email()
     password = random_lower_string()
     user_in = UserCreate(email=email, password=password, disabled=True)
@@ -58,7 +58,7 @@ async def test_check_if_user_is_active_inactive(db: AgnosticDatabase) -> None:
 
 
 @pytest.mark.asyncio
-async def test_check_if_user_is_superuser(db: AgnosticDatabase) -> None:
+async def test_check_if_user_is_superuser(db: AsyncDatabase) -> None:
     email = random_email()
     password = random_lower_string()
     user_in = UserCreate(email=email, password=password, is_superuser=True)
@@ -68,7 +68,7 @@ async def test_check_if_user_is_superuser(db: AgnosticDatabase) -> None:
 
 
 @pytest.mark.asyncio
-async def test_check_if_user_is_superuser_normal_user(db: AgnosticDatabase) -> None:
+async def test_check_if_user_is_superuser_normal_user(db: AsyncDatabase) -> None:
     username = random_email()
     password = random_lower_string()
     user_in = UserCreate(email=username, password=password)
@@ -78,7 +78,7 @@ async def test_check_if_user_is_superuser_normal_user(db: AgnosticDatabase) -> N
 
 
 @pytest.mark.asyncio
-async def test_get_user(db: AgnosticDatabase) -> None:
+async def test_get_user(db: AsyncDatabase) -> None:
     password = random_lower_string()
     username = random_email()
     user_in = UserCreate(email=username, password=password, is_superuser=True)
@@ -90,7 +90,7 @@ async def test_get_user(db: AgnosticDatabase) -> None:
 
 
 @pytest.mark.asyncio
-async def test_update_user(db: AgnosticDatabase) -> None:
+async def test_update_user(db: AsyncDatabase) -> None:
     password = random_lower_string()
     email = random_email()
     user_in = UserCreate(email=email, password=password, is_superuser=True)

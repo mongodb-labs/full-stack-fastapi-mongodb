@@ -1,7 +1,7 @@
 from typing import Dict
 
 from fastapi.testclient import TestClient
-from motor.core import AgnosticDatabase
+from pymongo.asynchronous.database import AsyncDatabase
 
 from app import crud
 from app.core.config import settings
@@ -20,7 +20,7 @@ def user_authentication_headers(*, client: TestClient, email: str, password: str
     return headers
 
 
-async def authentication_token_from_email(*, client: TestClient, email: str, db: AgnosticDatabase) -> Dict[str, str]:
+async def authentication_token_from_email(*, client: TestClient, email: str, db: AsyncDatabase) -> Dict[str, str]:
     """
     Return a valid token for the user with given email.
 

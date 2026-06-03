@@ -4,7 +4,7 @@ from bson import ObjectId
 
 from fastapi import APIRouter, Body, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
-from motor.core import AgnosticDatabase
+from pymongo.asynchronous.database import AsyncDatabase
 
 from app import crud, models, schemas
 from app.api import deps
@@ -37,7 +37,7 @@ See `security.py` for other requirements.
 
 
 @router.post("/magic/{email}", response_model=schemas.WebToken)
-async def login_with_magic_link(*, db: AgnosticDatabase = Depends(deps.get_db), email: str) -> Any:
+async def login_with_magic_link(*, db: AsyncDatabase = Depends(deps.get_db), email: str) -> Any:
     """
     First step of a 'magic link' login. Check if the user exists and generate a magic link. Generates two short-duration
     jwt tokens, one for validation, one for email. Creates user if not exist.
@@ -59,7 +59,7 @@ async def login_with_magic_link(*, db: AgnosticDatabase = Depends(deps.get_db), 
 @router.post("/claim", response_model=schemas.Token)
 async def validate_magic_link(
     *,
-    db: AgnosticDatabase = Depends(deps.get_db),
+    db: AsyncDatabase = Depends(deps.get_db),
     obj_in: schemas.WebToken,
     magic_in: bool = Depends(deps.get_magic_token),
 ) -> Any:
@@ -97,7 +97,7 @@ async def validate_magic_link(
 
 @router.post("/oauth", response_model=schemas.Token)
 async def login_with_oauth2(
-    db: AgnosticDatabase = Depends(deps.get_db), form_data: OAuth2PasswordRequestForm = Depends()
+    db: AsyncDatabase = Depends(deps.get_db), form_data: OAuth2PasswordRequestForm = Depends()
 ) -> Any:
     """
     First step with OAuth2 compatible token login, get an access token for future requests.
@@ -123,7 +123,7 @@ async def login_with_oauth2(
 @router.post("/totp", response_model=schemas.Token)
 async def login_with_totp(
     *,
-    db: AgnosticDatabase = Depends(deps.get_db),
+    db: AsyncDatabase = Depends(deps.get_db),
     totp_data: schemas.WebToken,
     current_user: models.User = Depends(deps.get_totp_user),
 ) -> Any:
@@ -149,7 +149,7 @@ async def login_with_totp(
 @router.put("/totp", response_model=schemas.Msg)
 async def enable_totp_authentication(
     *,
-    db: AgnosticDatabase = Depends(deps.get_db),
+    db: AsyncDatabase = Depends(deps.get_db),
     data_in: schemas.EnableTOTP,
     current_user: models.User = Depends(deps.get_current_active_user),
 ) -> Any:
@@ -175,7 +175,7 @@ async def enable_totp_authentication(
 @router.delete("/totp", response_model=schemas.Msg)
 async def disable_totp_authentication(
     *,
-    db: AgnosticDatabase = Depends(deps.get_db),
+    db: AsyncDatabase = Depends(deps.get_db),
     data_in: schemas.UserUpdate,
     current_user: models.User = Depends(deps.get_current_active_user),
 ) -> Any:
@@ -192,7 +192,7 @@ async def disable_totp_authentication(
 
 @router.post("/refresh", response_model=schemas.Token)
 async def refresh_token(
-    db: AgnosticDatabase = Depends(deps.get_db),
+    db: AsyncDatabase = Depends(deps.get_db),
     current_user: models.User = Depends(deps.get_refresh_user),
 ) -> Any:
     """
@@ -209,7 +209,7 @@ async def refresh_token(
 
 @router.post("/revoke", response_model=schemas.Msg)
 async def revoke_token(
-    db: AgnosticDatabase = Depends(deps.get_db),
+    db: AsyncDatabase = Depends(deps.get_db),
     current_user: models.User = Depends(deps.get_refresh_user),
 ) -> Any:
     """
@@ -219,7 +219,7 @@ async def revoke_token(
 
 
 @router.post("/recover/{email}", response_model=Union[schemas.WebToken, schemas.Msg])
-async def recover_password(email: str, db: AgnosticDatabase = Depends(deps.get_db)) -> Any:
+async def recover_password(email: str, db: AsyncDatabase = Depends(deps.get_db)) -> Any:
     """
     Password Recovery
     """
@@ -235,7 +235,7 @@ async def recover_password(email: str, db: AgnosticDatabase = Depends(deps.get_d
 @router.post("/reset", response_model=schemas.Msg)
 async def reset_password(
     *,
-    db: AgnosticDatabase = Depends(deps.get_db),
+    db: AsyncDatabase = Depends(deps.get_db),
     new_password: str = Body(...),
     claim: str = Body(...),
     magic_in: bool = Depends(deps.get_magic_token),

@@ -3,7 +3,7 @@ from typing import Any, List
 from fastapi import APIRouter, Body, Depends, HTTPException
 from fastapi.encoders import jsonable_encoder
 from pydantic.networks import EmailStr
-from motor.core import AgnosticDatabase
+from pymongo.asynchronous.database import AsyncDatabase
 
 from app import crud, models, schemas
 from app.api import deps
@@ -19,7 +19,7 @@ router = APIRouter()
 @router.post("/", response_model=schemas.User)
 async def create_user_profile(
     *,
-    db: AgnosticDatabase = Depends(deps.get_db),
+    db: AsyncDatabase = Depends(deps.get_db),
     password: str = Body(...),
     email: EmailStr = Body(...),
     full_name: str = Body(""),
@@ -42,7 +42,7 @@ async def create_user_profile(
 @router.put("/", response_model=schemas.User)
 async def update_user(
     *,
-    db: AgnosticDatabase = Depends(deps.get_db),
+    db: AsyncDatabase = Depends(deps.get_db),
     obj_in: schemas.UserUpdate,
     current_user: models.User = Depends(deps.get_current_active_user),
 ) -> Any:
@@ -85,7 +85,7 @@ async def read_user(
 @router.get("/all", response_model=List[schemas.User])
 async def read_all_users(
     *,
-    db: AgnosticDatabase = Depends(deps.get_db),
+    db: AsyncDatabase = Depends(deps.get_db),
     page: int = 0,
     current_user: models.User = Depends(deps.get_current_active_superuser),
 ) -> Any:
@@ -112,7 +112,7 @@ async def request_new_totp(
 @router.post("/toggle-state", response_model=schemas.Msg)
 async def toggle_state(
     *,
-    db: AgnosticDatabase = Depends(deps.get_db),
+    db: AsyncDatabase = Depends(deps.get_db),
     user_in: schemas.UserUpdate,
     current_user: models.User = Depends(deps.get_current_active_superuser),
 ) -> Any:
@@ -131,7 +131,7 @@ async def toggle_state(
 @router.post("/create", response_model=schemas.User)
 async def create_user(
     *,
-    db: AgnosticDatabase = Depends(deps.get_db),
+    db: AsyncDatabase = Depends(deps.get_db),
     user_in: schemas.UserCreate,
     current_user: models.User = Depends(deps.get_current_active_superuser),
 ) -> Any:

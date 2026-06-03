@@ -4,12 +4,12 @@ from typing import Dict, Generator
 import pytest
 import pytest_asyncio
 from fastapi.testclient import TestClient
-from motor.core import AgnosticDatabase
+from pymongo.asynchronous.database import AsyncDatabase
 
 from app.core.config import settings
 from app.db.init_db import init_db
 from app.main import app
-from app.db.session import MongoDatabase, _MongoClientSingleton
+from app.db.session import MongoDatabase
 from app.tests.utils.user import authentication_token_from_email
 from app.tests.utils.utils import get_superuser_token_headers
 
@@ -30,7 +30,6 @@ def event_loop():
 @pytest_asyncio.fixture(scope="session")
 async def db() -> Generator:
     db = MongoDatabase()
-    _MongoClientSingleton.instance.mongo_client.get_io_loop = asyncio.get_event_loop
     await init_db(db)
     yield db
 
@@ -47,5 +46,5 @@ def superuser_token_headers(client: TestClient) -> Dict[str, str]:
 
 
 @pytest_asyncio.fixture(scope="module")
-async def normal_user_token_headers(client: TestClient, db: AgnosticDatabase) -> Dict[str, str]:
+async def normal_user_token_headers(client: TestClient, db: AsyncDatabase) -> Dict[str, str]:
     return await authentication_token_from_email(client=client, email=settings.EMAIL_TEST_USER, db=db)

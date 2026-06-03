@@ -1,7 +1,7 @@
 from typing import Dict
 
 from fastapi.testclient import TestClient
-from motor.core import AgnosticDatabase
+from pymongo.asynchronous.database import AsyncDatabase
 import pytest
 
 from app import crud
@@ -31,7 +31,7 @@ async def test_get_users_normal_user_me(client: TestClient, normal_user_token_he
 
 
 @pytest.mark.asyncio
-async def test_create_user_new_email(client: TestClient, superuser_token_headers: dict, db: AgnosticDatabase) -> None:
+async def test_create_user_new_email(client: TestClient, superuser_token_headers: dict, db: AsyncDatabase) -> None:
     username = random_email()
     password = random_lower_string()
     data = {"email": username, "password": password}
@@ -49,7 +49,7 @@ async def test_create_user_new_email(client: TestClient, superuser_token_headers
 
 @pytest.mark.asyncio
 async def test_create_user_existing_username(
-    client: TestClient, superuser_token_headers: dict, db: AgnosticDatabase
+    client: TestClient, superuser_token_headers: dict, db: AsyncDatabase
 ) -> None:
     username = random_email()
     # username = email
@@ -68,7 +68,7 @@ async def test_create_user_existing_username(
 
 
 @pytest.mark.asyncio
-async def test_retrieve_users(client: TestClient, superuser_token_headers: dict, db: AgnosticDatabase) -> None:
+async def test_retrieve_users(client: TestClient, superuser_token_headers: dict, db: AsyncDatabase) -> None:
     username = random_email()
     password = random_lower_string()
     user_in = UserCreate(email=username, password=password)
