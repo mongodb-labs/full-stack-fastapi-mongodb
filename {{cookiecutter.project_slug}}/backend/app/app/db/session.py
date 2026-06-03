@@ -1,3 +1,5 @@
+import asyncio
+
 from app.core.config import settings
 from app.__version__ import __version__
 from pymongo import AsyncMongoClient
@@ -8,15 +10,21 @@ DRIVER_INFO = DriverInfo(name="full-stack-fastapi-mongodb", version=__version__)
 
 
 class _MongoClientSingleton:
-    mongo_client: AsyncMongoClient | None
+    _instances: dict = {}
 
     def __new__(cls):
-        if not hasattr(cls, "instance"):
-            cls.instance = super(_MongoClientSingleton, cls).__new__(cls)
-            cls.instance.mongo_client = AsyncMongoClient(
+        try:
+            loop = asyncio.get_running_loop()
+        except RuntimeError:
+            loop = None
+        loop_id = id(loop)
+        if loop_id not in cls._instances:
+            instance = super().__new__(cls)
+            instance.mongo_client = AsyncMongoClient(
                 settings.MONGO_DATABASE_URI, driver=DRIVER_INFO
             )
-        return cls.instance
+            cls._instances[loop_id] = instance
+        return cls._instances[loop_id]
 
 
 def MongoDatabase() -> AsyncDatabase:
