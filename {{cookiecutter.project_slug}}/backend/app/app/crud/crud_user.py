@@ -17,14 +17,14 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
 
     async def create(self, db: AsyncDatabase, *, obj_in: UserCreate) -> User: # noqa
         # TODO: Figure out what happens when you have a unique key like 'email'
-        user_data = {
+        user = {
             **obj_in.model_dump(),
             "email": obj_in.email,
             "hashed_password": get_password_hash(obj_in.password) if obj_in.password is not None else None, # noqa
             "full_name": obj_in.full_name,
             "is_superuser": obj_in.is_superuser,
         }
-        db_obj = User(**user_data)
+        db_obj = User(**user)
         await self._collection(db).insert_one(self._to_mongo(db_obj))
         return db_obj
 

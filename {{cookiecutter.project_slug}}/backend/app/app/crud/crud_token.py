@@ -10,9 +10,9 @@ from app.core.config import settings
 class CRUDToken(CRUDBase[Token, RefreshTokenCreate, RefreshTokenUpdate]):
     # Everything is user-dependent
     async def create(self, db: AsyncDatabase, *, obj_in: str, user_obj: User) -> Token:
-        doc = await self._collection(db).find_one({"token": obj_in})
-        if doc:
-            db_obj = self._from_mongo(doc)
+        db_obj = await self._collection(db).find_one({"token": obj_in})
+        if db_obj:
+            db_obj = self._from_mongo(db_obj)
             if db_obj.authenticates_id != user_obj.id:
                 raise ValueError("Token mismatch between key and user.")
             return db_obj
@@ -28,19 +28,14 @@ class CRUDToken(CRUDBase[Token, RefreshTokenCreate, RefreshTokenUpdate]):
         return self._from_mongo(doc) if doc else None
 
     async def get_multi(self, db: AsyncDatabase, *, user: User, page: int = 0, page_break: bool = False) -> list[Token]:
-        filter_q = {"authenticates_id": user.id}
-        if page_break:
-            cursor = self._collection(db).find(filter_q, skip=page * settings.MULTI_MAX, limit=settings.MULTI_MAX)
-        else:
-            cursor = self._collection(db).find(filter_q)
-        return [self._from_mongo(doc) async for doc in cursor]
+        offset = {"skip": page * settings.MULTI_MAX, "limit": settings.MULTI_MAX} if page_break else {}
+        return [self._from_mongo(doc) async for doc in self._collection(db).find({"authenticates_id": user.id}, **offset)]
 
     async def remove(self, db: AsyncDatabase, *, db_obj: Token) -> None:
-        user_col = db[User.__collection__]
-        async for doc in user_col.find({"refresh_tokens": db_obj.id}):
-            user = User.model_validate(doc)
+        async for user in db[User.__collection__].find({"refresh_tokens": db_obj.id}):
+            user = User.model_validate(user)
             user.refresh_tokens.remove(db_obj.id)
-            await user_col.replace_one({"_id": user.id}, user.to_mongo())
+            await db[User.__collection__].replace_one({"_id": user.id}, user.to_mongo())
         await self._collection(db).delete_one({"_id": db_obj.id})
 
 
