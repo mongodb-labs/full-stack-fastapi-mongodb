@@ -18,13 +18,8 @@ settings.MONGO_DATABASE = TEST_DATABASE
 
 
 @pytest.fixture(scope="session")
-def event_loop():
-    try:
-        loop = asyncio.get_running_loop()
-    except RuntimeError:
-        loop = asyncio.new_event_loop()
-    yield loop
-    loop.close()
+def event_loop_policy():
+    return asyncio.DefaultEventLoopPolicy()
 
 
 @pytest_asyncio.fixture(scope="session")
