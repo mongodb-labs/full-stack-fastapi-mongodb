@@ -4,7 +4,7 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt
 from pydantic import ValidationError
-from motor.core import AgnosticDatabase
+from pymongo.asynchronous.database import AsyncDatabase
 
 from app import crud, models, schemas
 from app.core.config import settings
@@ -34,7 +34,7 @@ def get_token_payload(token: str) -> schemas.TokenPayload:
 
 
 async def get_current_user(
-    db: AgnosticDatabase = Depends(get_db), token: str = Depends(reusable_oauth2)
+    db: AsyncDatabase = Depends(get_db), token: str = Depends(reusable_oauth2)
 ) -> models.User:
     token_data = get_token_payload(token)
     if token_data.refresh or token_data.totp:
@@ -49,7 +49,7 @@ async def get_current_user(
     return user
 
 
-async def get_totp_user(db: AgnosticDatabase = Depends(get_db), token: str = Depends(reusable_oauth2)) -> models.User:
+async def get_totp_user(db: AsyncDatabase = Depends(get_db), token: str = Depends(reusable_oauth2)) -> models.User:
     token_data = get_token_payload(token)
     if token_data.refresh or not token_data.totp:
         # Refresh token is not a valid access token and TOTP False cannot be used to validate TOTP
@@ -76,7 +76,7 @@ def get_magic_token(token: str = Depends(reusable_oauth2)) -> schemas.MagicToken
 
 
 async def get_refresh_user(
-    db: AgnosticDatabase = Depends(get_db), token: str = Depends(reusable_oauth2)
+    db: AsyncDatabase = Depends(get_db), token: str = Depends(reusable_oauth2)
 ) -> models.User:
     token_data = get_token_payload(token)
     if not token_data.refresh:
@@ -91,7 +91,7 @@ async def get_refresh_user(
     if not crud.user.is_active(user):
         raise HTTPException(status_code=400, detail="Inactive user")
     # Check and revoke this refresh token
-    token_obj = await crud.token.get(token=token, user=user)
+    token_obj = await crud.token.get(db, token=token, user=user)
     if not token_obj:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -100,7 +100,7 @@ async def get_refresh_user(
     await crud.token.remove(db, db_obj=token_obj)
 
     # Make sure to revoke all other refresh tokens
-    return await crud.user.get(id=token_data.sub)
+    return await crud.user.get(db, id=token_data.sub)
 
 
 async def get_current_active_user(
@@ -119,7 +119,7 @@ async def get_current_active_superuser(
     return current_user
 
 
-async def get_active_websocket_user(*, db: AgnosticDatabase, token: str) -> models.User:
+async def get_active_websocket_user(*, db: AsyncDatabase, token: str) -> models.User:
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.JWT_ALGO])
         token_data = schemas.TokenPayload(**payload)

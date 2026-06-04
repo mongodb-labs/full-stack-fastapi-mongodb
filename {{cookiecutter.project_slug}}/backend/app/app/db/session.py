@@ -1,32 +1,34 @@
+import asyncio
+
 from app.core.config import settings
 from app.__version__ import __version__
-from motor import motor_asyncio, core
-from odmantic import AIOEngine
+from pymongo import AsyncMongoClient
+from pymongo.asynchronous.database import AsyncDatabase
 from pymongo.driver_info import DriverInfo
 
 DRIVER_INFO = DriverInfo(name="full-stack-fastapi-mongodb", version=__version__)
 
 
 class _MongoClientSingleton:
-    mongo_client: motor_asyncio.AsyncIOMotorClient | None
-    engine: AIOEngine
+    _instances: dict = {}
 
     def __new__(cls):
-        if not hasattr(cls, "instance"):
-            cls.instance = super(_MongoClientSingleton, cls).__new__(cls)
-            cls.instance.mongo_client = motor_asyncio.AsyncIOMotorClient(
+        try:
+            loop = asyncio.get_running_loop()
+        except RuntimeError:
+            loop = None
+        loop_id = id(loop)
+        if loop_id not in cls._instances:
+            instance = super().__new__(cls)
+            instance.mongo_client = AsyncMongoClient(
                 settings.MONGO_DATABASE_URI, driver=DRIVER_INFO
             )
-            cls.instance.engine = AIOEngine(client=cls.instance.mongo_client, database=settings.MONGO_DATABASE)
-        return cls.instance
+            cls._instances[loop_id] = instance
+        return cls._instances[loop_id]
 
 
-def MongoDatabase() -> core.AgnosticDatabase:
+def MongoDatabase() -> AsyncDatabase:
     return _MongoClientSingleton().mongo_client[settings.MONGO_DATABASE]
-
-
-def get_engine() -> AIOEngine:
-    return _MongoClientSingleton().engine
 
 
 async def ping():
