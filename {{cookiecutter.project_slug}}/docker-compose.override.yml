@@ -70,7 +70,7 @@ services:
 
   frontend:
     ports:
-      - "3000:3000"
+      - "3000:80"
     build:
       context: ./frontend
       target: runner

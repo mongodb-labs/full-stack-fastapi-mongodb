@@ -73,7 +73,7 @@ services:
     #
     # You also have to change the flower command
     volumes:
-      - ./conf/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - ${PWD}/conf/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
 
   flower:
     image: mher/flower:2.0.1
@@ -160,6 +160,8 @@ services:
       - ./frontend/.env.local
     build:
       context: ./frontend
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL-http://localhost/api/v1}
     deploy:
       labels:
         - traefik.enable=true

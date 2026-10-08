@@ -26,6 +26,12 @@ COPY . .
 # Uncomment the following line in case you want to disable telemetry during the build.
 ENV NEXT_TELEMETRY_DISABLED 1
 
+# NEXT_PUBLIC_* vars are baked into the client bundle at build time, so this must be
+# set here (not just in .env) to override the localhost default in .env.local for
+# non-local builds.
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+
 # If using npm comment out above and use below instead
 RUN npm run build
 
@@ -53,8 +59,8 @@ COPY --from=builder --chown=nextjs:nodejs /frontend/.next/static ./.next/static
 
 USER nextjs
 
-EXPOSE 3000
-ENV PORT 3000
+EXPOSE 80
+ENV PORT 80
 
 # set hostname to localhost
 ENV HOSTNAME "0.0.0.0"

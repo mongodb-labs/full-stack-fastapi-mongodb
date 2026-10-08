@@ -72,9 +72,9 @@ export const getTokens = (payload: { username: string; password?: string }) => {
 };
 
 export const validateMagicTokens =
-  (token: string) => async (dispatch: Dispatch) => {
+  (token: string) => async (dispatch: Dispatch, getState: () => RootState) => {
     try {
-      const data: string = token;
+      const data: string = getState().tokens.access_token;
       // Check the two magic tokens meet basic criteria
       const localClaim = tokenParser(data);
       const magicClaim = tokenParser(token);
