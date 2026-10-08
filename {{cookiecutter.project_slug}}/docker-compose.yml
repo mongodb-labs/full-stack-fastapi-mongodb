@@ -1,21 +1,23 @@
 services:
   proxy:
-    image: traefik:v2.2
+    image: traefik:v3.7.13
     networks:
       - ${TRAEFIK_PUBLIC_NETWORK?Variable not set}
       - default
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command:
-      # Enable Docker in Traefik, so that it reads labels from Docker services
-      - --providers.docker
+      # Enable Docker Swarm in Traefik, so that it reads labels from Swarm services
+      - --providers.swarm
       # Add a constraint to only use services with the label for this stack
       # from the env var TRAEFIK_TAG
-      - --providers.docker.constraints=Label(`traefik.constraint-label-stack`, `${TRAEFIK_TAG?Variable not set}`)
-      # Do not expose all Docker services, only the ones explicitly exposed
-      - --providers.docker.exposedbydefault=false
-      # Enable Docker Swarm mode
-      - --providers.docker.swarmmode
+      - --providers.swarm.constraints=Label(`traefik.constraint-label-stack`, `${TRAEFIK_TAG?Variable not set}`)
+      # Do not expose all Swarm services, only the ones explicitly exposed
+      - --providers.swarm.exposedbydefault=false
+      # Create an entrypoint "http" listening on port 80
+      - --entrypoints.http.address=:80
+      # Create an entrypoint "https" listening on port 443
+      - --entrypoints.https.address=:443
       # Enable the access log, with HTTP requests
       - --accesslog
       # Enable the Traefik log, for configurations and errors
@@ -30,7 +32,7 @@ services:
         # Enable Traefik for this service, to make it available in the public network
         - traefik.enable=true
         # Use the traefik-public network (declared below)
-        - traefik.docker.network=${TRAEFIK_PUBLIC_NETWORK?Variable not set}
+        - traefik.swarm.network=${TRAEFIK_PUBLIC_NETWORK?Variable not set}
         # Use the custom label "traefik.constraint-label=traefik-public"
         # This public Traefik will only use services with this label
         - traefik.constraint-label=${TRAEFIK_PUBLIC_TAG?Variable not set}
@@ -92,7 +94,7 @@ services:
     deploy:
       labels:
         - traefik.enable=true
-        - traefik.docker.network=${TRAEFIK_PUBLIC_NETWORK?Variable not set}
+        - traefik.swarm.network=${TRAEFIK_PUBLIC_NETWORK?Variable not set}
         - traefik.constraint-label=${TRAEFIK_PUBLIC_TAG?Variable not set}
         - traefik.http.routers.${STACK_NAME?Variable not set}-flower-http.rule=Host(`flower.${DOMAIN?Variable not set}`)
         - traefik.http.routers.${STACK_NAME?Variable not set}-flower-http.entrypoints=http
