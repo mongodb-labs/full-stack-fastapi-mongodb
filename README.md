@@ -125,6 +125,74 @@ This project is currently experimental, so bugs or issues may occur. Please open
 
 See notes: 
 
+## Unreleased
+- Upgraded Traefik from v2 to v3, starting from v3.7.13. The image now tracks the `traefik:v3` tag, so redeploying picks up new v3 minor and patch releases. Moving to v4 remains a deliberate, manual upgrade.
+- Generated projects now include a `traefik.yml` stack file for the main public Traefik proxy. Previously this file was downloaded from DockerSwarm.rocks, but that file is pinned to Traefik v2 and can't be used with the v3 stack, so the template now ships its own.
+- Updated docs/
+  - Deployment guide now deploys the included `traefik.yml`
+
+### Migrating an existing generated project from Traefik v2 to v3
+
+Projects generated from earlier versions of this template don't pick up the change automatically. Apply it by hand:
+
+1. **Add `traefik.yml`** to the root of your project. Copy it from [`{{cookiecutter.project_slug}}/traefik.yml`](./{{cookiecutter.project_slug}}/traefik.yml). It contains no cookiecutter variables, so you can copy it as-is. It replaces the `traefik.yml` you downloaded from DockerSwarm.rocks.
+
+2. **Update `docker-compose.yml`.** In the `proxy` service, change the image and switch from the Docker provider in Swarm mode to the Swarm provider, which replaces it in Traefik v3:
+
+   ```yaml
+   # Before (Traefik v2)
+   image: traefik:v2.2
+   command:
+     - --providers.docker
+     - --providers.docker.constraints=Label(`traefik.constraint-label-stack`, `${TRAEFIK_TAG?Variable not set}`)
+     - --providers.docker.exposedbydefault=false
+     - --providers.docker.swarmmode
+
+   # After (Traefik v3)
+   image: traefik:v3
+   command:
+     - --providers.swarm
+     - --providers.swarm.constraints=Label(`traefik.constraint-label-stack`, `${TRAEFIK_TAG?Variable not set}`)
+     - --providers.swarm.exposedbydefault=false
+     - --entrypoints.http.address=:80
+     - --entrypoints.https.address=:443
+   ```
+
+   Then, in every service with Traefik labels (`proxy`, `flower` and any services you've added), rename the network label:
+
+   ```yaml
+   # Before
+   - traefik.docker.network=${TRAEFIK_PUBLIC_NETWORK?Variable not set}
+   # After
+   - traefik.swarm.network=${TRAEFIK_PUBLIC_NETWORK?Variable not set}
+   ```
+
+3. **Update `docker-compose.override.yml`** (local development). Keep `--providers.docker`, because local development doesn't use Swarm. Replace the commented-out `# - --providers.docker.swarmmode` line with the `http` entrypoint:
+
+   ```yaml
+   - --entrypoints.http.address=:80
+   ```
+
+4. **Check locally** with `docker compose up -d`. The app should load as before, and the Traefik UI at http://localhost:8090 should list your routers.
+
+5. **Upgrade the public proxy on your server before redeploying the app.** A v2 proxy doesn't read the `traefik.swarm.network` label. From your project directory, with `EMAIL`, `DOMAIN`, `USERNAME` and `HASHED_PASSWORD` exported as in the [deployment guide](./docs/deployment-guide.md#traefik-proxy-with-https), run:
+
+   ```bash
+   docker stack deploy -c traefik.yml traefik
+   ```
+
+   The existing `traefik-public` network, `traefik-public-certificates` volume and node label are reused, so your Let's Encrypt certificates carry over.
+
+6. **Redeploy your app stack** with `scripts/build.sh` and `scripts/deploy.sh` as usual.
+
+7. **Check production.** `docker stack ps traefik` should show the `traefik:v3` image, and `docker service logs traefik_traefik` should have no provider or label errors. Your site and the Traefik dashboard should load over HTTPS.
+
+If you've added your own routers, rules or middlewares, also check them against Traefik's [v2 to v3 migration guide](https://doc.traefik.io/traefik/migration/v2-to-v3/). For example, the `HostRegexp` and `PathPrefix` rule syntax changed in v3.
+
+### Forks of this template
+
+Merge the update into your fork. If you've customised `{{cookiecutter.project_slug}}/docker-compose.yml` or `docker-compose.override.yml`, apply the changes from steps 2 and 3 above to your versions. Then generate a test project to confirm it builds and runs.
+
 ## CalVer 2024.01.10
 - Replaced Beanie usage with ODMantic
 - Fixed TOTP login

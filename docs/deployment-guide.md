@@ -149,7 +149,7 @@ ndcg2iavasdfrm6q2qwere2rr *   dog.example.com      Ready     Active          Lea
 
 ### Traefik Proxy with HTTPS
 
-Follow the documentation from DockerSwarm.rocks to [get automatic HTTPS certificates](https://dockerswarm.rocks/traefik/).
+Your generated project includes a `traefik.yml` file in its root directory. It is a Docker Swarm stack for the main public [Traefik v3](https://doc.traefik.io/traefik/) proxy (the `traefik:v3` image, tested from v3.7.13 onwards), which routes requests to your stack and gets HTTPS certificates from Let's Encrypt automatically. The steps below set it up.
 
 Create a network that will be shared with Traefik and the containers that should be accessible from the outside, with
 
@@ -201,13 +201,7 @@ Use `openssl` to generate the "hashed" version of the password and store it in
 export HASHED_PASSWORD=$(openssl passwd -apr1 $PASSWORD)
 ```
 
-Download the file `traefik.yml`:
-
-```shell
-curl -L dockerswarm.rocks/traefik.yml -o traefik.yml
-```
-
-Deploy the stack with:
+From your project directory (e.g. `/srv/<project-name>`), deploy the included `traefik.yml` stack with:
 
 ```shell
 docker stack deploy -c traefik.yml traefik
@@ -223,7 +217,7 @@ It will output something like:
 
 ```
 ID             NAME                IMAGE          NODE              DESIRED STATE   CURRENT STATE          ERROR   PORTS
-w5o6fmmln8ni   traefik_traefik.1   traefik:v2.2   dog.example.com   Running         Running 1 minute ago
+w5o6fmmln8ni   traefik_traefik.1   traefik:v3     dog.example.com   Running         Running 1 minute ago
 ```
 
 You can check the Traefik logs with:
