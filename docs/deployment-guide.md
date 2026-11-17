@@ -226,8 +226,6 @@ You can check the Traefik logs with:
 docker service logs traefik_traefik
 ```
 
-The stack uses the `traefik:v3` tag, so `docker stack ps` only shows `v3`. The first lines of the log show the exact Traefik version running, e.g. `Traefik version 3.x.y`.
-
 ### Deploy to a Docker Swarm mode cluster
 
 There are 4 (5) steps:
