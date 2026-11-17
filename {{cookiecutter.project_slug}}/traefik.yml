@@ -4,7 +4,8 @@ services:
 
   traefik:
     # Traefik v3 (the swarmMode flag from v2 was removed, use the Swarm provider instead)
-    image: traefik:v3.7.13
+    # Track the latest Traefik v3 release (tested from v3.7.13); a v4 upgrade stays manual
+    image: traefik:v3
     ports:
       # Listen on port 80, default for HTTP, necessary to redirect to HTTPS
       - 80:80

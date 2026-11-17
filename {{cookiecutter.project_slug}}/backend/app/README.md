@@ -364,6 +364,12 @@ You can deploy the stack to a Docker Swarm mode cluster with a main Traefik prox
 
 And you can use CI (continuous integration) systems to do it automatically.
 
+The main public proxy is Traefik v3, defined in the `traefik.yml` file included in this project. With the environment variables `EMAIL`, `DOMAIN`, `USERNAME` and `HASHED_PASSWORD` set, deploy it to the cluster once with:
+
+```bash
+docker stack deploy -c traefik.yml traefik
+```
+
 But you have to configure a couple things first.
 
 ### Traefik network

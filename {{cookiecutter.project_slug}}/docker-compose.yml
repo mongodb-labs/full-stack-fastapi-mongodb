@@ -1,6 +1,7 @@
 services:
   proxy:
-    image: traefik:v3.7.13
+    # Track the latest Traefik v3 release (tested from v3.7.13); a v4 upgrade stays manual
+    image: traefik:v3
     networks:
       - ${TRAEFIK_PUBLIC_NETWORK?Variable not set}
       - default
