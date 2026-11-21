@@ -23,7 +23,7 @@ export default function CreateUser() {
       const data: IUserProfileCreate = {
         email: values.email,
         password: generateUUID(),
-        fullName: values.fullName ? values.fullName : "",
+        full_name: values.full_name ? values.full_name : "",
       };
       try {
         const res = await apiAuth.createUserProfile(accessToken, data);
@@ -53,16 +53,16 @@ export default function CreateUser() {
         <div className="space-y-6 bg-white py-6 px-4 sm:p-6">
           <div>
             <label
-              htmlFor="fullName"
+              htmlFor="full_name"
               className="block text-sm font-medium text-gray-700"
             >
               Profile name
             </label>
             <div className="mt-1 group relative inline-block w-full">
               <input
-                {...register("fullName")}
-                id="fullName"
-                name="fullName"
+                {...register("full_name")}
+                id="full_name"
+                name="full_name"
                 type="string"
                 className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-rose-500 focus:outline-none focus:ring-rose-500 sm:text-sm"
               />
