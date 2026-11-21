@@ -5,14 +5,14 @@ export interface IUserProfile {
   email_validated: boolean;
   is_active: boolean;
   is_superuser: boolean;
-  fullName: string;
+  full_name: string;
   password: boolean;
   totp: boolean;
 }
 
 export interface IUserProfileUpdate {
   email?: string;
-  fullName?: string;
+  full_name?: string;
   original?: string;
   password?: string;
   is_active?: boolean;
@@ -21,7 +21,7 @@ export interface IUserProfileUpdate {
 
 export interface IUserProfileCreate {
   email: string;
-  fullName?: string;
+  full_name?: string;
   password?: string;
   is_active?: boolean;
   is_superuser?: boolean;
@@ -29,6 +29,6 @@ export interface IUserProfileCreate {
 
 export interface IUserOpenProfileCreate {
   email: string;
-  fullName?: string;
+  full_name?: string;
   password: string;
 }
